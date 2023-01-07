@@ -1,1 +1,1 @@
-export * from './lib/nestx.module';
+export * from './lib';
