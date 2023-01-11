@@ -1,5 +1,14 @@
 {
   "name": "@clashsoft/nestx",
-  "version": "0.0.1",
-  "type": "commonjs"
+  "version": "0.1.0",
+  "type": "commonjs",
+  "peerDependencies": {
+    "@nestjs/core": "^9.0.0",
+    "@nestjs/common": "^9.0.0",
+    "rxjs": "^7.0.0",
+    "tslib": "^2.4.1"
+  },
+  "optionalDependencies": {
+    "@nestjs/swagger": "^6.1.4"
+  }
 }
