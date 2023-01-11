@@ -1,2 +1,1 @@
-export * from './not-found';
-export * from './nestx.module';
+export * from "./not-found";
