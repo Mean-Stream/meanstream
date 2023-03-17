@@ -18,7 +18,12 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   // ...
   initEventGateway(port, path);
+  app.connectMicroservice({
+    transport: Transport.NATS,
+    options: natsOptions,
+  });
   // ...
+  app.startAllMicroservices();
   app.listen(port);
 }
 
