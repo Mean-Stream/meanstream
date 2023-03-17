@@ -6,6 +6,7 @@ specifiers:
   '@nestjs/event-emitter': ^1.4.1
   '@nestjs/microservices': ^9.3.10
   '@nestjs/platform-express': ^9.3.10
+  '@nestjs/platform-ws': ^9.3.10
   '@nestjs/schematics': ^9.0.4
   '@nestjs/testing': ^9.3.10
   '@nestjs/websockets': ^9.3.10
@@ -39,6 +40,7 @@ dependencies:
   '@nestjs/event-emitter': 1.4.1_l47c26rusno2nzu2di7dysoove
   '@nestjs/microservices': 9.3.10_6t5i6pvz2nxkdmugaa5jttb4ye
   '@nestjs/platform-express': 9.3.10_7ftkheainf6elxr73aabueoaxm
+  '@nestjs/platform-ws': 9.3.10_ix52exclojweof7jgzapqibjfe
   '@nestjs/websockets': 9.3.10_a35b4njzmq35teptds6ij3qrdm
   nats: 2.13.1
   reflect-metadata: 0.1.13
@@ -950,6 +952,23 @@ packages:
       tslib: 2.5.0
     transitivePeerDependencies:
       - supports-color
+
+  /@nestjs/platform-ws/9.3.10_ix52exclojweof7jgzapqibjfe:
+    resolution: {integrity: sha512-CtoL0zH7toM3+bVY/vKlhRSnbG+aH8lTYznRBnl2kXf4H2Qb5uK21ClShAc/WJkKzC3ZsoiFnmeeUtE8qOLNJA==}
+    peerDependencies:
+      '@nestjs/common': ^9.0.0
+      '@nestjs/websockets': ^9.0.0
+      rxjs: ^7.1.0
+    dependencies:
+      '@nestjs/common': 9.3.10_mnr6j2del53muneqly5h4y27ai
+      '@nestjs/websockets': 9.3.10_a35b4njzmq35teptds6ij3qrdm
+      rxjs: 7.8.0
+      tslib: 2.5.0
+      ws: 8.13.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+    dev: false
 
   /@nestjs/schematics/9.0.4_typescript@4.8.4:
     resolution: {integrity: sha512-egurCfAc4e5i1r2TmeAF0UrOKejFmT5oTdv4b7HcOVPupc3QGU7CbEfGleL3mkM5AjrixTQeMxU9bJ00ttAbGg==}
@@ -7306,7 +7325,6 @@ packages:
         optional: true
       utf-8-validate:
         optional: true
-    dev: true
 
   /xml-name-validator/4.0.0:
     resolution: {integrity: sha512-ICP2e+jsHvAj2E2lIHxa5tjXRlKDJo4IdvPvCXbXQGdzSfmSpNVyIKMvoZHjDY9DP0zV17iI85o90vRFXNccRw==}

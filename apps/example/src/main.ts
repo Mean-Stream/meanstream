@@ -3,10 +3,12 @@
  * This is only a minimal backend to get started.
  */
 
-import {initEventGateway} from '@clashsoft/nestx';
+import {EventGateway} from '@clashsoft/nestx';
 import {Logger} from '@nestjs/common';
 import {NestFactory} from '@nestjs/core';
 import {Transport} from '@nestjs/microservices';
+import {WsAdapter} from '@nestjs/platform-ws';
+import {WebSocketGateway} from '@nestjs/websockets';
 
 import {AppModule} from './app/app.module';
 
@@ -14,7 +16,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
-  initEventGateway('/ws/events');
+  app.useWebSocketAdapter(new WsAdapter(app));
+  WebSocketGateway({path: '/ws/events'})(EventGateway);
   app.connectMicroservice({
     transport: Transport.NATS,
     options: {
