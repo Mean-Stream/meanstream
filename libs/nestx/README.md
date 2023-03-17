@@ -41,6 +41,13 @@ class MyService {
 }
 ```
 
+If you did everything right (including `initEventGateway`!), you will see the output:
+
+```
+[Nest] 27843  - 03/17/2023, 10:56:29 AM     LOG [WebSocketsController] EventGateway subscribed to the "subscribe" message +5ms
+[Nest] 27843  - 03/17/2023, 10:56:29 AM     LOG [WebSocketsController] EventGateway subscribed to the "unsubscribe" message +0ms
+```
+
 ### NotFound
 
 The `@NotFound` decorator automatically decorates an endpoint with `@ApiNotFoundResponse` with `@nestjs/swagger` is available.
