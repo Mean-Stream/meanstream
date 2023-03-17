@@ -23,6 +23,7 @@ specifiers:
   eslint-config-prettier: 8.1.0
   jest: 28.1.1
   jest-environment-jsdom: 28.1.1
+  nats: ^2.13.1
   nx: 15.4.5
   prettier: ^2.6.2
   reflect-metadata: ^0.1.13
@@ -36,9 +37,10 @@ dependencies:
   '@nestjs/common': 9.2.1_mnr6j2del53muneqly5h4y27ai
   '@nestjs/core': 9.2.1_isvgmpv2aguytrwpy7nxq2c6ty
   '@nestjs/event-emitter': 1.4.1_dntc3uqqknzoduyjojusds5kla
-  '@nestjs/microservices': 9.3.10_xzzpccdlzyfnb352h3yd36ty4q
+  '@nestjs/microservices': 9.3.10_b3rhbp4egsbd5kzdzyoea7evxq
   '@nestjs/platform-express': 9.2.1_hjcqpoaebdr7gdo5hgc22hthbe
   '@nestjs/websockets': 9.3.10_fyic65utxiftcghm7bf7rrj4z4
+  nats: 2.13.1
   reflect-metadata: 0.1.13
   rxjs: 7.8.0
   tslib: 2.4.1
@@ -841,7 +843,7 @@ packages:
         optional: true
     dependencies:
       '@nestjs/common': 9.2.1_mnr6j2del53muneqly5h4y27ai
-      '@nestjs/microservices': 9.3.10_xzzpccdlzyfnb352h3yd36ty4q
+      '@nestjs/microservices': 9.3.10_b3rhbp4egsbd5kzdzyoea7evxq
       '@nestjs/platform-express': 9.2.1_hjcqpoaebdr7gdo5hgc22hthbe
       '@nestjs/websockets': 9.3.10_fyic65utxiftcghm7bf7rrj4z4
       '@nuxtjs/opencollective': 0.3.2
@@ -869,7 +871,7 @@ packages:
       reflect-metadata: 0.1.13
     dev: false
 
-  /@nestjs/microservices/9.3.10_xzzpccdlzyfnb352h3yd36ty4q:
+  /@nestjs/microservices/9.3.10_b3rhbp4egsbd5kzdzyoea7evxq:
     resolution: {integrity: sha512-w27CxGYFAt9hMTLq9oWxx2amd7TOISk2/F8KbIqWFnb9riWE6YTxjZm7q/SolOlflYUcCZUEEgXFZedY8vAS6w==}
     peerDependencies:
       '@grpc/grpc-js': '*'
@@ -909,6 +911,7 @@ packages:
       '@nestjs/core': 9.2.1_isvgmpv2aguytrwpy7nxq2c6ty
       '@nestjs/websockets': 9.3.10_fyic65utxiftcghm7bf7rrj4z4
       iterare: 1.2.1
+      nats: 2.13.1
       reflect-metadata: 0.1.13
       rxjs: 7.8.0
       tslib: 2.5.0
@@ -959,7 +962,7 @@ packages:
     dependencies:
       '@nestjs/common': 9.2.1_mnr6j2del53muneqly5h4y27ai
       '@nestjs/core': 9.2.1_isvgmpv2aguytrwpy7nxq2c6ty
-      '@nestjs/microservices': 9.3.10_xzzpccdlzyfnb352h3yd36ty4q
+      '@nestjs/microservices': 9.3.10_b3rhbp4egsbd5kzdzyoea7evxq
       '@nestjs/platform-express': 9.2.1_hjcqpoaebdr7gdo5hgc22hthbe
       tslib: 2.4.1
     dev: true
@@ -5111,6 +5114,12 @@ packages:
     dev: true
     optional: true
 
+  /nats/2.13.1:
+    resolution: {integrity: sha512-lHV/DQREZVHXtavlAI5fFA7XDyN2/LNBtnNX76mPQV9BIKpTehzYrD1Hw7t/1mV4AGdrJj6U60JkQ8AMrVc6Mg==}
+    engines: {node: '>= 14.0.0'}
+    dependencies:
+      nkeys.js: 1.0.5
+
   /natural-compare-lite/1.4.0:
     resolution: {integrity: sha512-Tj+HTDSJJKaZnfiuw+iaF9skdPpTo2GtEly5JHnWV/hfv2Qj/9RKsGISQtLh2ox3l5EAGw487hnBee0sIJ6v2g==}
     dev: true
@@ -5126,6 +5135,12 @@ packages:
   /neo-async/2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: true
+
+  /nkeys.js/1.0.5:
+    resolution: {integrity: sha512-u25YnRPHiGVsNzwyHnn+PT90sgAhnS8jUJ1nxmkHMFYCJ6+Ic0lv291w7uhRBpJVJ3PH2GWbYqA151lGCRrB5g==}
+    engines: {node: '>=10.0.0'}
+    dependencies:
+      tweetnacl: 1.0.3
 
   /node-abort-controller/3.0.1:
     resolution: {integrity: sha512-/ujIVxthRs+7q6hsdjHMaj8hRG9NuWmwrz+JdRwZ14jdFoKSkm+vDsCbF9PLpnSqjaWQJuTmVtcWHNLr+vrOFw==}
@@ -6860,6 +6875,9 @@ packages:
       tslib: 1.14.1
       typescript: 4.8.4
     dev: true
+
+  /tweetnacl/1.0.3:
+    resolution: {integrity: sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw==}
 
   /type-check/0.3.2:
     resolution: {integrity: sha512-ZCmOJdvOWDBYJlzAoFkC+Q0+bUyEOS1ltgp1MGU03fqHG+dbi9tBFU2Rd9QKiDZFAYrhPh2JUf7rZRIuHRKtOg==}
