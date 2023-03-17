@@ -1,6 +1,6 @@
 {
   "name": "@clashsoft/nestx",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "type": "commonjs",
   "peerDependencies": {
     "@nestjs/core": "^9.0.0",
