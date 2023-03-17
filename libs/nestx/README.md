@@ -31,10 +31,13 @@ async function bootstrap() {
 // AppModule:
 @Module({
   imports: [
-    EventModule.register(Transport.NATS, natsOptions),
+    EventModule.register(Transport.NATS, natsOptions, {
+      provide: USER_ID_PROVIDER, 
+      useValue: async msg => 'id',
+    }),
   ],
   providers: [
-    {provide: USER_ID_PROVIDER, useValue: async msg => 'id'}
+    
   ]
 })
 class AppModule {
