@@ -12,6 +12,7 @@ Usage:
 ```ts
 import {EventModule, EventService, initEventGateway} from '@clashsoft/nestx';
 import {IncomingMessage} from 'http';
+import {USER_ID_PROVIDER} from './index';
 
 // main.ts:
 async function bootstrap() {
@@ -30,16 +31,20 @@ async function bootstrap() {
 // AppModule:
 @Module({
   imports: [
-    EventModule.register(Transport.NATS, natsOptions, async (msg: IncomingMessage) => userIdFromRequest(msg)),
+    EventModule.register(Transport.NATS, natsOptions),
   ],
+  providers: [
+    {provide: USER_ID_PROVIDER, useValue: async msg => 'id'}
+  ]
 })
-class AppModule {}
+class AppModule {
+}
 
 // Any Service:
 class MyService {
   constructor(private readonly eventService: EventService) {
   }
-  
+
   emit() {
     this.eventService.emit('some.event', myPayload, relevantUsers);
   }

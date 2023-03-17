@@ -5,13 +5,14 @@ import {OnGatewayConnection, OnGatewayInit, SubscribeMessage, WsResponse} from '
 import {IncomingMessage} from 'http';
 import {merge, Observable, Subject} from 'rxjs';
 import {filter, takeUntil} from 'rxjs/operators';
+import {USER_ID_PROVIDER} from './index';
 
 export type UserIdProvider = (msg: IncomingMessage) => Promise<string | undefined>;
 
 export class EventGateway implements OnGatewayInit, OnGatewayConnection {
   constructor(
     @Inject('EVENT_SERVICE') private client: ClientNats,
-    @Inject('USER_ID_PROVIDER') private userIdProvider: UserIdProvider,
+    @Inject(USER_ID_PROVIDER) private userIdProvider: UserIdProvider,
   ) {
   }
 

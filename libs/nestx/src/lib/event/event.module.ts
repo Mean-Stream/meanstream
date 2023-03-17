@@ -1,13 +1,12 @@
 import {DynamicModule} from '@nestjs/common';
 import {ClientsModule, Transport} from '@nestjs/microservices';
-import {EventGateway, UserIdProvider} from './event.gateway';
+import {EventGateway} from './event.gateway';
 import {EventService} from './event.service';
 
 export class EventModule {
   static register(
     transport: Transport,
     transportOptions: any,
-    userIdProvider: UserIdProvider,
   ): DynamicModule {
     return {
       module: EventModule,
@@ -21,7 +20,7 @@ export class EventModule {
           },
         ]),
       ],
-      providers: [EventService, EventGateway, {provide: 'USER_ID_PROVIDER', useValue: userIdProvider}],
+      providers: [EventService, EventGateway],
       exports: [EventService],
     };
   }
