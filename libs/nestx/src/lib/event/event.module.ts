@@ -1,37 +1,31 @@
-import {DynamicModule, Provider} from '@nestjs/common';
+import {Module} from '@nestjs/common';
 import {EventEmitterModule} from '@nestjs/event-emitter';
 import {ClientsModule, Transport} from '@nestjs/microservices';
-import {EventGateway, UserIdProvider} from './event.gateway';
+import {EventGateway} from './event.gateway';
+import {ConfigurableModuleClass} from './event.module-def';
 import {EventService} from './event.service';
 
-export class EventModule {
-  static register(
-    transport: Transport,
-    transportOptions: any,
-    userIdProvider: Provider<UserIdProvider>,
-  ): DynamicModule {
-    return {
-      module: EventModule,
+@Module({
+  imports: [
+    ClientsModule.register([
+      {
+        name: 'EVENT_SERVICE',
+        transport: Transport.NATS,
+        options: {
+          servers: 'nats://localhost:4222',
+        },
+      },
+    ]),
+    EventEmitterModule.forRoot({
+      wildcard: true,
       global: true,
-      imports: [
-        ClientsModule.register([
-          {
-            name: 'EVENT_SERVICE',
-            transport: transport,
-            options: transportOptions,
-          },
-        ]),
-        EventEmitterModule.forRoot({
-          wildcard: true,
-          global: true,
-        }),
-      ],
-      providers: [
-        userIdProvider,
-        EventService,
-        EventGateway,
-      ],
-      exports: [EventService],
-    };
-  }
+    }),
+  ],
+  providers: [
+    EventService,
+    EventGateway,
+  ],
+  exports: [EventService],
+})
+export class EventModule extends ConfigurableModuleClass {
 }
