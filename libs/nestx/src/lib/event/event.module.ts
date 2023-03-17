@@ -26,7 +26,11 @@ export class EventModule {
           global: true,
         }),
       ],
-      providers: [EventService, EventGateway, userIdProvider],
+      providers: [
+        userIdProvider,
+        EventService,
+        EventGateway,
+      ],
       exports: [EventService],
     };
   }

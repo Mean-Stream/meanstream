@@ -1,14 +1,16 @@
-import {Inject} from '@nestjs/common';
+import {Inject, Injectable} from '@nestjs/common';
 import {ClientNats} from '@nestjs/microservices';
 import {Client} from '@nestjs/microservices/external/nats-client.interface';
 import {OnGatewayConnection, OnGatewayInit, SubscribeMessage, WsResponse} from '@nestjs/websockets';
 import {IncomingMessage} from 'http';
 import {merge, Observable, Subject} from 'rxjs';
 import {filter, takeUntil} from 'rxjs/operators';
-import {USER_ID_PROVIDER} from './index';
+
+export const USER_ID_PROVIDER = Symbol('User ID Provider');
 
 export type UserIdProvider = (msg: IncomingMessage) => Promise<string | undefined>;
 
+@Injectable()
 export class EventGateway implements OnGatewayInit, OnGatewayConnection {
   constructor(
     @Inject('EVENT_SERVICE') private client: ClientNats,
