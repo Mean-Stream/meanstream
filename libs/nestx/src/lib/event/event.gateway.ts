@@ -6,12 +6,14 @@ import {IncomingMessage} from 'http';
 import {merge, Observable, Subject} from 'rxjs';
 import {filter, takeUntil} from 'rxjs/operators';
 import {EventModuleOptions, MODULE_OPTIONS_TOKEN} from './event.module-def';
+import {EventService} from './event.service';
 
 @Injectable()
 export class EventGateway implements OnGatewayInit, OnGatewayConnection {
   constructor(
     @Inject('EVENT_SERVICE') private client: ClientNats,
     @Inject(MODULE_OPTIONS_TOKEN) private options: EventModuleOptions,
+    private eventService: EventService,
   ) {
   }
 
@@ -68,5 +70,10 @@ export class EventGateway implements OnGatewayInit, OnGatewayConnection {
   @SubscribeMessage('unsubscribe')
   unsubscribe(client: any, event: string): void {
     this.unsubscribeRequests.next({client, event});
+  }
+
+  @SubscribeMessage('ping')
+  ping(client: any, data: string) {
+    this.eventService.emit('ping', data, [client.user]);
   }
 }
