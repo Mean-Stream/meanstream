@@ -3,15 +3,16 @@
   "version": "0.3.5",
   "type": "commonjs",
   "peerDependencies": {
-    "@nestjs/core": "^9.0.0",
     "@nestjs/common": "^9.0.0",
+    "@nestjs/core": "^9.0.0",
+    "@nestjs/event-emitter": "^1.0.0",
+    "@nestjs/microservices": "^9.0.0",
+    "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/swagger": "^6.0.0",
+    "@nestjs/websockets": "^9.0.0",
+    "nats": "^2.13.0",
+    "reflect-metadata": "^0.1.0",
     "rxjs": "^7.0.0",
     "tslib": "^2.4.1"
-  },
-  "optionalDependencies": {
-    "@nestjs/event-emitter": "^1.4.0",
-    "@nestjs/microservices": "^9.3.0",
-    "@nestjs/swagger": "^6.1.4",
-    "@nestjs/websockets": "^9.3.0"
   }
 }
