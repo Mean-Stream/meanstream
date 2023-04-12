@@ -1,9 +1,17 @@
 {
-  "name": "@meanstream/ngbx",
-  "version": "0.0.1",
+  "name": "@mean-stream/ngbx",
+  "version": "0.7.0",
+  "keywords": [
+    "ng-bootstrap",
+    "bootstrap",
+    "angular",
+    "components"
+  ],
   "peerDependencies": {
     "@angular/common": "^15.2.0",
     "@angular/core": "^15.2.0",
+    "@angular/router": "^15.2.0",
+    "bootstrap": "^5.2.3",
     "@ng-bootstrap/ng-bootstrap": "^14.0.0"
   },
   "dependencies": {

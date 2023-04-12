@@ -1,11 +1,13 @@
 # ngbx
 
+[![NPM version](https://badge.fury.io/js/@mean-stream%2Fngbx.svg)](https://www.npmjs.com/package/@mean-stream/ngbx)
+
 Helpful additional components for [ng-bootstrap](https://ng-bootstrap.github.io).
 
 ## Installation
 
 1. [Install ng-bootstrap](https://ng-bootstrap.github.io/#/getting-started#installation) first.
-2. `npm install @meanstream/ngbx`
+2. `npm install @mean-stream/ngbx`
 
 ## Compatibility
 
