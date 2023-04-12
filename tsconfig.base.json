@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@clashsoft/nestx": ["libs/nestx/src/index.ts"]
+      "@clashsoft/nestx": ["libs/nestx/src/index.ts"],
+      "@nestx/ngbx": ["libs/ngbx/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
