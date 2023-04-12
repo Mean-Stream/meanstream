@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@clashsoft/nestx": ["libs/nestx/src/index.ts"],
+      "@meanstream/ngbx": ["libs/ngbx/src/index.ts"],
       "@nestx/ngbx": ["libs/ngbx/src/index.ts"]
     }
   },
