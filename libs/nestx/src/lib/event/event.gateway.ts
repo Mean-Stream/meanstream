@@ -1,6 +1,5 @@
 import {Inject, Injectable} from '@nestjs/common';
 import {ClientNats} from '@nestjs/microservices';
-import {Client} from '@nestjs/microservices/external/nats-client.interface';
 import {OnGatewayConnection, OnGatewayInit, SubscribeMessage, WsResponse} from '@nestjs/websockets';
 import {IncomingMessage} from 'http';
 import {merge, Observable, Subject} from 'rxjs';
@@ -34,37 +33,9 @@ export class EventGateway implements OnGatewayInit, OnGatewayConnection {
 
   @SubscribeMessage('subscribe')
   subscribe(client: any, event: string): Observable<WsResponse<unknown>> {
-    return merge(this.observe(client, event)).pipe(
+    return merge(this.eventService.subscribe<unknown>(event, client.user)).pipe(
       takeUntil(this.unsubscribeRequests.pipe(filter(unsub => unsub.client === client && unsub.event === event))),
     );
-  }
-
-  private observe<T>(client: any, event: string): Observable<WsResponse<T>> {
-    return new Observable<WsResponse<T>>(observer => {
-      const nats = ((this.client as any).natsClient) as Client;
-      const subscription = nats.subscribe(event, {
-        callback: (err, msg) => {
-          const event = msg.subject;
-          const dataStr = Buffer.from(msg.data).toString('utf-8');
-          let parsed: any;
-          try {
-            parsed = JSON.parse(dataStr);
-          } catch (err) {
-            console.error('Invalid message:', dataStr, err);
-            return;
-          }
-          const {data: {data, users}} = parsed;
-          if (users && (!client.user || !users.includes(client.user))) {
-            return;
-          }
-          observer.next({
-            event,
-            data,
-          });
-        },
-      });
-      return () => subscription.unsubscribe();
-    });
   }
 
   @SubscribeMessage('unsubscribe')
