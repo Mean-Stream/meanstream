@@ -1,5 +1,5 @@
 {
-  "name": "@clashsoft/nestx",
+  "name": "@mean-stream/nestx",
   "version": "0.4.0",
   "type": "commonjs",
   "peerDependencies": {
