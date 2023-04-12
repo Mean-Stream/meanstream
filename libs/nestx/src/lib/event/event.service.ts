@@ -1,8 +1,7 @@
-import {Inject, Injectable} from '@nestjs/common';
+import {Inject, Injectable, Logger, Optional} from '@nestjs/common';
 import {EventEmitter2} from '@nestjs/event-emitter';
 import {ClientProxy} from '@nestjs/microservices';
 import {Client} from '@nestjs/microservices/external/nats-client.interface';
-import {WsResponse} from '@nestjs/websockets';
 import {Observable} from 'rxjs';
 
 @Injectable()
@@ -10,6 +9,7 @@ export class EventService {
   constructor(
     @Inject('EVENT_SERVICE') private client: ClientProxy,
     private eventEmitter2: EventEmitter2,
+    @Optional() @Inject() private logger = new Logger(EventService.name),
   ) {
   }
 
@@ -25,11 +25,15 @@ export class EventService {
         callback: (err, msg) => {
           const event = msg.subject;
           const dataStr = Buffer.from(msg.data).toString('utf-8');
-          let parsed: { data: {data: T, users?: string[] } };
+          let parsed: { data: { data: T, users?: string[] } };
           try {
             parsed = JSON.parse(dataStr);
-          } catch (err) {
-            console.error('Invalid message:', dataStr, err);
+          } catch (err: unknown) {
+            if (err instanceof Error) {
+              this.logger.error(`Invalid message: ${err.message}: ${dataStr}`, err.stack);
+            } else {
+              this.logger.error(err);
+            }
             return;
           }
           const {data: {data, users}} = parsed;
