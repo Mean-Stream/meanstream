@@ -1,8 +1,16 @@
 # nestx
 
+[![NPM version](https://badge.fury.io/js/@mean-stream%2Fnestx.svg)](https://www.npmjs.com/package/@mean-stream/nestx)
+
 nestx is an extension package for NestJS apps.
 
-## Libraries
+## Installation
+
+```
+$ npm install @mean-stream/nestx
+```
+
+## Usage
 
 ### Events
 
