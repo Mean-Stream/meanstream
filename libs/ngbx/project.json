@@ -2,7 +2,7 @@
   "name": "ngbx",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/ngbx/src",
-  "prefix": "nestx",
+  "prefix": "ngbx",
   "tags": [],
   "projectType": "library",
   "targets": {
