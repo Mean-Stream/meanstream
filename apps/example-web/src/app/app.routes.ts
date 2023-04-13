@@ -17,7 +17,6 @@ export const appRoutes: Route[] = [
     component: ModalsComponent,
     data: {
       title: 'Modals',
-      new: true,
     },
     children: [
       {
@@ -31,6 +30,7 @@ export const appRoutes: Route[] = [
     component: FormsComponent,
     data: {
       title: 'Forms',
+      new: true,
     },
   },
 ];
