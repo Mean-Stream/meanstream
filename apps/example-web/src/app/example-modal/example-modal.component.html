@@ -1,0 +1,16 @@
+<ngbx-modal #modal="modal" [back]="['../..']">
+  <ng-container modal-title>
+    Edit User
+  </ng-container>
+  <ng-container modal-body>
+    This is an example modal!
+  </ng-container>
+  <ng-container modal-footer>
+    <button type="button" class="btn btn-secondary" (click)="modal.close()">
+      Cancel
+    </button>
+    <button class="btn btn-primary" (click)="modal.close()">
+      Save
+    </button>
+  </ng-container>
+</ngbx-modal>
