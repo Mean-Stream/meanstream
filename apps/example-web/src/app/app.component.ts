@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {appRoutes} from './app.routes';
 
 @Component({
   selector: 'nestx-root',
@@ -7,4 +8,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'example-web';
+  routes = appRoutes;
 }
