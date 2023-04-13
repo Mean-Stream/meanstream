@@ -16,7 +16,7 @@
       [pattern]="field.pattern"
       [minLength]="field.minLength"
       [maxLength]="field.maxLength"
-      [(ngModel)]="object[field.id]"
+      [(ngModel)]="model[field.id]"
       (change)="validate(field)"
       [class.is-valid]="errors[field.id]?.length === 0"
       [class.is-invalid]="errors[field.id]?.length"
@@ -26,7 +26,7 @@
       type="checkbox"
       [id]="field.id"
       [required]="field.required"
-      [(ngModel)]="object[field.id]"
+      [(ngModel)]="model[field.id]"
       (change)="validate(field)"
       [class.is-valid]="errors[field.id]?.length === 0"
       [class.is-invalid]="errors[field.id]?.length"
@@ -40,12 +40,12 @@
       [minLength]="field.minLength"
       [maxLength]="field.maxLength"
       [rows]="field.rows"
-      [(ngModel)]="object[field.id]"
+      [(ngModel)]="model[field.id]"
       (change)="validate(field)"
       [class.is-valid]="errors[field.id]?.length === 0"
       [class.is-invalid]="errors[field.id]?.length"
     ></textarea>
-    <select *ngSwitchCase="'select'" class="form-select" [(ngModel)]="object[field.id]">
+    <select *ngSwitchCase="'select'" class="form-select" [(ngModel)]="model[field.id]">
       <option *ngFor="let option of field.options" [value]="option">
         {{ option }}
       </option>
@@ -53,8 +53,8 @@
     <ng-container *ngSwitchCase="'radio'">
       <div *ngFor="let option of field.options; let i = index" class="form-check">
         <input class="form-check-input" type="radio" id="radio-{{ i }}"
-               [checked]="object[field.id] === option"
-               (change)="object[field.id] = option">
+               [checked]="model[field.id] === option"
+               (change)="model[field.id] = option">
         <label class="form-check-label" for="radio-{{ i }}">
           {{ option }}
         </label>

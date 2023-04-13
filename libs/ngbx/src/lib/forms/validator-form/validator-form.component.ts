@@ -9,8 +9,8 @@ import {InputProperties} from '../input-properties.interface';
   styleUrls: ['./validator-form.component.css'],
 })
 export class ValidatorFormComponent<T extends object> implements OnInit {
-  @Input() target?: Type<T>;
-  @Input() object!: T;
+  @Input() type?: Type<T>;
+  @Input() model!: T;
   @Input() pick?: (keyof T)[];
 
   fields: InputProperties<T>[] = [];
@@ -23,11 +23,11 @@ export class ValidatorFormComponent<T extends object> implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fields = this.formsService.parse(this.target || this.object.constructor as Type<T>, this.pick);
+    this.fields = this.formsService.parse(this.type || this.model.constructor as Type<T>, this.pick);
   }
 
   validateAll(): void {
-    validate(this.object).then(errors => {
+    validate(this.model).then(errors => {
       for (const field of this.fields) {
         this.addErrors(errors, field.id);
       }
@@ -36,9 +36,9 @@ export class ValidatorFormComponent<T extends object> implements OnInit {
 
   validate(field: InputProperties<T>): void {
     const property = field.id;
-    this.object[property] = this.formsService.coerce(field.type, this.object[property]);
+    this.model[property] = this.formsService.coerce(field.type, this.model[property]);
 
-    validate(this.object).then(errors => {
+    validate(this.model).then(errors => {
       this.addErrors(errors, property);
     });
   }
