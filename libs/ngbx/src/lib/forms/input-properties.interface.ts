@@ -58,3 +58,8 @@ export type CustomProperties<T> = Partial<Pick<InputProperties<T>,
 >>;
 
 export type Mapper = <T>(props: InputProperties<T>, ...constraints: any[]) => void;
+
+export interface ValidationFormOptions<T> {
+  pick?: (keyof T)[];
+  omit?: (keyof T)[];
+}

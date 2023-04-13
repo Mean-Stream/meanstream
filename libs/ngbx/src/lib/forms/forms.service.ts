@@ -3,7 +3,7 @@ import {Injectable, Type} from '@angular/core';
 import {getMetadataStorage, ValidationTypes} from 'class-validator';
 import {ValidationMetadata} from 'class-validator/types/metadata/ValidationMetadata';
 import {MAPPERS, TYPE_MAPPING} from './forms.constants';
-import {InputProperties, InputType} from './input-properties.interface';
+import {InputProperties, InputType, ValidationFormOptions} from './input-properties.interface';
 import {getPresentation} from './presentation.decorator';
 
 
@@ -11,14 +11,18 @@ import {getPresentation} from './presentation.decorator';
   providedIn: 'root',
 })
 export class FormsService {
-  parse<T extends object>(ctor: Type<T>, properties?: (keyof T)[]): InputProperties<T>[] {
+  parse<T extends object>(ctor: Type<T>, options: ValidationFormOptions<T> = {}): InputProperties<T>[] {
     const storage = getMetadataStorage();
     const metadata = storage.getTargetValidationMetadatas(ctor, ctor.name, false, false);
     const grouped = storage.groupByPropertyName(metadata);
     let entries = Object.entries(grouped);
-    if (properties) {
-      const propertySet = new Set(properties);
+    if (options.pick) {
+      const propertySet = new Set(options.pick);
       entries = entries.filter(([key]) => propertySet.has(key as keyof T));
+    }
+    if (options.omit) {
+      const propertySet = new Set(options.omit);
+      entries = entries.filter(([key]) => !propertySet.has(key as keyof T));
     }
     return entries.map(([key, metadata]) => {
       const customProps = getPresentation(ctor.prototype, key);

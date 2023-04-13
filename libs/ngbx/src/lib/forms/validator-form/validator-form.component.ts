@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, Type} from '@angular/core';
 import {validate, ValidationError} from 'class-validator';
 import {FormsService} from '../forms.service';
-import {InputProperties} from '../input-properties.interface';
+import {InputProperties, ValidationFormOptions} from '../input-properties.interface';
 
 @Component({
   selector: 'ngbx-validator-form',
@@ -11,7 +11,7 @@ import {InputProperties} from '../input-properties.interface';
 export class ValidatorFormComponent<T extends object> implements OnInit {
   @Input() type?: Type<T>;
   @Input() model!: T;
-  @Input() pick?: (keyof T)[];
+  @Input() options?: ValidationFormOptions<T>;
 
   fields: InputProperties<T>[] = [];
 
@@ -23,7 +23,7 @@ export class ValidatorFormComponent<T extends object> implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fields = this.formsService.parse(this.type || this.model.constructor as Type<T>, this.pick);
+    this.fields = this.formsService.parse(this.type || this.model.constructor as Type<T>, this.options);
   }
 
   validateAll(): void {
