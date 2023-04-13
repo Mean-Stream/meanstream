@@ -41,9 +41,11 @@ this.toastService.add({
   ],
 });
 this.toastService.success('Account', 'Successfully created account');
-this.toastService.warning('Account', 'Successfully deleted account');
+this.toastService.warn('Account', 'Successfully deleted account');
 this.toastService.error('Account', 'Failed to delete account', error);
 ```
+
+For a live example, see [Toasts](../../apps/example-web/src/app/toasts).
 
 ### Modals
 
@@ -98,6 +100,8 @@ Modals support the following options:
 - `locked`: Disables the close button, ESC and outside clicks.
 - `modalClose` (event): Emitted when the modal is closed or dismissed.
 
+For a live example, see [Modals](../../apps/example-web/src/app/modals) and [Modals](../../apps/example-web/src/app/example-modal).
+
 ### Route Tabs
 
 1. Import the `RouteTabsModule`, e.g. in `AppModule`.
@@ -124,3 +128,5 @@ Route Tabs support the following options:
 - `routes`: An array of routes.
 - `active`: The route to be active.
 - `newBadgeClass`: A CSS class for the "new" badge. Defaults to `badge text-white bg-primary bg-gradient-primary`.
+
+For a live example, see [Example App](../../apps/example-web/src/app).
