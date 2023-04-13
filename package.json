@@ -3,8 +3,10 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "nx build nestx",
-    "serve": "nx serve example"
+    "build:nestx": "nx build nestx",
+    "build:ngbx": "nx build ngbx",
+    "serve:service": "nx serve example-service",
+    "serve:web": "nx serve example-web"
   },
   "private": true,
   "dependencies": {
