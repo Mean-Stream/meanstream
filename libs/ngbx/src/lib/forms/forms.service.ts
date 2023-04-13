@@ -48,22 +48,36 @@ export class FormsService {
   }
 
   private translateMetadata<T>(m: ValidationMetadata, props: InputProperties<T>) {
-    if (!m.name) {
-      return;
+    if (m.name) {
+      if (m.name in TYPE_MAPPING) {
+        props.type = TYPE_MAPPING[m.name];
+      }
+
+      if (m.name in MAPPERS) {
+        MAPPERS[m.name](props, ...(m.constraints ?? []));
+      }
     }
 
-    if (m.name in TYPE_MAPPING) {
-      props.type = TYPE_MAPPING[m.name];
-    }
-
-    if (m.name in MAPPERS) {
-      MAPPERS[m.name](props, ...(m.constraints ?? []));
-    }
-
-    if (m.type === ValidationTypes.CONDITIONAL_VALIDATION) {
-      // TODO check for IsOptional
+    if (this.isIsOptional(m)) {
       props.required = false;
     }
+  }
+
+  private isIsOptional(m: ValidationMetadata) {
+    if (m.type !== ValidationTypes.CONDITIONAL_VALIDATION) {
+      return false;
+    }
+    const constraint = m.constraints?.[0];
+    // black box testing
+    return constraint
+      && constraint({[m.propertyName]: null}, null) === false
+      && constraint({[m.propertyName]: undefined}, undefined) === false
+      && constraint({[m.propertyName]: ''}, '') === true
+      && constraint({[m.propertyName]: ' '}, ' ') === true
+      && constraint({[m.propertyName]: 0}, 0) === true
+      && constraint({[m.propertyName]: false}, false) === true
+      && constraint({[m.propertyName]: true}, true) === true
+      ;
   }
 
   coerce(type: InputType, value: any) {
