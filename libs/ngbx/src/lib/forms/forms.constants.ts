@@ -1,6 +1,5 @@
 import {
   IS_BOOLEAN,
-  IS_DEFINED,
   IS_DIVISIBLE_BY,
   IS_EMAIL,
   IS_EMPTY,
@@ -20,7 +19,6 @@ import {
   MAX_LENGTH,
   MIN,
   MIN_LENGTH,
-  ValidationTypes,
 } from 'class-validator';
 import {InputType, Mapper} from './input-properties.interface';
 
@@ -39,7 +37,7 @@ export const TYPE_MAPPING: Record<string, InputType> = {
   //  [IS_ISO8601]: 'datetime-local', // ok
 };
 
-function getEnumValues(enumClass: any): any[] {
+function getEnumValues<T>(enumClass: Record<string, T>): T[] {
   return Object.entries(enumClass).filter(entry => isNaN(parseInt(entry[0]))).map(entry => entry[1]);
 }
 

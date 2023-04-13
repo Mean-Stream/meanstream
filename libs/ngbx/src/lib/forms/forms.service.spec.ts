@@ -1,6 +1,5 @@
-import { TestBed } from '@angular/core/testing';
-
-import { FormsService } from './forms.service';
+import {TestBed} from '@angular/core/testing';
+import {FormsService} from '@nestx/ngbx';
 
 describe('FormsService', () => {
   let service: FormsService;

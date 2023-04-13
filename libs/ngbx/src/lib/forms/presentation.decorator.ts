@@ -7,6 +7,6 @@ export function Presentation<T>(props: CustomProperties<T>): PropertyDecorator {
   };
 }
 
-export function getPresentation<T>(target: any, key: string): CustomProperties<T> {
+export function getPresentation<T>(target: object, key: string): CustomProperties<T> {
   return Reflect.getMetadata('ngbx-presentation', target, key);
 }

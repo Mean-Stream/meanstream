@@ -1,16 +1,16 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ValidatorFormComponent } from './validator-form.component';
+import {ValidatorFormComponent} from '@nestx/ngbx';
 
 describe('ValidatorFormComponent', () => {
-  let component: ValidatorFormComponent;
-  let fixture: ComponentFixture<ValidatorFormComponent>;
+  let component: ValidatorFormComponent<object>;
+  let fixture: ComponentFixture<ValidatorFormComponent<object>>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ValidatorFormComponent ]
+      declarations: [ValidatorFormComponent],
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
