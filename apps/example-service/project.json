@@ -1,7 +1,7 @@
 {
-  "name": "example",
+  "name": "example-service",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/example/src",
+  "sourceRoot": "apps/example-service/src",
   "projectType": "application",
   "targets": {
     "build": {
@@ -10,10 +10,10 @@
       "options": {
         "target": "node",
         "compiler": "tsc",
-        "outputPath": "dist/apps/example",
-        "main": "apps/example/src/main.ts",
-        "tsConfig": "apps/example/tsconfig.app.json",
-        "assets": ["apps/example/src/assets"]
+        "outputPath": "dist/apps/example-service",
+        "main": "apps/example-service/src/main.ts",
+        "tsConfig": "apps/example-service/tsconfig.app.json",
+        "assets": ["apps/example-service/src/assets"]
       },
       "configurations": {
         "production": {
@@ -22,8 +22,8 @@
           "inspect": false,
           "fileReplacements": [
             {
-              "replace": "apps/example/src/environments/environment.ts",
-              "with": "apps/example/src/environments/environment.prod.ts"
+              "replace": "apps/example-service/src/environments/environment.ts",
+              "with": "apps/example-service/src/environments/environment.prod.ts"
             }
           ]
         }
@@ -32,11 +32,11 @@
     "serve": {
       "executor": "@nrwl/js:node",
       "options": {
-        "buildTarget": "example:build"
+        "buildTarget": "example-service:build"
       },
       "configurations": {
         "production": {
-          "buildTarget": "example:build:production"
+          "buildTarget": "example-service:build:production"
         }
       }
     },
@@ -44,14 +44,14 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/example/**/*.ts"]
+        "lintFilePatterns": ["apps/example-service/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "apps/example/jest.config.ts",
+        "jestConfig": "apps/example-service/jest.config.ts",
         "passWithNoTests": true
       }
     }
