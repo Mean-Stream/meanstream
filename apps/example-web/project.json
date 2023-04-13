@@ -8,18 +8,25 @@
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/example-web",
         "index": "apps/example-web/src/index.html",
         "main": "apps/example-web/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": [
+          "zone.js"
+        ],
         "tsConfig": "apps/example-web/tsconfig.app.json",
         "assets": [
           "apps/example-web/src/favicon.ico",
           "apps/example-web/src/assets"
         ],
-        "styles": ["apps/example-web/src/styles.css"],
+        "styles": [
+          "node_modules/bootstrap/dist/css/bootstrap.min.css",
+          "apps/example-web/src/styles.css"
+        ],
         "scripts": []
       },
       "configurations": {
@@ -69,7 +76,9 @@
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
         "lintFilePatterns": [
           "apps/example-web/**/*.ts",
@@ -79,7 +88,9 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
         "jestConfig": "apps/example-web/jest.config.ts",
         "passWithNoTests": true
