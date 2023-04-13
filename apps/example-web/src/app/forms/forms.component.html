@@ -1,0 +1,25 @@
+<h2>Basics</h2>
+<ngbx-validator-form [target]="Person" [object]="person" [pick]="[
+    'name',
+    'age',
+    'gender',
+  ]"></ngbx-validator-form>
+<h2>Contact</h2>
+<ngbx-validator-form [target]="Person" [object]="person" [pick]="[
+    'email',
+    'phone',
+  ]"></ngbx-validator-form>
+<h2>About</h2>
+<ngbx-validator-form [target]="Person" [object]="person" [pick]="[
+    'website',
+    'bio',
+  ]"></ngbx-validator-form>
+<h2>App</h2>
+<ngbx-validator-form [target]="Person" [object]="person" [pick]="[
+    'status',
+    'balance',
+    'adEmailConsent',
+    'tosAccepted',
+  ]"></ngbx-validator-form>
+<pre>{{ person | json }}</pre>
+<button class="btn btn-warning" (click)="validate()">Validate</button>

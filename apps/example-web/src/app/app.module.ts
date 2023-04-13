@@ -1,11 +1,12 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {RouterModule} from '@angular/router';
-import {ModalModule, RouteTabsModule, ToastModule} from '@nestx/ngbx';
+import {FormsModule, ModalModule, RouteTabsModule, ToastModule} from '@nestx/ngbx';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AppComponent} from './app.component';
 import {appRoutes} from './app.routes';
 import {ExampleModalComponent} from './example-modal/example-modal.component';
+import {FormsComponent} from './forms/forms.component';
 import {ModalsComponent} from './modals/modals.component';
 import {ToastsComponent} from './toasts/toasts.component';
 
@@ -15,6 +16,7 @@ import {ToastsComponent} from './toasts/toasts.component';
     ToastsComponent,
     ModalsComponent,
     ExampleModalComponent,
+    FormsComponent,
   ],
   imports: [
     BrowserModule,
@@ -23,6 +25,7 @@ import {ToastsComponent} from './toasts/toasts.component';
     ToastModule,
     RouteTabsModule,
     ModalModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
