@@ -24,8 +24,8 @@ export type InputType =
   | 'week'
 ;
 
-export interface InputProperties {
-  id: string;
+export interface InputProperties<T> {
+  id: keyof T;
   label: string;
   placeholder?: string;
   description?: string;
@@ -48,7 +48,7 @@ export interface InputProperties {
   maxLength: number;
 }
 
-export type CustomProperties = Partial<Pick<InputProperties,
+export type CustomProperties<T> = Partial<Pick<InputProperties<T>,
   | 'label'
   | 'control'
   | 'placeholder'
@@ -57,4 +57,4 @@ export type CustomProperties = Partial<Pick<InputProperties,
   //
 >>;
 
-export type Mapper = (props: InputProperties, ...constraints: any[]) => void;
+export type Mapper = <T>(props: InputProperties<T>, ...constraints: any[]) => void;

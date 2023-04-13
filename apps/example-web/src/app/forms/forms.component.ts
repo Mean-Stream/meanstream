@@ -13,7 +13,7 @@ export class FormsComponent {
   person = new Person();
 
   @ViewChildren(ValidatorFormComponent)
-  forms!: QueryList<ValidatorFormComponent>;
+  forms!: QueryList<ValidatorFormComponent<Person>>;
 
   validate() {
     for (const form of this.forms) {

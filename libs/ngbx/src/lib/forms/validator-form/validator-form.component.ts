@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Type} from '@angular/core';
 import {validate, ValidationError} from 'class-validator';
 import {FormsService} from '../forms.service';
 import {InputProperties} from '../input-properties.interface';
@@ -8,14 +8,14 @@ import {InputProperties} from '../input-properties.interface';
   templateUrl: './validator-form.component.html',
   styleUrls: ['./validator-form.component.css'],
 })
-export class ValidatorFormComponent implements OnInit {
-  @Input() target?: Function;
-  @Input() object: any;
-  @Input() pick?: string[];
+export class ValidatorFormComponent<T extends object> implements OnInit {
+  @Input() target?: Type<T>;
+  @Input() object!: T;
+  @Input() pick?: (keyof T)[];
 
-  fields: InputProperties[] = [];
+  fields: InputProperties<T>[] = [];
 
-  errors: Record<string, string[]> = {};
+  errors: Partial<Record<keyof T, string[]>> = {};
 
   constructor(
     private formsService: FormsService,
@@ -23,19 +23,19 @@ export class ValidatorFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fields = this.formsService.parse(this.target || this.object.constructor, this.pick);
+    this.fields = this.formsService.parse(this.target || this.object.constructor as Type<T>, this.pick);
   }
 
   validateAll(): void {
     validate(this.object).then(errors => {
-      for (let field of this.fields) {
+      for (const field of this.fields) {
         this.addErrors(errors, field.id);
       }
     });
   }
 
-  validate(field: InputProperties): void {
-    let property = field.id;
+  validate(field: InputProperties<T>): void {
+    const property = field.id;
     this.object[property] = this.formsService.coerce(field.type, this.object[property]);
 
     validate(this.object).then(errors => {
@@ -43,8 +43,8 @@ export class ValidatorFormComponent implements OnInit {
     });
   }
 
-  private addErrors(errors: ValidationError[], property: string) {
-    let error = errors.find(e => e.property === property);
+  private addErrors(errors: ValidationError[], property: keyof T) {
+    const error = errors.find(e => e.property === property);
     this.errors[property] = Object.values(error?.constraints || {});
   }
 }

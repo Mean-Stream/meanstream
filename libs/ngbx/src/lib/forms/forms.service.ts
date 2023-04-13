@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, Type} from '@angular/core';
 
 import {getMetadataStorage, ValidationTypes} from 'class-validator';
 import {ValidationMetadata} from 'class-validator/types/metadata/ValidationMetadata';
@@ -11,14 +11,10 @@ import {getPresentation} from './presentation.decorator';
   providedIn: 'root',
 })
 export class FormsService {
-
-  constructor() {
-  }
-
-  parse<T extends object>(ctor: Function, properties?: (keyof T)[]): InputProperties[] {
-    let storage = getMetadataStorage();
-    let metadata = storage.getTargetValidationMetadatas(ctor, ctor.name, false, false);
-    let grouped = storage.groupByPropertyName(metadata);
+  parse<T extends object>(ctor: Type<T>, properties?: (keyof T)[]): InputProperties<T>[] {
+    const storage = getMetadataStorage();
+    const metadata = storage.getTargetValidationMetadatas(ctor, ctor.name, false, false);
+    const grouped = storage.groupByPropertyName(metadata);
     let entries = Object.entries(grouped);
     if (properties) {
       const propertySet = new Set(properties);
@@ -26,11 +22,11 @@ export class FormsService {
     }
     return entries.map(([key, metadata]) => {
       const customProps = getPresentation(ctor.prototype, key);
-      const props: InputProperties = {
+      const props: InputProperties<T> = {
         label: key,
         control: 'input',
         ...customProps,
-        id: key,
+        id: key as keyof T,
         type: 'text',
         required: true,
         pattern: '',
@@ -40,14 +36,14 @@ export class FormsService {
         min: null,
         step: null,
       };
-      for (let m of metadata) {
+      for (const m of metadata) {
         this.translateMetadata(m, props);
       }
       return props;
     });
   }
 
-  private translateMetadata(m: ValidationMetadata, props: InputProperties) {
+  private translateMetadata<T>(m: ValidationMetadata, props: InputProperties<T>) {
     if (!m.name) {
       return;
     }
