@@ -80,12 +80,22 @@ class Group {
   @Ref(User.name)
   createdBy: Types.ObjectId;
 
-  @OptionalRef(User.name)
+  @OptionalRef(User.name) // or @Ref(User.name, {optional: true})
   updatedBy?: Types.ObjectId;
 
-  @RefArray(User.name)
+  @RefArray(User.name) // or @Ref(User.name, {array: true})
   members: Types.ObjectId[];
+
+  @Ref(User.name, {optional: true, array: true})
+  admins?: Types.ObjectId[];
 }
+```
+
+An example usage using `populate`:
+
+```ts
+const groupWithMembers = await this.model.findOneById(groupId).populate<{members: User[]}>('members').exec();
+groupWithMembers.members.map(user => user.name);
 ```
 
 It adds the following decorators:
