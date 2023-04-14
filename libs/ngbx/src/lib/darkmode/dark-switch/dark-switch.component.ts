@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 
 import {Subject} from 'rxjs';
 
@@ -13,15 +13,10 @@ import {ThemeService} from '../theme.service';
   templateUrl: './dark-switch.component.html',
   styleUrls: ['./dark-switch.component.scss'],
 })
-export class DarkSwitchComponent implements OnInit {
+export class DarkSwitchComponent {
   theme$: Subject<string | null>;
 
-  constructor(
-    private themeService: ThemeService,
-  ) {
-  }
-
-  ngOnInit() {
-    this.theme$ = this.themeService.theme$;
+  constructor(themeService: ThemeService) {
+    this.theme$ = themeService.theme$;
   }
 }

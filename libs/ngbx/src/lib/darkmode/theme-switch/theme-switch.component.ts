@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 import {Subject} from 'rxjs';
 
@@ -13,9 +13,7 @@ import {ThemeService} from '../theme.service';
   templateUrl: './theme-switch.component.html',
   styleUrls: ['./theme-switch.component.scss'],
 })
-export class ThemeSwitchComponent implements OnInit {
-  theme$: Subject<string | null>;
-
+export class ThemeSwitchComponent {
   /**
    * The size of the toggle button.
    *
@@ -39,12 +37,9 @@ export class ThemeSwitchComponent implements OnInit {
    */
   @Input() style?: 'icon' | 'label';
 
-  constructor(
-    private themeService: ThemeService,
-  ) {
-  }
+  theme$: Subject<string | null>;
 
-  ngOnInit() {
-    this.theme$ = this.themeService.theme$;
+  constructor(themeService: ThemeService) {
+    this.theme$ = themeService.theme$;
   }
 }
