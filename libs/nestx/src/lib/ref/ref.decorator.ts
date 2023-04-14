@@ -4,11 +4,11 @@ import {Transform} from 'class-transformer';
 import {IsInstance, IsOptional} from 'class-validator';
 import {Types} from 'mongoose';
 
-function objectId(value): Types.ObjectId | undefined {
+function objectId<T extends string | number | Types.ObjectId | Uint8Array>(value: T): Types.ObjectId | T {
   try {
     return new Types.ObjectId(value);
   } catch (e) {
-    return undefined;
+    return value;
   }
 }
 
