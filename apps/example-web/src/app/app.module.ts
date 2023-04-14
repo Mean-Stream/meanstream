@@ -5,6 +5,7 @@ import {FormsModule, ModalModule, RouteTabsModule, ToastModule} from '@nestx/ngb
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AppComponent} from './app.component';
 import {appRoutes} from './app.routes';
+import {DarkmodeModule} from './darkmode/darkmode.module';
 import {ExampleModalComponent} from './example-modal/example-modal.component';
 import {FormsComponent} from './forms/forms.component';
 import {ModalsComponent} from './modals/modals.component';
@@ -26,8 +27,8 @@ import {ToastsComponent} from './toasts/toasts.component';
     RouteTabsModule,
     ModalModule,
     FormsModule,
+    DarkmodeModule,
   ],
-  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {

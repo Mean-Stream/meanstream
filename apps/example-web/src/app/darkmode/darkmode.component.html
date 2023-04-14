@@ -1,0 +1,36 @@
+<p>
+  Detected Theme: <code>{{themeService.detectedTheme$ | async}}</code>
+</p>
+<p>
+  Selected Theme: <code>{{themeService.theme$ | async}}</code>
+</p>
+
+<h4>Darkmode Switch</h4>
+<ngbx-darkmode-switch></ngbx-darkmode-switch>
+
+<h4>Theme Switch</h4>
+<table class="table table-bordered">
+  <tr>
+    <th>Size</th>
+    <th>Result</th>
+  </tr>
+  <tr *ngFor="let size of sizes">
+    <th><code>{{size || '(undefined)'}}</code></th>
+    <th>
+      <ngbx-theme-switch [size]="size"></ngbx-theme-switch>
+    </th>
+  </tr>
+</table>
+
+<table class="table table-bordered">
+  <tr>
+    <th>Style</th>
+    <th>Result</th>
+  </tr>
+  <tr *ngFor="let style of styles">
+    <th><code>{{style || '(undefined)'}}</code></th>
+    <th>
+      <ngbx-theme-switch [style]="style"></ngbx-theme-switch>
+    </th>
+  </tr>
+</table>
