@@ -1,0 +1,7 @@
+<div class="custom-control custom-switch">
+  <input type="checkbox" class="custom-control-input" id="darkModeSwitch"
+         [ngModel]="(theme$ | async) === 'dark'" (ngModelChange)="theme$.next($event ? 'dark' : 'light')">
+  <label class="custom-control-label" for="darkModeSwitch">
+    Dark Mode
+  </label>
+</div>
