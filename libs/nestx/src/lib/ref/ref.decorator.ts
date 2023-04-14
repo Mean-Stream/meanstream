@@ -1,7 +1,7 @@
 import {applyDecorators} from '@nestjs/common';
 import {optionalRequire} from '@nestjs/core/helpers/optional-require';
 import {Transform} from 'class-transformer';
-import {IsInstance} from 'class-validator';
+import {IsInstance, IsOptional} from 'class-validator';
 import {Types} from 'mongoose';
 
 function objectId(value): Types.ObjectId | undefined {
@@ -23,6 +23,19 @@ export function Ref(ref: string): PropertyDecorator {
   mongoose && decorators.push(mongoose.Prop({type: Types.ObjectId, ref, required: true}));
   const swagger = optionalRequire('@nestjs/swagger');
   swagger && decorators.push(swagger.ApiProperty({example: EXAMPLE_OBJECT_ID, format: 'objectid'}));
+  return applyDecorators(...decorators);
+}
+
+export function OptionalRef(ref: string): PropertyDecorator {
+  const decorators: PropertyDecorator[] = [
+    Transform(({value}) => objectId(value)),
+    IsOptional(),
+    IsInstance(Types.ObjectId),
+  ];
+  const mongoose = optionalRequire('@nestjs/mongoose');
+  mongoose && decorators.push(mongoose.Prop({type: Types.ObjectId, ref}));
+  const swagger = optionalRequire('@nestjs/swagger');
+  swagger && decorators.push(swagger.ApiPropertyOptional({example: EXAMPLE_OBJECT_ID, format: 'objectid'}));
   return applyDecorators(...decorators);
 }
 
