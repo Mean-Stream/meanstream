@@ -22,6 +22,7 @@ For older versions, see [ng-bootstrap-ext](https://github.com/Clashsoft/ng-boots
 
 Ngbx provides many standalone modules that can be combined at will.
 
+- [Darkmode](./src/lib/darkmode) - Dark theme switches for `bootstrap-darkmode`.
 - [Forms](./src/lib/forms) - Simply create forms based on `class-validator` annotations.
 - [Modals](./src/lib/modal) - Simplifies modals with `ng-bootstrap`.
 - [Route Tabs](./src/lib/route-tabs) - Tabs that are based on Angular Router routes.
