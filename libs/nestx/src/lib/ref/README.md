@@ -21,12 +21,16 @@ class Group {
 }
 ```
 
+## Populate
+
 An example usage using `populate`:
 
 ```ts
 const groupWithMembers = await this.model.findOneById(groupId).populate<{members: User[]}>('members').exec();
 groupWithMembers.members.map(user => user.name);
 ```
+
+## Decorator Details
 
 It adds the following decorators:
 
@@ -38,3 +42,34 @@ It adds the following decorators:
 ```
 
 The `@RefArray` and `@OptionalRef` decorators are also available and use the equivalent decorators but with support for optionals and arrays.
+
+## ObjectId Pipes
+
+In addition, this module offers the following pipes:
+
+```ts
+ObjectIdPipe // converts strings and numbers to ObjectIDs and retains others
+OptionalObjectIdPipe // retains null and undefined and acts like ObjectIdPipe otherwise
+ObjectIdArrayPipe // converts each element of an array like ObjectIdPipe
+```
+
+Example:
+
+```ts
+class GroupController {
+  @Get(':id')
+  findOne(
+    @Param('id', ObjectIdPipe) id: Types.ObjectId,
+  ) {
+    // ...
+  }
+ 
+  @Get()
+  findAll(
+    @Query('members', ParseArrayPipe, ObjectIdArrayPipe) members: Types.ObjectId[],
+    @Query('createdBy', OptionalObjectIdPipe) createdBy?: Types.ObjectId,
+  ) {
+    // ...
+  }
+}
+```
