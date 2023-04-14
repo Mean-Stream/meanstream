@@ -7,9 +7,13 @@
     "@nestjs/core": "^9.0.0",
     "@nestjs/event-emitter": "^1.0.0",
     "@nestjs/microservices": "^9.0.0",
+    "@nestjs/mongoose": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/swagger": "^6.0.0",
     "@nestjs/websockets": "^9.0.0",
+    "class-transformer": "^0.5.0",
+    "class-validator": "^0.14.0",
+    "mongoose": "^7.0.0",
     "nats": "^2.13.0",
     "reflect-metadata": "^0.1.0",
     "rxjs": "^7.0.0",
@@ -32,6 +36,12 @@
       "optional": true
     },
     "nats": {
+      "optional": true
+    },
+    "mongoose": {
+      "optional": true
+    },
+    "@nestjs/mongoose": {
       "optional": true
     }
   }
