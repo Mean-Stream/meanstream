@@ -7,6 +7,9 @@
     "angular",
     "components"
   ],
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
   "peerDependencies": {
     "@angular/common": "^15.2.0",
     "@angular/core": "^15.2.0",
@@ -15,8 +18,10 @@
     "@ng-bootstrap/ng-bootstrap": "^14.0.0",
     "bootstrap-darkmode": "^0.9.1"
   },
-  "dependencies": {
-    "tslib": "^2.3.0"
+  "peerDependenciesMeta": {
+    "bootstrap-darkmode": {
+      "optional": true
+    }
   },
   "sideEffects": false
 }
