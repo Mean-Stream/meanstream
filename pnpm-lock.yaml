@@ -55,6 +55,9 @@ dependencies:
   bootstrap:
     specifier: ^5.2.3
     version: 5.2.3(@popperjs/core@2.11.7)
+  bootstrap-icons:
+    specifier: ^1.10.4
+    version: 1.10.4
   class-validator:
     specifier: ^0.14.0
     version: 0.14.0
@@ -6425,6 +6428,10 @@ packages:
   /boolbase@1.0.0:
     resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==}
     dev: true
+
+  /bootstrap-icons@1.10.4:
+    resolution: {integrity: sha512-eI3HyIUmpGKRiRv15FCZccV+2sreGE2NnmH8mtxV/nPOzQVu0sPEj8HhF1MwjJ31IhjF0rgMvtYOX5VqIzcb/A==}
+    dev: false
 
   /bootstrap@5.2.3(@popperjs/core@2.11.7):
     resolution: {integrity: sha512-cEKPM+fwb3cT8NzQZYEu4HilJ3anCrWqh3CHAok1p9jXqMPsPTBhU25fBckEJHJ/p+tTxTFTsFQGM+gaHpi3QQ==}
