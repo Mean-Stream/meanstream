@@ -3,14 +3,7 @@ import {optionalRequire} from '@nestjs/core/helpers/optional-require';
 import {Transform} from 'class-transformer';
 import {IsInstance, IsOptional} from 'class-validator';
 import {Types} from 'mongoose';
-
-function objectId<T extends string | number | Types.ObjectId | Uint8Array>(value: T): Types.ObjectId | T {
-  try {
-    return new Types.ObjectId(value);
-  } catch (e) {
-    return value;
-  }
-}
+import {objectId} from './objectid.helper';
 
 const EXAMPLE_OBJECT_ID = '62fc9b33773277d12d28929b';
 
