@@ -9,7 +9,7 @@ import {ThemeService} from '../theme.service';
  * Enabling the toggle sets the theme to `dark`, while disabling sets it to `light`.
  */
 @Component({
-  selector: 'ng-bootstrap-darkmode-switch, ngbd-darkmode-switch',
+  selector: 'ngbx-darkmode-switch',
   templateUrl: './dark-switch.component.html',
   styleUrls: ['./dark-switch.component.scss'],
 })

@@ -18,5 +18,5 @@ import {ThemeSwitchComponent} from './theme-switch/theme-switch.component';
     ThemeSwitchComponent,
   ],
 })
-export class DarkmodeModule {
+export class NgbxDarkmodeModule {
 }

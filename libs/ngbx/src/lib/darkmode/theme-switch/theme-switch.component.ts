@@ -9,7 +9,7 @@ import {ThemeService} from '../theme.service';
  * Size and style (icon vs label) are configurable.
  */
 @Component({
-  selector: 'ng-bootstrap-theme-switch, ngbd-theme-switch',
+  selector: 'ngbx-theme-switch',
   templateUrl: './theme-switch.component.html',
   styleUrls: ['./theme-switch.component.scss'],
 })
