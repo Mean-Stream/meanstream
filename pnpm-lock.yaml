@@ -55,6 +55,9 @@ dependencies:
   bootstrap:
     specifier: ^5.2.3
     version: 5.2.3(@popperjs/core@2.11.7)
+  bootstrap-darkmode:
+    specifier: ^5.0.1
+    version: 5.0.1(bootstrap@5.2.3)
   bootstrap-icons:
     specifier: ^1.10.4
     version: 1.10.4
@@ -6428,6 +6431,15 @@ packages:
   /boolbase@1.0.0:
     resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==}
     dev: true
+
+  /bootstrap-darkmode@5.0.1(bootstrap@5.2.3):
+    resolution: {integrity: sha512-jyl507aEItDG7PHVdFgVNZ+qBX+Gffo6uGYOY9waegHcNRqBuajwyfkLpCGczMlhAQiEcms3jdxfhMg3AZJMfA==}
+    peerDependencies:
+      bootstrap: '>=5'
+    dependencies:
+      bootstrap: 5.2.3(@popperjs/core@2.11.7)
+      tslib: 2.5.0
+    dev: false
 
   /bootstrap-icons@1.10.4:
     resolution: {integrity: sha512-eI3HyIUmpGKRiRv15FCZccV+2sreGE2NnmH8mtxV/nPOzQVu0sPEj8HhF1MwjJ31IhjF0rgMvtYOX5VqIzcb/A==}
