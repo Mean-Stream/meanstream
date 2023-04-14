@@ -1,6 +1,6 @@
 {
   "name": "@mean-stream/nestx",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "type": "commonjs",
   "peerDependencies": {
     "@nestjs/common": "^9.0.0",
