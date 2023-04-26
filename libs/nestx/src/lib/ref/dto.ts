@@ -15,4 +15,4 @@ export type DTO<T> =
             [P in keyof T]: DTO<T[P]>;
           }> : T;
 
-export type Doc<T> = T & Document<Types.ObjectId, never, T>;
+export type Doc<T, ID = Types.ObjectId, HELP = object> = T & Document<ID, HELP, T>;
