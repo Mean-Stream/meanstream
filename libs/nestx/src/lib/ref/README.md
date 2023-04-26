@@ -7,6 +7,9 @@ import {Ref, OptionalRef, RefArray} from '@mean-stream/nestx';
 import {Types} from 'mongoose';
 
 class Group {
+  _id: Types.ObjectId;
+  createdAt: Date;
+
   @Ref(User.name)
   createdBy: Types.ObjectId;
 
@@ -73,3 +76,30 @@ class GroupController {
   }
 }
 ```
+
+## DTOs
+
+The `DTO<T>` helper type can be used for frontend code to automatically derive types that use `string` instead of `ObjectId` or `Date`:
+
+```ts
+type GroupDTO = DTO<Group>; // using Group from the example above
+// same as:
+interface GroupDTO {
+  _id: string;
+  createdAt: string;
+  createdBy: string;
+  updatedBy?: string;
+  members: string[];
+  admins?: string[];
+}
+```
+
+In addition, the `Doc` type can help in the backend:
+
+```ts
+type GroupDoc = Doc<Group>;
+// same as:
+type GroupDoc = Group & Document<Types.ObjectId, object, Group>;
+```
+
+The optional second and third parameters of `Doc` specify the ID type and the helpers type of `Document<ID, HELP, T>`, respectively.
