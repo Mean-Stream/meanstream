@@ -21,9 +21,12 @@ export function Ref(ref: string, {array, optional}: {
   }
 
   const mongoose = optionalRequire('@nestjs/mongoose');
-  mongoose && decorators.push(mongoose.Prop({
-    type: array ? [{type: Types.ObjectId, ref}] : Types.ObjectId,
-    ref: array ? undefined : ref,
+  mongoose && decorators.push(mongoose.Prop(array ? {
+    type: [{type: Types.ObjectId, ref}],
+    required: !optional,
+  } : {
+    type: Types.ObjectId,
+    ref,
     required: !optional,
   }));
   const swagger = optionalRequire('@nestjs/swagger');
