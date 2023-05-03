@@ -25,11 +25,11 @@
       "optional": true,
       "comment": "Required for darkmode-switch"
     },
-    "class-validator":  {
+    "class-validator": {
       "optional": true,
       "comment": "Required for forms"
     },
-    "reflect-metadata":  {
+    "reflect-metadata": {
       "optional": true,
       "comment": "Required for forms"
     }
