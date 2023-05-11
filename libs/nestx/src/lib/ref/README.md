@@ -84,12 +84,12 @@ To enable 16-character base64 IDs, you can modify the schema like this:
 
 ```ts
 @Schema({
-  id: false,
-  toJSON: {virtuals: true},
-  toObject: {virtuals: true},
+  id: false, // without this, the getter below will be overriden
+  toJSON: {virtuals: true}, // to include only id, use "virtuals: ['id']"
+  toObject: {virtuals: true}, // see above
   virtuals: {
-    id: {
-      get: function (this: Poll) {
+    id: { // can be named "shortId" or whatever else. The "id: false" above is not necessary in that case.
+      get: function (this: Group) {
         return this._id.toString('base64');
       },
     },
