@@ -33,11 +33,7 @@ export class ObjectIdArrayPipe implements PipeTransform<ObjectIdInput[], Types.O
   }
 
   transform(value: ObjectIdInput[]): Types.ObjectId[] {
-    try {
-      return value.map(v => new Types.ObjectId(v));
-    } catch (e) {
-      throw this.exceptionFactory(`Validation failed (${e.message})`);
-    }
+    return value.map(v => objectId(v, this.exceptionFactory));
   }
 }
 
