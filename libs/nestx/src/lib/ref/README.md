@@ -80,6 +80,33 @@ class GroupController {
 }
 ```
 
+To enable 16-character base64 IDs, you can modify the schema like this:
+
+```ts
+@Schema({
+  id: false,
+  toJSON: {virtuals: true},
+  toObject: {virtuals: true},
+  virtuals: {
+    id: {
+      get: function (this: Poll) {
+        return this._id.toString('base64');
+      },
+    },
+  },
+})
+```
+
+Your JSON results will then look like this:
+
+```json5
+{
+  "_id": "645ca44113a3287b2fa39705", // long id
+  "id": "ZFykQROjKHsvo5cF", // short id
+  "...": "..."
+}
+```
+
 ## DTOs
 
 The `DTO<T>` helper type can be used for frontend code to automatically derive types that use `string` instead of `ObjectId` or `Date`:
