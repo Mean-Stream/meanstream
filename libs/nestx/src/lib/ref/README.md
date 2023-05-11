@@ -45,6 +45,7 @@ It adds the following decorators:
 ```
 
 The `@RefArray` and `@OptionalRef` decorators are also available and use the equivalent decorators but with support for optionals and arrays.
+The transformer support both 24-character hex strings and 16-character base64 strings.
 
 ## ObjectId Pipes
 
@@ -55,6 +56,8 @@ ObjectIdPipe // converts strings and numbers to ObjectIDs and retains others
 OptionalObjectIdPipe // retains null and undefined and acts like ObjectIdPipe otherwise
 ObjectIdArrayPipe // converts each element of an array like ObjectIdPipe
 ```
+
+The pipes support both 24-character hex strings and 16-character base64 strings.
 
 Example:
 
