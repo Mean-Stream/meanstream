@@ -1,4 +1,4 @@
-import {objectId} from './objectid.helper';
+import {objectIdToBase64, objectId} from './objectid.helper';
 import {Types} from "mongoose";
 
 describe('ObjectIdHelper', () => {
@@ -21,5 +21,15 @@ describe('ObjectIdHelper', () => {
 
   it('should keep ObjectId as ObjectId', () => {
     expect(objectId(exampleId)).toEqual(exampleId);
+  });
+
+  it('should parse url-safe base64', () => {
+    expect(objectId('EjRWeJCrze8SNFZ4')).toEqual(exampleId);
+    expect(objectId('_ty6CYdlQyH-3LoJ')).toEqual(new Types.ObjectId('fedcba0987654321fedcba09'));
+  });
+
+  it('should generate url-safe base64', () => {
+    expect(objectIdToBase64(exampleId)).toEqual('EjRWeJCrze8SNFZ4');
+    expect(objectIdToBase64(new Types.ObjectId('fedcba0987654321fedcba09'))).toEqual('_ty6CYdlQyH-3LoJ');
   });
 });

@@ -83,6 +83,8 @@ class GroupController {
 To enable 16-character base64 IDs, you can modify the schema like this:
 
 ```ts
+import {objectIdToBase64} from "@mean-stream/nestx";
+
 @Schema({
   id: false, // without this, the getter below will be overriden
   toJSON: {virtuals: true}, // to include only id, use "virtuals: ['id']"
@@ -90,7 +92,7 @@ To enable 16-character base64 IDs, you can modify the schema like this:
   virtuals: {
     id: { // can be named "shortId" or whatever else. The "id: false" above is not necessary in that case.
       get: function (this: Group) {
-        return this._id.toString('base64');
+        return objectIdToBase64(this._id); // this._id.toString('base64') works, but is not URL safe
       },
     },
   },
