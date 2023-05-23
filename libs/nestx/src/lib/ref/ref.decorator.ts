@@ -49,10 +49,10 @@ export function Ref(ref: string, {array, optional, index}: RefOptions = {}): Pro
   return applyDecorators(...decorators);
 }
 
-export function OptionalRef(ref: string): PropertyDecorator {
-  return Ref(ref, {optional: true});
+export function OptionalRef(ref: string, options: RefOptions = {}): PropertyDecorator {
+  return Ref(ref, {...options, optional: true});
 }
 
-export function RefArray(ref: string) {
-  return Ref(ref, {array: true});
+export function RefArray(ref: string, options: RefOptions = {}): PropertyDecorator {
+  return Ref(ref, {...options, array: true});
 }
