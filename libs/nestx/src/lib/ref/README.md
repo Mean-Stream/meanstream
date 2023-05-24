@@ -47,6 +47,8 @@ It adds the following decorators:
 The `@RefArray` and `@OptionalRef` decorators are also available and use the equivalent decorators but with support for optionals and arrays.
 The transformer support both 24-character hex strings and 16-character base64 strings.
 
+You can use the `index` option to create an index on the property.
+
 ## ObjectId Pipes
 
 In addition, this module offers the following pipes:
