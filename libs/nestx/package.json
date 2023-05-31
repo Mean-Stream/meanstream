@@ -2,6 +2,20 @@
   "name": "@mean-stream/nestx",
   "version": "0.7.2",
   "type": "commonjs",
+  "exports": {
+    "./event": {
+      "default": "./src/lib/event/index.js",
+      "types": "./src/lib/event/index.d.ts"
+    },
+    "./not-found": {
+      "default": "./src/lib/not-found/index.js",
+      "types": "./src/lib/not-found/index.d.ts"
+    },
+    "./ref": {
+      "default": "./src/lib/ref/index.js",
+      "types": "./src/lib/ref/index.d.ts"
+    }
+  },
   "peerDependencies": {
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
