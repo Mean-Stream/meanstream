@@ -3,6 +3,10 @@
   "version": "0.7.3",
   "type": "commonjs",
   "exports": {
+    ".": {
+      "default": "./src/index.js",
+      "types": "./src/index.d.ts"
+    },
     "./event": {
       "default": "./src/lib/event/index.js",
       "types": "./src/lib/event/index.d.ts"
