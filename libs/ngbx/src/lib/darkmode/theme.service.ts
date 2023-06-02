@@ -26,7 +26,7 @@ export class ThemeService {
     @Inject(THEME_LOADER) themeLoader: ThemeLoader,
     @Inject(THEME_SAVER) themeSaver: ThemeSaver,
   ) {
-    themeLoader().subscribe(this._theme);
+    themeLoader().subscribe(theme => this._theme.next(theme));
 
     this.theme$.pipe(
       tap(theme => themeSaver(theme)),
