@@ -29,6 +29,10 @@ export const LOCAL_STORAGE_THEME_SAVER: ThemeSaver = theme => {
   }
 }
 
+export const THEME_ATTRIBUTE: InjectionToken<string> = new InjectionToken<string>('Body attribute to set in ThemeService', {
+  factory: () => 'data-theme',
+});
+
 /**
  * A function that loads the saved theme.
  * Defaults to loading from local storage with the key `theme`.

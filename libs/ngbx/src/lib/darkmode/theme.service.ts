@@ -3,7 +3,7 @@ import {Inject, Injectable} from '@angular/core';
 
 import {BehaviorSubject, fromEvent, Observable, of, Subject} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
-import {DetectedTheme, THEME_LOADER, THEME_SAVER, ThemeLoader, ThemeSaver} from './theme-loader';
+import {DetectedTheme, THEME_ATTRIBUTE, THEME_LOADER, THEME_SAVER, ThemeLoader, ThemeSaver} from './theme-loader';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +13,7 @@ export class ThemeService {
 
   constructor(
     @Inject(DOCUMENT) document: Document,
+    @Inject(THEME_ATTRIBUTE) themeAttribute: string,
     @Inject(THEME_LOADER) themeLoader: ThemeLoader,
     @Inject(THEME_SAVER) themeSaver: ThemeSaver,
   ) {
@@ -20,9 +21,9 @@ export class ThemeService {
 
     this._theme.subscribe(theme => {
       if (theme) {
-        document.body.setAttribute('data-theme', theme);
+        document.body.setAttribute(themeAttribute, theme);
       } else {
-        document.body.removeAttribute('data-theme');
+        document.body.removeAttribute(themeAttribute);
       }
 
       themeSaver(theme);
