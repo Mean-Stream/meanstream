@@ -1,7 +1,7 @@
 import {DOCUMENT} from '@angular/common';
 import {Inject, Injectable} from '@angular/core';
 
-import {BehaviorSubject, fromEvent, Observable, of, Subject} from 'rxjs';
+import {BehaviorSubject, fromEvent, Observable, of, Subject, switchMap} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {DetectedTheme, THEME_ATTRIBUTE, THEME_LOADER, THEME_SAVER, ThemeLoader, ThemeSaver} from './theme-loader';
 
@@ -17,9 +17,11 @@ export class ThemeService {
     @Inject(THEME_LOADER) themeLoader: ThemeLoader,
     @Inject(THEME_SAVER) themeSaver: ThemeSaver,
   ) {
-    themeLoader().subscribe(theme => this._theme.next(theme));
+    themeLoader().subscribe(this._theme);
 
-    this._theme.subscribe(theme => {
+    this._theme.pipe(
+      switchMap(theme => theme === 'auto' ? this.detectedTheme$ : of(theme)),
+    ).subscribe(theme => {
       if (theme) {
         document.body.setAttribute(themeAttribute, theme);
       } else {
