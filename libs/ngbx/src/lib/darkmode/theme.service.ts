@@ -3,13 +3,22 @@ import {Inject, Injectable} from '@angular/core';
 
 import {BehaviorSubject, fromEvent, Observable, of, Subject, switchMap} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
-import {DetectedTheme, THEME_ATTRIBUTE, THEME_LOADER, THEME_SAVER, ThemeLoader, ThemeSaver} from './theme-loader';
+import {
+  ActiveTheme,
+  DetectedTheme,
+  Theme,
+  THEME_ATTRIBUTE,
+  THEME_LOADER,
+  THEME_SAVER,
+  ThemeLoader,
+  ThemeSaver
+} from './theme-loader';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ThemeService {
-  private _theme = new BehaviorSubject<string | null>(null);
+  private _theme = new BehaviorSubject<Theme | null>(null);
 
   constructor(
     @Inject(DOCUMENT) document: Document,
@@ -33,7 +42,7 @@ export class ThemeService {
   /**
    * @return the current theme
    */
-  get theme(): string | null {
+  get theme(): Theme {
     return this._theme.getValue();
   }
 
@@ -41,21 +50,21 @@ export class ThemeService {
    * @param value
    *  the new theme
    */
-  set theme(value: string | null) {
+  set theme(value: Theme) {
     this._theme.next(value);
   }
 
   /**
    * @return a subject representing the currently set theme (may be auto)
    */
-  get theme$(): Subject<string | null> {
+  get theme$(): Subject<Theme> {
     return this._theme;
   }
 
   /**
    * @return the currently active theme (auto is resolved to dark or light depending on the preferred color scheme)
    */
-  get activeTheme(): string | null {
+  get activeTheme(): ActiveTheme {
     const theme = this.theme;
     return theme === 'auto' ? this.detectedTheme : theme;
   }
@@ -64,7 +73,7 @@ export class ThemeService {
    * @return an observable version of {@link activeTheme} that automatically updates on changes
    * @see detectedTheme$
    */
-  get activeTheme$(): Observable<string | null> {
+  get activeTheme$(): Observable<ActiveTheme> {
     return this.theme$.pipe(
       switchMap(theme => theme === 'auto' ? this.detectedTheme$ : of(theme)),
     );

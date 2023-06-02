@@ -2,10 +2,12 @@ import {InjectionToken} from '@angular/core';
 import {fromEvent, Observable, of} from 'rxjs';
 import {filter, map, startWith} from 'rxjs/operators';
 
+export type Theme = 'auto' | ActiveTheme;
+export type ActiveTheme = 'dark' | 'light' | string | null;
 export type DetectedTheme = 'dark' | 'light';
 
-export type ThemeLoader = () => Observable<string | null>;
-export type ThemeSaver = (theme: string | null) => void;
+export type ThemeLoader = () => Observable<Theme>;
+export type ThemeSaver = (theme: Theme) => void;
 
 export const LOCAL_STORAGE_THEME_LOADER: ThemeLoader = () => {
   if (!globalThis.localStorage) {
