@@ -3,7 +3,9 @@
 An Angular wrapper for [bootstrap-darkmode](https://github.com/Clashsoft/bootstrap-darkmode).
 For previous versions check out [ng-bootstrap-darkmode](https://github.com/Clashsoft/ng-bootstrap-darkmode).
 
-## Setup
+This library is compatible with both bootstrap-darkmode and native Bootstrap color modes (introduced in 5.3).
+
+## Setup with bootstrap-darkmode (Optional)
 
 Follow the steps to [Install `bootstrap-darkmode` with npm/yarn/pnpm](https://github.com/Clashsoft/bootstrap-darkmode#with-npmyarnpnpm).
 
@@ -27,14 +29,23 @@ Alternatively, if you are not using SCSS, add the following in `angular.json` un
 ### Module Import
 
 ```typescript
-import {NgBootstrapDarkmodeModule} from 'ng-bootstrap-darkmode';
+import {NgbxDarkmodeModule} from '@mean-stream/ngbx';
 
 @NgModule({
   imports: [
     // ...
-    NgBootstrapDarkmodeModule,
+    NgbxDarkmodeModule,
   ],
   // ...
+
+  // Important for Bootstrap color mode:
+  providers: [
+    // ...
+    {
+      provide: THEME_ATTRIBUTE, // import {THEME_ATTRIBUTE} from '@mean-stream/ngbx';
+      useValue: 'data-bs-theme',
+    },
+  ],
 })
 export class AppModule {
 }
@@ -70,7 +81,7 @@ An outdated alternative is the dark mode switch, which does not support automati
 ### Subscribing to the Theme
 
 ```typescript
-import {ThemeService} from 'ng-bootstrap-darkmode';
+import {ThemeService} from '@mean-stream/ngbx';
 
 @Injectable()
 export class MyService {
@@ -91,12 +102,12 @@ Just provide the `THEME_SAVER` and `THEME_LOADER` functions in your module:
 ```typescript
 import {of} from 'rxjs';
 
-import {NgBootstrapDarkmodeModule, THEME_LOADER, THEME_SAVER} from 'ng-bootstrap-darkmode';
+import {NgbxDarkmodeModule, THEME_LOADER, THEME_SAVER} from '@mean-stream/ngbx';
 
 @NgModule({
   imports: [
     // ...
-    NgBootstrapDarkmodeModule,
+    NgbxDarkmodeModule,
   ],
   providers: [
     {
