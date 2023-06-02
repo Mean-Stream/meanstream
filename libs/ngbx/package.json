@@ -34,5 +34,27 @@
       "comment": "Required for forms"
     }
   },
+  "exports": {
+    "./darkmode": {
+      "esm2020": "./esm2020/lib/darkmode/index.js",
+      "types": "./lib/darkmode/index.d.ts"
+    },
+    "./forms": {
+      "esm2020": "./esm2020/lib/forms/index.js",
+      "types": "./lib/forms/index.d.ts"
+    },
+    "./modal": {
+      "esm2020": "./esm2020/lib/modal/index.js",
+      "types": "./lib/modal/index.d.ts"
+    },
+    "./route-tabs": {
+      "esm2020": "./esm2020/lib/route-tabs/index.js",
+      "types": "./lib/route-tabs/index.d.ts"
+    },
+    "./toast": {
+      "esm2020": "./esm2020/lib/toast/index.js",
+      "types": "./lib/toast/index.d.ts"
+    }
+  },
   "sideEffects": false
 }
