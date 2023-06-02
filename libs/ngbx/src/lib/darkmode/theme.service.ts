@@ -19,9 +19,7 @@ export class ThemeService {
   ) {
     themeLoader().subscribe(this._theme);
 
-    this._theme.pipe(
-      switchMap(theme => theme === 'auto' ? this.detectedTheme$ : of(theme)),
-    ).subscribe(theme => {
+    this.activeTheme$.subscribe(theme => {
       if (theme) {
         document.body.setAttribute(themeAttribute, theme);
       } else {
@@ -33,10 +31,43 @@ export class ThemeService {
   }
 
   /**
-   * @return a subject representing the currently active theme
+   * @return the current theme
+   */
+  get theme(): string | null {
+    return this._theme.getValue();
+  }
+
+  /**
+   * @param value
+   *  the new theme
+   */
+  set theme(value: string | null) {
+    this._theme.next(value);
+  }
+
+  /**
+   * @return a subject representing the currently set theme (may be auto)
    */
   get theme$(): Subject<string | null> {
     return this._theme;
+  }
+
+  /**
+   * @return the currently active theme (auto is resolved to dark or light depending on the preferred color scheme)
+   */
+  get activeTheme(): string | null {
+    const theme = this.theme;
+    return theme === 'auto' ? this.detectedTheme : theme;
+  }
+
+  /**
+   * @return an observable version of {@link activeTheme} that automatically updates on changes
+   * @see detectedTheme$
+   */
+  get activeTheme$(): Observable<string | null> {
+    return this.theme$.pipe(
+      switchMap(theme => theme === 'auto' ? this.detectedTheme$ : of(theme)),
+    );
   }
 
   /**
@@ -60,20 +91,5 @@ export class ThemeService {
       startWith(mediaQuery.matches),
       map(matches => matches ? 'dark' : 'light'),
     );
-  }
-
-  /**
-   * @return the current theme
-   */
-  get theme(): string | null {
-    return this._theme.getValue();
-  }
-
-  /**
-   * @param value
-   *  the new theme
-   */
-  set theme(value: string | null) {
-    this._theme.next(value);
   }
 }
