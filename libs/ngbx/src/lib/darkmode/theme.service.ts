@@ -1,7 +1,7 @@
 import {DOCUMENT} from '@angular/common';
 import {Inject, Injectable} from '@angular/core';
 
-import {BehaviorSubject, fromEvent, Observable, of, Subject, switchMap} from 'rxjs';
+import {BehaviorSubject, fromEvent, Observable, of, Subject, switchMap, tap} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {
   ActiveTheme,
@@ -28,7 +28,10 @@ export class ThemeService {
   ) {
     themeLoader().subscribe(this._theme);
 
-    this.activeTheme$.subscribe(theme => {
+    this.theme$.pipe(
+      tap(theme => themeSaver(theme)),
+      switchMap(theme => this.activeThemeFrom$(theme)),
+    ).subscribe(theme => {
       if (theme) {
         document.body.setAttribute(themeAttribute, theme);
       } else {
@@ -75,8 +78,12 @@ export class ThemeService {
    */
   get activeTheme$(): Observable<ActiveTheme> {
     return this.theme$.pipe(
-      switchMap(theme => theme === 'auto' ? this.detectedTheme$ : of(theme)),
+      switchMap(theme => this.activeThemeFrom$(theme)),
     );
+  }
+
+  private activeThemeFrom$(theme: Theme) {
+    return theme === 'auto' ? this.detectedTheme$ : of(theme);
   }
 
   /**
