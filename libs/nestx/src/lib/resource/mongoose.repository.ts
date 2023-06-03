@@ -1,6 +1,6 @@
 import {FilterQuery, Model, QueryOptions, Types, UpdateQuery, UpdateWriteOpResult} from "mongoose";
 import {Doc} from "../ref";
-import {Repository} from "./repository";
+import {DeleteManyResult, RawUpsertResult, Repository} from "./repository";
 
 
 export class MongooseRepository<T, ID = Types.ObjectId, DOC = Doc<T, ID>>
@@ -30,7 +30,7 @@ export class MongooseRepository<T, ID = Types.ObjectId, DOC = Doc<T, ID>>
     return (await this.upsertRaw(filter, update, options)).result;
   }
 
-  async upsertRaw(filter: FilterQuery<T>, update: UpdateQuery<T>, options: QueryOptions<T> = {}): Promise<{ operation: 'created' | 'updated', result: DOC | null }> {
+  async upsertRaw(filter: FilterQuery<T>, update: UpdateQuery<T>, options: QueryOptions<T> = {}): Promise<RawUpsertResult<DOC>> {
     const result = await this.model.findOneAndUpdate(filter, update, {...options, new: true, upsert: true, rawResult: true}).exec();
     if (result.lastErrorObject.upserted) {
       return { operation: 'created', result: result.value };
@@ -47,10 +47,7 @@ export class MongooseRepository<T, ID = Types.ObjectId, DOC = Doc<T, ID>>
     return this.model.findByIdAndDelete(id, options);
   }
 
-  async deleteMany(filter: FilterQuery<T>, options?: QueryOptions<T>): Promise<{
-    acknowledged: boolean;
-    deletedCount: number
-  }> {
+  async deleteMany(filter: FilterQuery<T>, options?: QueryOptions<T>): Promise<DeleteManyResult> {
     return this.model.deleteMany(filter, options).exec();
   }
 }
