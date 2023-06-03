@@ -27,7 +27,7 @@ export class MongooseRepository<T, ID = Types.ObjectId, DOC = Doc<T, ID>>
   }
 
   async upsert(filter: FilterQuery<T>, update: UpdateQuery<T>, options: QueryOptions<T> = {}): Promise<DOC | null> {
-    return this.model.findOneAndUpdate(filter, update, {...options, new: true, upsert: true}).exec();
+    return (await this.upsertRaw(filter, update, options)).result;
   }
 
   async upsertRaw(filter: FilterQuery<T>, update: UpdateQuery<T>, options: QueryOptions<T> = {}): Promise<{ operation: 'created' | 'updated', result: DOC | null }> {

@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types,no-prototype-builtins */
 
+import {RawUpsertResult} from "../resource/repository";
+
 function getMethodDescriptor(target: Function, propertyName: string): TypedPropertyDescriptor<any> {
   if (target.prototype.hasOwnProperty(propertyName))
     return Object.getOwnPropertyDescriptor(target.prototype, propertyName);
@@ -34,6 +36,21 @@ export function EventRepository(): ClassDecorator {
       const created = await originalMethod.apply(this, args);
       this.emit('created', created);
       return created;
+    });
+    replaceImplementation(target, 'update', async function (this, originalMethod, ...args) {
+      const updated = await originalMethod.apply(this, args);
+      this.emit('updated', updated);
+      return updated;
+    });
+    replaceImplementation(target, 'upsertRaw', async function (this, originalMethod, ...args) {
+      const result = await originalMethod.apply(this, args) as RawUpsertResult<unknown>;
+      this.emit(result.operation, result.result);
+      return result;
+    });
+    replaceImplementation(target, 'delete', async function (this, originalMethod, ...args) {
+      const deleted = await originalMethod.apply(this, args);
+      this.emit('deleted', deleted);
+      return deleted;
     });
   }
 }
