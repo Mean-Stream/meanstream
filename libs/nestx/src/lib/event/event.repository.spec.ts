@@ -1,11 +1,15 @@
 import {EventRepository} from "./event.repository";
-import {RawUpsertResult} from "../resource/repository";
+import {DeleteManyResult, RawUpsertResult, UpdateManyResult} from "../resource/repository";
 
 describe('EventRepository', () => {
   let emitted = undefined;
 
   @EventRepository()
   class SimpleService {
+    async findAll(filter: any) {
+      return [filter];
+    }
+
     async create(dto: any) {
       return dto;
     }
@@ -16,6 +20,14 @@ describe('EventRepository', () => {
 
     async upsertRaw(filter: any, update: any): Promise<RawUpsertResult<any>> {
       return {operation: 'created', result: {...filter, ...update}};
+    }
+
+    async updateMany(filter: any, update: any): Promise<UpdateManyResult> {
+      return {acknowledged: true, matchedCount: 1, upsertedCount: 0, modifiedCount: 1};
+    }
+
+    async deleteMany(filter: any): Promise<DeleteManyResult> {
+      return {acknowledged: true, deletedCount: 1};
     }
 
     async delete(id: any) {
@@ -47,6 +59,16 @@ describe('EventRepository', () => {
   it('should call emit on upsert', async () => {
     await service.upsertRaw({id: 1}, {a: 'a'});
     expect(emitted).toStrictEqual({event: 'created', data: {id: 1, a: 'a'}});
+  });
+
+  it('should call emit on update many', async () => {
+    await service.updateMany({id: 1}, {a: 'a'});
+    expect(emitted).toStrictEqual({event: 'updated', data: {id: 1}});
+  });
+
+  it('should call emit on delete many', async () => {
+    await service.deleteMany({id: 1});
+    expect(emitted).toStrictEqual({event: 'deleted', data: {id: 1}});
   });
 
   class BaseService {

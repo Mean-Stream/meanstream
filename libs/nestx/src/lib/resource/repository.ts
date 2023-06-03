@@ -10,7 +10,7 @@ export interface RawUpsertResult<DOC> {
   result: DOC | null;
 }
 
-interface DeleteManyResult {
+export interface DeleteManyResult {
   acknowledged: boolean;
   deletedCount: number;
 }
