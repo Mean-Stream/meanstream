@@ -52,5 +52,21 @@ export function EventRepository(): ClassDecorator {
       this.emit('deleted', deleted);
       return deleted;
     });
+    replaceImplementation(target, 'updateMany', async function (this, originalMethod, filter, update, ...args) {
+      const results = await this.findAll(filter, ...args);
+      await originalMethod.call(this, filter, ...args);
+      for (const result of results) {
+        this.emit('updated', result);
+      }
+      return results;
+    });
+    replaceImplementation(target, 'deleteMany', async function (this, originalMethod, ...args) {
+      const results = await this.findAll(...args);
+      await originalMethod.apply(this, args);
+      for (const result of results) {
+        this.emit('deleted', result);
+      }
+      return results;
+    });
   }
 }
