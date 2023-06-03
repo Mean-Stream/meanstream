@@ -25,6 +25,9 @@
           "node_modules/bootstrap-icons/font/bootstrap-icons.css",
           "apps/example-web/src/styles.css"
         ],
+        "allowedCommonJsDependencies": [
+          "validator"
+        ],
         "scripts": []
       },
       "configurations": {
