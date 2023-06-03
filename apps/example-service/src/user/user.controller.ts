@@ -1,14 +1,26 @@
-import {Body, Controller, Delete, Get, Param, Patch, Post,} from '@nestjs/common';
+import {Body, Controller, Delete, Get, MessageEvent, Param, Patch, Post, Sse,} from '@nestjs/common';
 import {UserService} from './user.service';
 import {CreateUserDto, UpdateUserDto} from './user.dto';
-import {ObjectIdPipe} from "@clashsoft/nestx";
+import {EventService, ObjectIdPipe} from "@clashsoft/nestx";
 import {Types} from "mongoose";
+import {map, Observable} from "rxjs";
 
 @Controller('users')
 export class UserController {
   constructor(
     private readonly userService: UserService,
+    private readonly eventService: EventService,
   ) {
+  }
+
+  @Sse('events')
+  events(): Observable<MessageEvent> {
+    return this.eventService.subscribe('users.*.*').pipe(map(({event, data}) => ({data: {event, data}})));
+  }
+
+  @Sse(':id/events')
+  eventsId(@Param('id', ObjectIdPipe) id: Types.ObjectId): Observable<MessageEvent> {
+    return this.eventService.subscribe(`users.${id}.*`).pipe(map(({event, data}) => ({data: {event, data}})));
   }
 
   @Post()
