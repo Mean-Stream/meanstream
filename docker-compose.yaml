@@ -1,0 +1,13 @@
+services:
+  nats:
+    image: nats:2
+    ports:
+      - "4222:4222"
+  database:
+    image: mongo:6
+    ports:
+      - "27017:27017"
+    volumes:
+      - data:/data/db
+volumes:
+  data:
