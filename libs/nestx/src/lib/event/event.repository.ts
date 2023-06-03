@@ -1,29 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types,no-prototype-builtins */
 
-function getMethodDescriptor(target: Function, propertyName: string): TypedPropertyDescriptor<any> {
-  if (target.prototype.hasOwnProperty(propertyName))
-    return Object.getOwnPropertyDescriptor(target.prototype, propertyName);
-
-  // create a new property descriptor for the base class' method
-  return {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    value: target.prototype[propertyName]
-  };
-}
-
-function decorate(target: Function, method: string, decorator: MethodDecorator) {
-  const propertyValue = target.prototype[method];
-  if (!(propertyValue instanceof Function)) {
-    return;
-  }
-
-  let descriptor = getMethodDescriptor(target, method);
-  descriptor = decorator(target, method, descriptor) || descriptor;
-  Object.defineProperty(target.prototype, method, descriptor);
-}
-
 export function EventRepository(): ClassDecorator {
   return target => {
     decorate(target, 'create', Emit('created'));
@@ -68,3 +44,26 @@ export function Emit(event: string | ((result: any) => string), extractor?: (res
   };
 }
 
+function getMethodDescriptor(target: Function, propertyName: string): TypedPropertyDescriptor<any> {
+  if (target.prototype.hasOwnProperty(propertyName))
+    return Object.getOwnPropertyDescriptor(target.prototype, propertyName);
+
+  // create a new property descriptor for the base class' method
+  return {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: target.prototype[propertyName]
+  };
+}
+
+function decorate(target: Function, method: string, decorator: MethodDecorator) {
+  const propertyValue = target.prototype[method];
+  if (!(propertyValue instanceof Function)) {
+    return;
+  }
+
+  let descriptor = getMethodDescriptor(target, method);
+  descriptor = decorator(target, method, descriptor) || descriptor;
+  Object.defineProperty(target.prototype, method, descriptor);
+}
