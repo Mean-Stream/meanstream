@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types,no-prototype-builtins */
 
-import {RawUpsertResult} from "../resource/repository";
-
 function getMethodDescriptor(target: Function, propertyName: string): TypedPropertyDescriptor<any> {
   if (target.prototype.hasOwnProperty(propertyName))
     return Object.getOwnPropertyDescriptor(target.prototype, propertyName);
@@ -15,43 +13,24 @@ function getMethodDescriptor(target: Function, propertyName: string): TypedPrope
   };
 }
 
-function replaceImplementation(target: Function, method: string, impl: (this: any, originalMethod: Function, ...args: any[]) => any) {
+function decorate(target: Function, method: string, decorator: MethodDecorator) {
   const propertyValue = target.prototype[method];
   if (!(propertyValue instanceof Function)) {
     return;
   }
 
-  const descriptor = getMethodDescriptor(target, method);
-  const originalMethod = descriptor.value;
-  descriptor.value = function (...args: any[]) {
-    return impl.call(this, originalMethod, ...args);
-  };
-
+  let descriptor = getMethodDescriptor(target, method);
+  descriptor = decorator(target, method, descriptor) || descriptor;
   Object.defineProperty(target.prototype, method, descriptor);
 }
 
 export function EventRepository(): ClassDecorator {
   return target => {
-    replaceImplementation(target, 'create', async function (this, originalMethod, ...args) {
-      const created = await originalMethod.apply(this, args);
-      this.emit('created', created);
-      return created;
-    });
-    replaceImplementation(target, 'update', async function (this, originalMethod, ...args) {
-      const updated = await originalMethod.apply(this, args);
-      this.emit('updated', updated);
-      return updated;
-    });
-    replaceImplementation(target, 'upsertRaw', async function (this, originalMethod, ...args) {
-      const result = await originalMethod.apply(this, args) as RawUpsertResult<unknown>;
-      this.emit(result.operation, result.result);
-      return result;
-    });
-    replaceImplementation(target, 'delete', async function (this, originalMethod, ...args) {
-      const deleted = await originalMethod.apply(this, args);
-      this.emit('deleted', deleted);
-      return deleted;
-    });
+    decorate(target, 'create', Emit('created'));
+    decorate(target, 'update', Emit('updated'));
+    decorate(target, 'delete', Emit('deleted'));
+    decorate(target, 'upsertRaw', Emit(result => result.operation, result => result.result));
+    /*
     replaceImplementation(target, 'updateMany', async function (this, originalMethod, filter, update, ...args) {
       const results = await this.findAll(filter, ...args);
       await originalMethod.call(this, filter, ...args);
@@ -68,5 +47,17 @@ export function EventRepository(): ClassDecorator {
       }
       return results;
     });
+     */
   }
+}
+
+export function Emit(event: string | ((result: any) => string), extractor?: (result: any) => any): MethodDecorator {
+  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+    const originalMethod = descriptor.value;
+    descriptor.value = async function (this, ...args) {
+      const result = await originalMethod.apply(this, args);
+      this.emit(typeof event === 'string' ? event : event(result), extractor ? extractor(result) : result);
+      return result;
+    };
+  };
 }
