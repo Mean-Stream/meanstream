@@ -7,7 +7,7 @@ export interface UpdateManyResult {
 
 export interface RawUpsertResult<DOC> {
   operation: 'created' | 'updated',
-  result: DOC | null;
+  result: DOC;
 }
 
 export interface DeleteManyResult {
@@ -24,7 +24,7 @@ export interface Repository<T, ID, DOC, FILTER, UPDATE> {
 
   update(id: ID, update: UPDATE): Promise<DOC | null>;
 
-  upsert(filter: FILTER, update: UPDATE): Promise<DOC | null>;
+  upsert(filter: FILTER, update: UPDATE): Promise<DOC>;
 
   upsertRaw(filter: FILTER, update: UPDATE): Promise<RawUpsertResult<DOC>>;
 
