@@ -17,7 +17,7 @@ export class MongooseRepository<T, ID = Types.ObjectId, DOC = Doc<T, ID>>
     return this.model.findById(id, undefined, options).exec();
   }
 
-  async findAll(filter: FilterQuery<T>, options?: QueryOptions<T>): Promise<DOC[]> {
+  async findAll(filter?: FilterQuery<T>, options?: QueryOptions<T>): Promise<DOC[]> {
     return this.model.find(filter, undefined, options).exec();
   }
 
