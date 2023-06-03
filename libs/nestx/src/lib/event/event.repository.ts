@@ -11,7 +11,7 @@ export function EventRepository(): ClassDecorator {
       const originalMethod = descriptor.value;
       descriptor.value = async function (this, filter, update, ...args) {
         const results = await this.findAll(filter, ...args);
-        await originalMethod.call(this, filter, ...args);
+        await originalMethod.call(this, filter, update, ...args);
         for (const result of results) {
           this.emit('updated', result);
         }
