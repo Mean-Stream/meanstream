@@ -18,6 +18,10 @@
     "./ref": {
       "default": "./src/lib/ref/index.js",
       "types": "./src/lib/ref/index.d.ts"
+    },
+    "./resource": {
+      "default": "./src/lib/resource/index.js",
+      "types": "./src/lib/resource/index.d.ts"
     }
   },
   "peerDependencies": {

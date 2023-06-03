@@ -17,6 +17,7 @@ Nestx provides many standalone modules that can be combined at will.
 - [Events](./src/lib/event) - `@mean-stream/nestx/event` - Simple event gateway and emitter based on NATS.
 - [NotFound](./src/lib/not-found) - `@mean-stream/nestx/not-found` - Converts `null` and `undefined` to `404 Not Found` errors.
 - [Ref](./src/lib/ref) - `@mean-stream/nestx/ref` - Declare model properties as ObjectIds with support for Swagger, validation and populate.
+- [Resource](./src/lib/resource) - `@mean-stream/nestx/resource` - Helpers for CRUD services and controllers.
 
 Submodules can be imported individually or all at once:
 
