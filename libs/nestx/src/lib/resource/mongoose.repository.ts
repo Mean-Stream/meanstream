@@ -1,7 +1,6 @@
-import {FilterQuery, Model, QueryOptions, Types, UpdateQuery, UpdateWriteOpResult} from "mongoose";
+import type {FilterQuery, Model, QueryOptions, Types, UpdateQuery, UpdateWriteOpResult} from "mongoose";
 import {Doc} from "../ref";
 import {DeleteManyResult, RawUpsertResult, Repository} from "./repository";
-
 
 export class MongooseRepository<T, ID = Types.ObjectId, DOC = Doc<T, ID>>
   implements Repository<T, ID, DOC, FilterQuery<T>, UpdateQuery<T>> {
@@ -31,11 +30,16 @@ export class MongooseRepository<T, ID = Types.ObjectId, DOC = Doc<T, ID>>
   }
 
   async upsertRaw(filter: FilterQuery<T>, update: UpdateQuery<T>, options: QueryOptions<T> = {}): Promise<RawUpsertResult<DOC>> {
-    const result = await this.model.findOneAndUpdate(filter, update, {...options, new: true, upsert: true, rawResult: true}).exec();
+    const result = await this.model.findOneAndUpdate(filter, update, {
+      ...options,
+      new: true,
+      upsert: true,
+      rawResult: true
+    }).exec();
     if (result.lastErrorObject.upserted) {
-      return { operation: 'created', result: result.value };
+      return {operation: 'created', result: result.value};
     } else {
-      return { operation: 'updated', result: result.value };
+      return {operation: 'updated', result: result.value};
     }
   }
 
