@@ -47,12 +47,20 @@ export class MongooseRepository<T, ID = Types.ObjectId, DOC = Doc<T, ID>>
     }
   }
 
+  async updateOne(filter: FilterQuery<T>, update: UpdateQuery<T>, options: QueryOptions<T> = {}): Promise<DOC | null> {
+    return this.model.findOneAndUpdate(filter, update, {...options, new: true}).exec();
+  }
+
   async updateMany(filter: FilterQuery<T>, update: UpdateQuery<T>, options: QueryOptions<T> = {}): Promise<UpdateWriteOpResult> {
     return this.model.updateMany(filter, update, {...options, new: true}).exec();
   }
 
   async delete(id: ID, options?: QueryOptions<T>): Promise<DOC | null> {
     return this.model.findByIdAndDelete(id, options);
+  }
+
+  async deleteOne(filter: FilterQuery<T>, options?: QueryOptions<T>): Promise<DOC | null> {
+    return this.model.findOneAndDelete(filter, options);
   }
 
   async deleteMany(filter: FilterQuery<T>, options?: QueryOptions<T>): Promise<DeleteManyResult> {

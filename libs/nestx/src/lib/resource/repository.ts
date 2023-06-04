@@ -30,9 +30,13 @@ export interface Repository<T, ID, DOC, FILTER, UPDATE> {
 
   upsertRaw(filter: FILTER, update: UPDATE): Promise<RawUpsertResult<DOC>>;
 
+  updateOne(filter: FILTER, update: UPDATE): Promise<DOC | null>;
+
   updateMany(filter: FILTER, update: UPDATE): Promise<UpdateManyResult>;
 
   delete(id: ID): Promise<DOC | null>;
+
+  deleteOne(filter: FILTER): Promise<DOC | null>;
 
   deleteMany(filter: FILTER): Promise<DeleteManyResult>;
 }

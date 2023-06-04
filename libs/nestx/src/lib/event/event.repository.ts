@@ -4,7 +4,9 @@ export function EventRepository(): ClassDecorator {
   return target => {
     decorate(target, 'create', Emit('created'));
     decorate(target, 'update', Emit('updated'));
+    decorate(target, 'updateOne', Emit('updated'));
     decorate(target, 'delete', Emit('deleted'));
+    decorate(target, 'deleteOne', Emit('deleted'));
     decorate(target, 'upsertRaw', Emit(result => result.operation, result => result.result));
 
     decorate(target, 'updateMany', (target, propertyKey, descriptor: TypedPropertyDescriptor<any>) => {
