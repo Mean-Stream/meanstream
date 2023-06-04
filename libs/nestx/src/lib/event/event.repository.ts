@@ -14,24 +14,24 @@ export function EventRepository(): ClassDecorator {
     decorate(target, 'updateMany', (target, propertyKey, descriptor: TypedPropertyDescriptor<any>) => {
       const originalMethod = descriptor.value;
       descriptor.value = async function (this, filter, update, ...args) {
-        const results = await this.findAll(filter, ...args);
-        await originalMethod.call(this, filter, update, ...args);
-        for (const result of results) {
+        const all = await this.findAll(filter, ...args);
+        const result = await originalMethod.call(this, filter, update, ...args);
+        for (const result of all) {
           this.emit('updated', result);
         }
-        return results;
+        return result;
       };
     });
 
     decorate(target, 'deleteMany', (target, propertyKey, descriptor: TypedPropertyDescriptor<any>) => {
       const originalMethod = descriptor.value;
       descriptor.value = async function (this, ...args) {
-        const results = await this.findAll(...args);
-        await originalMethod.apply(this, args);
-        for (const result of results) {
+        const all = await this.findAll(...args);
+        const result = await originalMethod.apply(this, args);
+        for (const result of all) {
           this.emit('deleted', result);
         }
-        return results;
+        return result;
       };
     });
 
