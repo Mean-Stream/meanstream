@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types,no-prototype-builtins */
 
+import type {Document} from "mongoose";
+
 export function EventRepository(): ClassDecorator {
   return target => {
     decorate(target, 'create', Emit('created'));
@@ -30,6 +32,33 @@ export function EventRepository(): ClassDecorator {
           this.emit('deleted', result);
         }
         return results;
+      };
+    });
+
+    decorate(target, 'saveAll', (target, propertyKey, descriptor: TypedPropertyDescriptor<any>) => {
+      const originalMethod = descriptor.value;
+      descriptor.value = async function (this, docs: Document[], ...args) {
+        const created = docs.filter(d => d.isNew);
+        const updated = docs.filter(d => d.isModified());
+        const result = await originalMethod.apply(this, args);
+        for (const doc of created) {
+          this.emit('created', doc);
+        }
+        for (const doc of updated) {
+          this.emit('updated', doc);
+        }
+        return result;
+      };
+    });
+
+    decorate(target, 'deleteAll', (target, propertyKey, descriptor: TypedPropertyDescriptor<any>) => {
+      const originalMethod = descriptor.value;
+      descriptor.value = async function (this, docs: Document[], ...args) {
+        const result = await originalMethod.apply(this, args);
+        for (const doc of docs) {
+          this.emit('delete', doc);
+        }
+        return result;
       };
     });
   }

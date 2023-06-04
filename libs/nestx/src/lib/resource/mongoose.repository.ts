@@ -1,4 +1,4 @@
-import type {FilterQuery, Model, QueryOptions, Types, UpdateQuery, UpdateWriteOpResult} from "mongoose";
+import type {Document, FilterQuery, Model, QueryOptions, Types, UpdateQuery, UpdateWriteOpResult} from "mongoose";
 import {Doc} from "../ref";
 import {DeleteManyResult, RawUpsertResult, Repository} from "./repository";
 
@@ -65,5 +65,14 @@ export class MongooseRepository<T, ID = Types.ObjectId, DOC = Doc<T, ID>>
 
   async deleteMany(filter: FilterQuery<T>, options?: QueryOptions<T>): Promise<DeleteManyResult> {
     return this.model.deleteMany(filter, options).exec();
+  }
+
+  // TODO may specify a better return type
+  async saveAll(docs: DOC[]): Promise<void> {
+    await this.model.bulkSave(docs as Document[]);
+  }
+
+  async deleteAll(items: (T & {_id: ID})[]): Promise<DeleteManyResult> {
+    return this.model.deleteMany({_id: {$in: items.map(i => i._id)}});
   }
 }
