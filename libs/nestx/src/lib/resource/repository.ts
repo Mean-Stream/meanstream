@@ -18,7 +18,9 @@ export interface DeleteManyResult {
 export interface Repository<T, ID, DOC, FILTER, UPDATE> {
   create(dto: Omit<T, '_id' | 'createdAt' | 'updatedAt'>): Promise<DOC>;
 
-  findOne(id: ID): Promise<DOC | null>;
+  find(id: ID): Promise<DOC | null>;
+
+  findOne(filter: FILTER): Promise<DOC | null>;
 
   findAll(filter: FILTER): Promise<DOC[]>;
 

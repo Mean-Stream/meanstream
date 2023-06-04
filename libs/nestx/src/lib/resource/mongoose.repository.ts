@@ -13,8 +13,12 @@ export class MongooseRepository<T, ID = Types.ObjectId, DOC = Doc<T, ID>>
     return this.model.create(dto);
   }
 
-  async findOne(id: ID, options?: QueryOptions<T>): Promise<DOC | null> {
+  async find(id: ID, options?: QueryOptions<T>): Promise<DOC | null> {
     return this.model.findById(id, undefined, options).exec();
+  }
+
+  async findOne(filter: FilterQuery<T>, options?: QueryOptions<T>): Promise<DOC | null> {
+    return this.model.findOne(filter, undefined, options).exec();
   }
 
   async findAll(filter?: FilterQuery<T>, options?: QueryOptions<T>): Promise<DOC[]> {
