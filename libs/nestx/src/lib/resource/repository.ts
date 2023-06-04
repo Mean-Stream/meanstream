@@ -15,8 +15,8 @@ export interface DeleteManyResult {
   deletedCount: number;
 }
 
-export interface Repository<T, ID, DOC, FILTER, UPDATE> {
-  create(dto: Omit<T, '_id' | 'createdAt' | 'updatedAt'>): Promise<DOC>;
+export interface Repository<ID, DOC, NEW, FILTER, UPDATE> {
+  create(dto: NEW): Promise<DOC>;
 
   find(id: ID): Promise<DOC | null>;
 

@@ -2,14 +2,20 @@ import type {Document, FilterQuery, Model, QueryOptions, Types, UpdateQuery, Upd
 import {Doc} from "../ref";
 import {DeleteManyResult, RawUpsertResult, Repository} from "./repository";
 
-export class MongooseRepository<T, ID = Types.ObjectId, DOC = Doc<T, ID>>
-  implements Repository<T, ID, DOC, FilterQuery<T>, UpdateQuery<T>> {
+export class MongooseRepository<T,
+  ID = Types.ObjectId,
+  DOC = Doc<T, ID>,
+  NEW = Omit<T, '_id' | 'createdAt' | 'updatedAt'>,
+  FILTER = FilterQuery<T>,
+  UPDATE = UpdateQuery<T>,
+>
+  implements Repository<ID, DOC, NEW, FILTER, UPDATE> {
   constructor(
     protected readonly model: Model<T, object, object, object, DOC>,
   ) {
   }
 
-  async create(dto: Omit<T, '_id' | 'createdAt' | 'updatedAt'>): Promise<DOC> {
+  async create(dto: NEW): Promise<DOC> {
     return this.model.create(dto);
   }
 
@@ -17,23 +23,23 @@ export class MongooseRepository<T, ID = Types.ObjectId, DOC = Doc<T, ID>>
     return this.model.findById(id, undefined, options).exec();
   }
 
-  async findOne(filter: FilterQuery<T>, options?: QueryOptions<T>): Promise<DOC | null> {
+  async findOne(filter: FILTER, options?: QueryOptions<T>): Promise<DOC | null> {
     return this.model.findOne(filter, undefined, options).exec();
   }
 
-  async findAll(filter?: FilterQuery<T>, options?: QueryOptions<T>): Promise<DOC[]> {
+  async findAll(filter?: FILTER, options?: QueryOptions<T>): Promise<DOC[]> {
     return this.model.find(filter, undefined, options).exec();
   }
 
-  async update(id: ID, update: UpdateQuery<T>, options: QueryOptions<T> = {}): Promise<DOC | null> {
+  async update(id: ID, update: UPDATE, options: QueryOptions<T> = {}): Promise<DOC | null> {
     return this.model.findByIdAndUpdate(id, update, {...options, new: true}).setOptions(options).exec();
   }
 
-  async upsert(filter: FilterQuery<T>, update: UpdateQuery<T>, options: QueryOptions<T> = {}): Promise<DOC> {
+  async upsert(filter: FILTER, update: UPDATE, options: QueryOptions<T> = {}): Promise<DOC> {
     return (await this.upsertRaw(filter, update, options)).result;
   }
 
-  async upsertRaw(filter: FilterQuery<T>, update: UpdateQuery<T>, options: QueryOptions<T> = {}): Promise<RawUpsertResult<DOC>> {
+  async upsertRaw(filter: FILTER, update: UPDATE, options: QueryOptions<T> = {}): Promise<RawUpsertResult<DOC>> {
     const result = await this.model.findOneAndUpdate(filter, update, {
       ...options,
       new: true,
@@ -47,11 +53,11 @@ export class MongooseRepository<T, ID = Types.ObjectId, DOC = Doc<T, ID>>
     }
   }
 
-  async updateOne(filter: FilterQuery<T>, update: UpdateQuery<T>, options: QueryOptions<T> = {}): Promise<DOC | null> {
+  async updateOne(filter: FILTER, update: UPDATE, options: QueryOptions<T> = {}): Promise<DOC | null> {
     return this.model.findOneAndUpdate(filter, update, {...options, new: true}).exec();
   }
 
-  async updateMany(filter: FilterQuery<T>, update: UpdateQuery<T>, options: QueryOptions<T> = {}): Promise<UpdateWriteOpResult> {
+  async updateMany(filter: FILTER, update: UPDATE, options: QueryOptions<T> = {}): Promise<UpdateWriteOpResult> {
     return this.model.updateMany(filter, update, {...options, new: true}).exec();
   }
 
@@ -59,11 +65,11 @@ export class MongooseRepository<T, ID = Types.ObjectId, DOC = Doc<T, ID>>
     return this.model.findByIdAndDelete(id, options);
   }
 
-  async deleteOne(filter: FilterQuery<T>, options?: QueryOptions<T>): Promise<DOC | null> {
+  async deleteOne(filter: FILTER, options?: QueryOptions<T>): Promise<DOC | null> {
     return this.model.findOneAndDelete(filter, options);
   }
 
-  async deleteMany(filter: FilterQuery<T>, options?: QueryOptions<T>): Promise<DeleteManyResult> {
+  async deleteMany(filter: FILTER, options?: QueryOptions<T>): Promise<DeleteManyResult> {
     return this.model.deleteMany(filter, options).exec();
   }
 
