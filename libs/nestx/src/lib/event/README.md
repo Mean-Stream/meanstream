@@ -65,7 +65,18 @@ class MyService {
 ### EventRepository
 
 The `@EventRepository` decorator seemlessly integrates with [`Repository`](../resource/README.md).
-It ensures the `create`, `update`, `delete`, `upsertRaw`, `updateMany` and `deleteMany` methods emit appropriate events by calling the service's `emit` method.
+It ensures the following methods emit appropriate events by calling the service's `emit` method.
+
+- `create`
+- `update`
+- `updateOne`
+- `delete`
+- `deleteOne`
+- `upsertRaw` - Note that `upsert` itself is not wrapped, assuming it is implemented using `upsertRaw`.
+- `updateMany`
+- `deleteMany`
+- `saveAll` (MongooseRepository)
+- `deleteAll` (MongooseRepository)
 
 ```ts
 import {MongooseRepository, EventRepository} from "@mean-stream/nestx";

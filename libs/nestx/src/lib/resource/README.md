@@ -24,13 +24,20 @@ class UserController {
 
   examples() {
     this.userService.create({name: 'Alice'});
-    this.userService.findOne(id);
+    this.userService.find(id);
+    this.userService.findOne({...filter});
     this.userService.findAll({...filter});
     this.userService.update(id, {...update});
+    this.userService.updateOne({...filter}, {...update});
     this.userService.upsert({...filter}, {...update});
     this.userService.updateMany({...filter}, {...update});
     this.userService.delete(id);
+    this.userService.deleteOne({...filter});
     this.userService.deleteMany({...filter});
+
+    // specific to MongooseRepository
+    this.userService.saveAll([...docs]);
+    this.userService.deleteAll([...docs]);
   }
 }
 ```
