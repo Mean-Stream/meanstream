@@ -54,7 +54,7 @@ export function EventRepository(): ClassDecorator {
     decorate(target, 'deleteAll', (target, propertyKey, descriptor: TypedPropertyDescriptor<any>) => {
       const originalMethod = descriptor.value;
       descriptor.value = async function (this, docs: Document[], ...args) {
-        const result = await originalMethod.apply(this, args);
+        const result = await originalMethod.call(this, docs, ...args);
         for (const doc of docs) {
           this.emit('delete', doc);
         }
