@@ -34,6 +34,14 @@ describe('EventRepository', () => {
       return {id};
     }
 
+    async saveAll(docs: any[]) {
+      return docs;
+    }
+
+    async deleteAll(docs: any[]) {
+      return docs;
+    }
+
     emit(event: string, data: any) {
       emitted = {event, data};
     }
@@ -69,6 +77,25 @@ describe('EventRepository', () => {
   it('should call emit on delete many', async () => {
     await service.deleteMany({id: 1});
     expect(emitted).toStrictEqual({event: 'deleted', data: {id: 1}});
+  });
+
+  it('should call emit on save all', async () => {
+    let input: any[] = [{id: 1, isNew: true, isModified: () => false}];
+    let result = await service.saveAll(input);
+    expect(result).toStrictEqual(input);
+    expect(emitted).toStrictEqual({event: 'created', data: input[0]});
+
+    input = [{id: 1, isModified: () => true}];
+    result = await service.saveAll(input);
+    expect(result).toStrictEqual(input);
+    expect(emitted).toStrictEqual({event: 'updated', data: input[0]});
+  });
+
+  it('should call emit on delete all', async () => {
+    const input: any[] = [{id: 1}];
+    const result = await service.deleteAll(input);
+    expect(result).toStrictEqual(input);
+    expect(emitted).toStrictEqual({event: 'deleted', data: input[0]});
   });
 
   class BaseService {
