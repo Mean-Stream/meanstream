@@ -69,7 +69,7 @@ export function Emit(event: string | ((result: any) => string), extractor?: (res
     const originalMethod = descriptor.value;
     descriptor.value = async function (this, ...args) {
       const result = await originalMethod.apply(this, args);
-      this.emit(typeof event === 'string' ? event : event(result), extractor ? extractor(result) : result);
+      result && this.emit(typeof event === 'string' ? event : event(result), extractor ? extractor(result) : result);
       return result;
     };
   };
