@@ -40,7 +40,7 @@ export function EventRepository(): ClassDecorator {
       descriptor.value = async function (this, docs: Document[], ...args) {
         const created = docs.filter(d => d.isNew);
         const updated = docs.filter(d => d.isModified());
-        const result = await originalMethod.apply(this, args);
+        const result = await originalMethod.call(this, docs, ...args);
         for (const doc of created) {
           this.emit('created', doc);
         }
