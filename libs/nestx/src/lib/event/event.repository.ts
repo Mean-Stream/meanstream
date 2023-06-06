@@ -56,7 +56,7 @@ export function EventRepository(): ClassDecorator {
       descriptor.value = async function (this, docs: Document[], ...args) {
         const result = await originalMethod.call(this, docs, ...args);
         for (const doc of docs) {
-          this.emit('delete', doc);
+          this.emit('deleted', doc);
         }
         return result;
       };
