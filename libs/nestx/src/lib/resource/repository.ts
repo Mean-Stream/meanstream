@@ -39,4 +39,6 @@ export interface Repository<ID, DOC, NEW, FILTER, UPDATE> {
   deleteOne(filter: FILTER): Promise<DOC | null>;
 
   deleteMany(filter: FILTER): Promise<DeleteManyResult>;
+
+  emit?(event: string, data: DOC): void;
 }
