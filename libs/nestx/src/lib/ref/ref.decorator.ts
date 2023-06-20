@@ -1,10 +1,9 @@
 import {applyDecorators} from '@nestjs/common';
 import {optionalRequire} from '@nestjs/core/helpers/optional-require';
-import {Transform} from 'class-transformer';
-import {IsInstance, IsOptional} from 'class-validator';
+import {IsOptional} from 'class-validator';
 import {IndexDefinition, IndexDirection, Types} from 'mongoose';
-import {objectId} from './objectid.helper';
 import type {PropOptions} from '@nestjs/mongoose';
+import {AsObjectId} from './objectid.decorator';
 
 const EXAMPLE_OBJECT_ID = '62fc9b33773277d12d28929b';
 
@@ -16,8 +15,7 @@ export type RefOptions = {
 
 export function Ref(ref: string, {array, optional, index}: RefOptions = {}): PropertyDecorator {
   const decorators: PropertyDecorator[] = [
-    Transform(array ? ({value}) => Array.isArray(value) && value.map(objectId) : ({value}) => objectId(value)),
-    IsInstance(Types.ObjectId, {each: array}),
+    AsObjectId({each: array}),
   ];
 
   if (optional) {

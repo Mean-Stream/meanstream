@@ -38,8 +38,7 @@ groupWithMembers.members.map(user => user.name);
 It adds the following decorators:
 
 ```ts
-@Transform(({value}) => objectId(value)) // from class-transformer, converts strings and numbers to ObjectIDs and retains others
-@IsInstance(Types.ObjectId) // from class-validator, validates ObjectIDs and rejects other values
+@AsObjectId()
 @Prop({type: Types.ObjectId, ref, required: true}) // if @nestjs/mongoose is available
 @ApiProperty({example: EXAMPLE_OBJECT_ID, format: 'objectid'}) // if @nestjs/swagger is available
 ```
@@ -48,6 +47,12 @@ The `@RefArray` and `@OptionalRef` decorators are also available and use the equ
 The transformer support both 24-character hex strings and 16-character base64 strings.
 
 You can use the `index` option to create an index on the property.
+
+## IsObjectId, TransformObjectId and AsObjectId
+
+`IsObjectId` is an alias for `IsInstance(Types.ObjectId)`.
+`TransformObjectId` combines `Transform` with `objectId`, but works for arrays and works around [class-transformer#484](https://github.com/typestack/class-transformer/issues/484#issuecomment-755872178).
+`AsObjectId` combines both decorators.
 
 ## ObjectId Pipes
 
