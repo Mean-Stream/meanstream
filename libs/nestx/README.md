@@ -15,7 +15,7 @@ $ npm install @mean-stream/nestx
 Nestx provides many standalone modules that can be combined at will.
 
 - [Events](./src/lib/event) - `@mean-stream/nestx/event` - Simple event gateway and emitter based on NATS.
-- [NotFound](./src/lib/not-found) - `@mean-stream/nestx/not-found` - Converts `null` and `undefined` to `404 Not Found` errors.
+- [Errors](./src/lib/error) - `@mean-stream/nestx/error` (formerly `@mean-stream/nestx/not-found`) - Simplified error handling and documentation with Swagger.
 - [Ref](./src/lib/ref) - `@mean-stream/nestx/ref` - Declare model properties as ObjectIds with support for Swagger, validation and populate.
 - [Resource](./src/lib/resource) - `@mean-stream/nestx/resource` - Helpers for CRUD services and controllers.
 

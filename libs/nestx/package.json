@@ -11,9 +11,13 @@
       "default": "./src/lib/event/index.js",
       "types": "./src/lib/event/index.d.ts"
     },
+    "./error": {
+      "default": "./src/lib/error/index.js",
+      "types": "./src/lib/error/index.d.ts"
+    },
     "./not-found": {
-      "default": "./src/lib/not-found/index.js",
-      "types": "./src/lib/not-found/index.d.ts"
+      "default": "./src/lib/error/index.js",
+      "types": "./src/lib/error/index.d.ts"
     },
     "./ref": {
       "default": "./src/lib/ref/index.js",
