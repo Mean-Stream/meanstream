@@ -1,4 +1,5 @@
-import {Type} from "@nestjs/common";
+import {HttpException, Type} from "@nestjs/common";
+import {ApiResponse} from "@nestjs/swagger";
 
 /**
  * Looks through the body of all functions, finds expressions of the form
@@ -41,7 +42,7 @@ import {Type} from "@nestjs/common";
 export function extractExceptionMessages<T extends Error>(type: Type<T>, ...functions: ((...args: any[]) => any)[]): string[] {
   const result: string[] = [];
   for (const func of functions) {
-    for (const match of func.toString().matchAll(/throw new ([\w.]+)\(('[^']+'|"[^"]+|`[^`]+`")\)/g)) {
+    for (const match of func.toString().matchAll(/throw new ([\w.]+)\(('[^']+'|"[^"]+"|`[^`]+`)\)/g)) {
       if (match[1].endsWith(type.name)) {
         result.push(match[2].slice(1, -1));
       }
