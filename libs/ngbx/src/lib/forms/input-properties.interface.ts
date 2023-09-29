@@ -26,15 +26,32 @@ export type InputType =
 
 export interface InputProperties<T> {
   id: keyof T;
+  /**
+   * The primary label text for the form element.
+   * If not set, it will be the property name.
+   */
   label: string;
+  /**
+   * Input fields will show this while empty.
+   * @see
+   */
   placeholder?: string;
+  /**
+   * When set, this will appear as a "form-text" (gray small text) element below the input control.
+   */
   description?: string;
 
+  /**
+   * The type of element for editing the value
+   */
   control: 'input' | 'checkbox' | 'radio' | 'select' | 'textarea';
   type: InputType;
   required: boolean;
 
   options?: any[];
+  /**
+   * For control=textarea, how many lines of text are typically used to display the value
+   */
   rows?: number;
 
   // number
