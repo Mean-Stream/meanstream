@@ -25,11 +25,9 @@ export class FormsService {
       entries = entries.filter(([key]) => !propertySet.has(key as keyof T));
     }
     return entries.map(([key, metadata]) => {
-      const customProps = getPresentation(ctor.prototype, key);
       const props: InputProperties<T> = {
         label: key,
         control: 'input',
-        ...customProps,
         id: key as keyof T,
         type: 'text',
         required: true,
@@ -43,6 +41,7 @@ export class FormsService {
       for (const m of metadata) {
         this.translateMetadata(m, props);
       }
+      Object.assign(props, getPresentation(ctor.prototype, key));
       return props;
     });
   }

@@ -44,7 +44,7 @@ function getEnumValues<T>(enumClass: Record<string, T>): T[] {
 export const COMMON_MAPPERS: Record<string, Mapper> = {
   [IS_BOOLEAN]: (props) => {
     props.control = 'checkbox';
-    props.options ||= [true, false];
+    props.options = [true, false];
   },
   [IS_IN]: (props, options) => {
     props.options = options;
