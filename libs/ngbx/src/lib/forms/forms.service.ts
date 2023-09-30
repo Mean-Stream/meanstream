@@ -7,6 +7,10 @@ import {InputProperties, InputType, ValidationFormOptions} from './input-propert
 import {getPresentation} from './presentation.decorator';
 
 
+function toTitleCase(key: string) {
+  return key[0].toUpperCase() + key.substring(1).replace(/[A-Z]+/g, match => ' ' + match[0].toUpperCase() + match.substring(1));
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -26,7 +30,7 @@ export class FormsService {
     }
     return entries.map(([key, metadata]) => {
       const props: InputProperties<T> = {
-        label: key,
+        label: toTitleCase(key),
         control: 'input',
         id: key as keyof T & string,
         type: 'text',

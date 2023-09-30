@@ -63,7 +63,10 @@ export class Person {
     rows: 1,
   })
   @IsIn([1, 2, 3, 4, 5])
-  rating!: number;
+  serviceRating!: number;
+
+  @IsUrl()
+  avatarURL!: string;
 
   @IsNumber()
   @IsDivisibleBy(0.01)
