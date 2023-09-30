@@ -47,7 +47,7 @@
     ></textarea>
     <select *ngSwitchCase="'select'" class="form-select" [(ngModel)]="model[field.id]">
       <option *ngFor="let option of field.options" [value]="option">
-        {{ option }}
+        {{ field.optionLabels?.[option] ?? option }}
       </option>
     </select>
     <ng-container *ngSwitchCase="'radio'">
@@ -56,7 +56,7 @@
                [checked]="model[field.id] === option"
                (change)="model[field.id] = option">
         <label class="form-check-label" for="radio-{{ i }}">
-          {{ option }}
+          {{ field.optionLabels?.[option] ?? option }}
         </label>
       </div>
     </ng-container>

@@ -50,6 +50,25 @@ export interface InputProperties<T> {
 
   options?: any[];
   /**
+   * If options are specified and control is radio or select,
+   * this will be used to display the values in a friendlier way.
+   *
+   * @example ```
+   * @Presentation({
+   *   optionNames: {'true': 'Yes', 'false': 'No'}
+   * })
+   * @IsBoolean()
+   * ```
+   *
+   * @example ```
+   * @Presentation({
+   *   optionNames: {1: '1st', 2: '2nd', 3: '3rd'}
+   * })
+   * @IsIn([1, 2, 3])
+   * ```
+   */
+  optionLabels?: Record<PropertyKey, string>;
+  /**
    * For control=textarea, how many lines of text are typically used to display the value
    */
   rows?: number;
@@ -71,6 +90,7 @@ export type CustomProperties<T> = Partial<Pick<InputProperties<T>,
   | 'placeholder'
   | 'description'
   | 'rows'
+  | 'optionLabels'
   //
 >>;
 
