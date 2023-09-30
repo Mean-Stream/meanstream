@@ -28,7 +28,7 @@ export class FormsService {
       const props: InputProperties<T> = {
         label: key,
         control: 'input',
-        id: key as keyof T,
+        id: key as keyof T & string,
         type: 'text',
         required: true,
         pattern: '',

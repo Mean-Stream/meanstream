@@ -25,7 +25,7 @@ export type InputType =
 ;
 
 export interface InputProperties<T> {
-  id: keyof T;
+  id: keyof T & string;
   /**
    * The primary label text for the form element.
    * If not set, it will be the property name.
