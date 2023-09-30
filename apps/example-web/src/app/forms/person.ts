@@ -52,15 +52,35 @@ export class Person {
   @Max(100)
   age!: number;
 
+  @Presentation({
+    optionLabels: {
+      [Gender.MALE]: 'Male',
+      [Gender.FEMALE]: 'Female',
+      [Gender.DIVERSE]: 'Diverse',
+    },
+  })
   @IsEnum(Gender)
   gender!: Gender;
 
+  @Presentation({
+    optionLabels: {
+      'online': 'Online',
+      'sleeping': 'Asleep',
+      'do-not-disturb': 'DnD',
+      'invisible': 'Invisible',
+      'offline': 'Offline',
+    },
+  })
   @IsIn(['online', 'sleeping', 'do-not-disturb', 'invisible', 'offline'])
   status!: string;
 
   @Presentation({
     control: 'radio',
     rows: 1,
+    optionLabels: {
+      1: '1 (Very Great)',
+      5: '5 (Very Poor)',
+    },
   })
   @IsIn([1, 2, 3, 4, 5])
   serviceRating!: number;
