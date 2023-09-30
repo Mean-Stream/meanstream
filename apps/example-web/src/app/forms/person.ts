@@ -58,6 +58,13 @@ export class Person {
   @IsIn(['online', 'sleeping', 'do-not-disturb', 'invisible', 'offline'])
   status!: string;
 
+  @Presentation({
+    control: 'radio',
+    rows: 1,
+  })
+  @IsIn([1, 2, 3, 4, 5])
+  rating!: number;
+
   @IsNumber()
   @IsDivisibleBy(0.01)
   balance!: number;

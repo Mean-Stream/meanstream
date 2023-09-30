@@ -50,16 +50,17 @@
         {{ field.optionLabels?.[option] ?? option }}
       </option>
     </select>
-    <ng-container *ngSwitchCase="'radio'">
-      <div *ngFor="let option of field.options; let i = index" class="form-check">
-        <input class="form-check-input" type="radio" id="radio-{{ i }}"
+    <div *ngSwitchCase="'radio'">
+      <div *ngFor="let option of field.options; let index = index"
+           [class]="field.rows === 1 ? 'form-check-inline' : 'form-check'">
+        <input class="form-check-input" type="radio" id="radio-{{ index }}"
                [checked]="model[field.id] === option"
                (change)="model[field.id] = option">
-        <label class="form-check-label" for="radio-{{ i }}">
+        <label class="form-check-label" for="radio-{{ index }}">
           {{ field.optionLabels?.[option] ?? option }}
         </label>
       </div>
-    </ng-container>
+    </div>
   </ng-container>
   <label *ngIf="field.control == 'checkbox'" class="form-check-label" for="{{field.id}}">
     {{ field.placeholder || field.label }}

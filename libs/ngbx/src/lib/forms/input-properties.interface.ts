@@ -69,7 +69,8 @@ export interface InputProperties<T> {
    */
   optionLabels?: Record<PropertyKey, string>;
   /**
-   * For control=textarea, how many lines of text are typically used to display the value
+   * For control=textarea, how many lines of text are typically used to display the value.
+   * For control=radio, setting this to 1 makes the radio buttons display inline.
    */
   rows?: number;
 
