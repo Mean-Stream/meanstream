@@ -27,6 +27,9 @@ export class ValidatorFormComponent<T extends object> implements OnInit {
   }
 
   validateAll(): void {
+    for (const field of this.fields) {
+      this.model[field.id] = this.formsService.coerce(field.type, this.model[field.id]);
+    }
     validate(this.model).then(errors => {
       for (const field of this.fields) {
         this.addErrors(errors, field.id);
