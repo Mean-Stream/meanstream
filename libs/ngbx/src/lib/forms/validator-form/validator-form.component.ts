@@ -26,28 +26,28 @@ export class ValidatorFormComponent<T extends object> implements OnInit {
     this.fields = this.formsService.parse(this.type || this.model.constructor as Type<T>, this.options);
   }
 
-  validateAll(): void {
+  async validateAll(): Promise<ValidationError[]> {
     for (const field of this.fields) {
       this.model[field.id] = this.formsService.coerce(field.type, this.model[field.id]);
     }
-    validate(this.model).then(errors => {
-      for (const field of this.fields) {
-        this.addErrors(errors, field.id);
-      }
-    });
+    const errors = await validate(this.model)
+    this.addErrors(errors);
+    return errors;
   }
 
-  validate(field: InputProperties<T>): void {
+  async validate(field: InputProperties<T>): Promise<ValidationError[]> {
     const property = field.id;
     this.model[property] = this.formsService.coerce(field.type, this.model[property]);
 
-    validate(this.model).then(errors => {
-      this.addErrors(errors, property);
-    });
+    const allErrors = await validate(this.model);
+    const fieldErrors = allErrors.filter(e => e.property === property);
+    this.addErrors(fieldErrors);
+    return fieldErrors;
   }
 
-  private addErrors(errors: ValidationError[], property: keyof T) {
-    const error = errors.find(e => e.property === property);
-    this.errors[property] = Object.values(error?.constraints || {});
+  private addErrors(errors: ValidationError[]) {
+    for (const error of errors) {
+      this.errors[error.property as keyof T] = Object.values(error?.constraints || {});
+    }
   }
 }
