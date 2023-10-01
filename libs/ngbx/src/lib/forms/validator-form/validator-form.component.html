@@ -45,7 +45,7 @@
       [class.is-valid]="errors[field.id]?.length === 0"
       [class.is-invalid]="errors[field.id]?.length"
     ></textarea>
-    <select *ngSwitchCase="'select'" class="form-select" [(ngModel)]="model[field.id]">
+    <select *ngSwitchCase="'select'" class="form-select" [(ngModel)]="model[field.id]" (change)="validate(field)">
       <option *ngFor="let option of field.options" [value]="option">
         {{ field.optionLabels?.[option] ?? option }}
       </option>
