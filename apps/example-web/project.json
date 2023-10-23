@@ -25,9 +25,7 @@
           "node_modules/bootstrap-icons/font/bootstrap-icons.css",
           "apps/example-web/src/styles.css"
         ],
-        "allowedCommonJsDependencies": [
-          "validator"
-        ],
+        "allowedCommonJsDependencies": ["validator"],
         "scripts": []
       },
       "configurations": {
@@ -76,7 +74,7 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [

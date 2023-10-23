@@ -12,7 +12,8 @@
         "tsConfig": "libs/nestx/tsconfig.lib.json",
         "packageJson": "libs/nestx/package.json",
         "main": "libs/nestx/src/index.ts",
-        "assets": ["libs/nestx/*.md"]
+        "assets": ["libs/nestx/*.md"],
+        "updateBuildableProjectDepsInPackageJson": true
       }
     },
     "publish": {
@@ -23,7 +24,7 @@
       "dependsOn": ["build"]
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["libs/nestx/**/*.ts"]
