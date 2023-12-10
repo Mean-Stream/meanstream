@@ -19,6 +19,10 @@ export class MongooseRepository<T,
     return this.model.create(dto);
   }
 
+  async createMany(dtos: NEW[]): Promise<DOC[]> {
+    return await this.model.insertMany(dtos) as DOC[];
+  }
+
   async exists(filter: FILTER): Promise<ID | undefined> {
     return (await this.model.exists(filter))?._id as ID;
   }

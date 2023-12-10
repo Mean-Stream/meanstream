@@ -11,6 +11,17 @@ export function EventRepository(): ClassDecorator {
     decorate(target, 'deleteOne', Emit('deleted'));
     decorate(target, 'upsertRaw', Emit(result => result.operation, result => result.result));
 
+    decorate(target, 'createMany', (target, propertyKey, descriptor: TypedPropertyDescriptor<any>) => {
+      const originalMethod = descriptor.value;
+      descriptor.value = async function (this, ...args) {
+        const created = await originalMethod.apply(this, args);
+        for (const doc of created) {
+          this.emit('created', doc);
+        }
+        return created;
+      };
+    });
+
     decorate(target, 'updateMany', (target, propertyKey, descriptor: TypedPropertyDescriptor<any>) => {
       const originalMethod = descriptor.value;
       descriptor.value = async function (this, filter, update, ...args) {
