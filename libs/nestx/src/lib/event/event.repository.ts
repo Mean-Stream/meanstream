@@ -2,6 +2,41 @@
 
 import type {Document} from "mongoose";
 
+/**
+ * Adds additional logic to Repository methods to emit events.
+ *
+ * - `create`, `update`, `updateOne`, `delete`, `deleteOne`: emit `created`, `updated`, `deleted` respectively
+ * - `upsertRaw`: emit `created` or `updated` depending on the operation
+ * - `createMany`: emit `created` for each document
+ * - `updateMany`, `deleteMany`:
+ *   emit `updated` or `deleted` respectively for each document.
+ *   Note that the operation itself does not return the documents, so an additional `findAll` is done BEFORE the operation
+ * - `saveAll`: emit `created` or `updated` depending on status of the document
+ * - `deleteAll`: emit `deleted` for each document
+ *
+ * Other (read) operations are not affected.
+ * Overriding one of the methods and calling `super` will emit the event after the overridden method has finished.
+ *
+ * @example
+ * *@EventRepository()
+ * class MyRepository extends MongooseRepository {
+ *   create(dto: Foo): Promise<Doc<Foo>> {
+ *     console.log('before super');
+ *     const result = super.create(dto);
+ *     console.log('after super');
+ *     return result;
+ *   }
+ *
+ *   emit(event: string, data: Foo): void {
+ *     console.log('emit', event, data);
+ *   }
+ * }
+ * // myRepo.create(new Foo()) Will log:
+ * // - before super
+ * // - (Document created in MongoDB)
+ * // - after super
+ * // - emit created { ... }
+ */
 export function EventRepository(): ClassDecorator {
   return target => {
     decorate(target, 'create', Emit('created'));
