@@ -16,9 +16,13 @@ export interface DeleteManyResult {
 }
 
 export interface Repository<ID, DOC, NEW, FILTER, UPDATE> {
+  // --------- Create ---------
+
   create(dto: NEW): Promise<DOC>;
 
   createMany(dtos: NEW[]): Promise<DOC[]>;
+
+  // --------- Read ---------
 
   exists(filter: FILTER): Promise<ID | undefined>;
 
@@ -31,6 +35,8 @@ export interface Repository<ID, DOC, NEW, FILTER, UPDATE> {
 
   findAll(filter: FILTER): Promise<DOC[]>;
 
+  // --------- Update ---------
+
   update(id: ID, update: UPDATE): Promise<DOC | null>;
 
   upsert(filter: FILTER, update: UPDATE): Promise<DOC>;
@@ -41,11 +47,15 @@ export interface Repository<ID, DOC, NEW, FILTER, UPDATE> {
 
   updateMany(filter: FILTER, update: UPDATE): Promise<UpdateManyResult>;
 
+  // --------- Delete ---------
+
   delete(id: ID): Promise<DOC | null>;
 
   deleteOne(filter: FILTER): Promise<DOC | null>;
 
   deleteMany(filter: FILTER): Promise<DeleteManyResult>;
+
+  // --------- Other ---------
 
   emit?(event: string, data: DOC): void;
 }

@@ -15,6 +15,8 @@ export class MongooseRepository<T,
   ) {
   }
 
+  // --------- Create ---------
+
   async create(dto: NEW): Promise<DOC> {
     return this.model.create(dto);
   }
@@ -22,6 +24,8 @@ export class MongooseRepository<T,
   async createMany(dtos: NEW[]): Promise<DOC[]> {
     return await this.model.insertMany(dtos) as DOC[];
   }
+
+  // --------- Read ---------
 
   async exists(filter: FILTER): Promise<ID | undefined> {
     return (await this.model.exists(filter))?._id as ID;
@@ -43,6 +47,8 @@ export class MongooseRepository<T,
   async findAll(filter?: FILTER, options?: QueryOptions<T>): Promise<DOC[]> {
     return this.model.find(filter, undefined, options).exec();
   }
+
+  // --------- Update ---------
 
   async update(id: ID, update: UPDATE, options: QueryOptions<T> = {}): Promise<DOC | null> {
     return this.model.findByIdAndUpdate(id, update, {...options, new: true}).setOptions(options).exec();
@@ -74,6 +80,8 @@ export class MongooseRepository<T,
     return this.model.updateMany(filter, update, {...options, new: true}).exec();
   }
 
+  // --------- Delete ---------
+
   async delete(id: ID, options?: QueryOptions<T>): Promise<DOC | null> {
     return this.model.findByIdAndDelete(id, options);
   }
@@ -85,6 +93,8 @@ export class MongooseRepository<T,
   async deleteMany(filter: FILTER, options?: QueryOptions<T>): Promise<DeleteManyResult> {
     return this.model.deleteMany(filter, options).exec();
   }
+
+  // --------- Other ---------
 
   // TODO may specify a better return type
   async saveAll(docs: DOC[]): Promise<void> {
