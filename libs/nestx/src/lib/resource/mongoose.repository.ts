@@ -23,8 +23,7 @@ export class MongooseRepository<T,
     return (await this.model.exists(filter))?._id as ID;
   }
 
-  async distinct<K extends keyof T>(field: K, filter: FILTER): Promise<T[K][]>
-  async distinct(field: string, filter: FILTER): Promise<unknown[]>
+  distinct<K extends keyof DOC>(field: K, filter: FILTER): Promise<DOC[K][]>;
   async distinct(field: string, filter: FILTER): Promise<unknown[]> {
     return this.model.distinct(field, filter).exec();
   }

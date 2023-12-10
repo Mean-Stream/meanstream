@@ -18,6 +18,11 @@ export interface DeleteManyResult {
 export interface Repository<ID, DOC, NEW, FILTER, UPDATE> {
   create(dto: NEW): Promise<DOC>;
 
+  exists(filter: FILTER): Promise<ID | undefined>;
+
+  distinct<K extends keyof DOC>(field: K, filter: FILTER): Promise<DOC[K][]>;
+  distinct(field: string, filter: FILTER): Promise<unknown[]>;
+
   find(id: ID): Promise<DOC | null>;
 
   findOne(filter: FILTER): Promise<DOC | null>;
