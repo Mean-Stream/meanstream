@@ -19,6 +19,12 @@ export class MongooseRepository<T,
     return this.model.create(dto);
   }
 
+  async distinct<K extends keyof T>(field: K, filter: FILTER): Promise<T[K][]>
+  async distinct(field: string, filter: FILTER): Promise<unknown[]>
+  async distinct(field: string, filter: FILTER): Promise<unknown[]> {
+    return this.model.distinct(field, filter).exec();
+  }
+
   async find(id: ID, options?: QueryOptions<T>): Promise<DOC | null> {
     return this.model.findById(id, undefined, options).exec();
   }
