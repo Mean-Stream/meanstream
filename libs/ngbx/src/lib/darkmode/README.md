@@ -12,7 +12,7 @@ Follow the steps to [Install `bootstrap-darkmode` with npm/yarn/pnpm](https://gi
 Include darkmode css (in `styles.scss`):
 
 ```scss
-@import "~bootstrap-darkmode/darktheme";
+@import "~bootstrap-darkmode/scss/darktheme";
 ```
 
 Alternatively, if you are not using SCSS, add the following in `angular.json` under `projects.<yourProject>.architect.build.options.styles`:
@@ -22,6 +22,30 @@ Alternatively, if you are not using SCSS, add the following in `angular.json` un
   // ...
   "node_modules/bootstrap-darkmode/dist/darktheme.css"
 ]
+```
+
+As of version 0.13.0, this library targets [Bootstrap 5.3 Color Modes](https://getbootstrap.com/docs/5.3/customize/color-modes/) instead of `bootstrap-darkmode` by default.
+To use `bootstrap-darkmode` instead, you need to provide the `THEME_ATTRIBUTE` token in your module:
+
+```typescript
+import {NgbxDarkmodeModule, THEME_ATTRIBUTE} from '@mean-stream/ngbx';
+
+@NgModule({
+  imports: [
+    // ...
+    NgbxDarkmodeModule,
+  ],
+  // ...
+  providers: [
+    // ...
+    {
+      provide: THEME_ATTRIBUTE,
+      useValue: 'data-theme',
+    },
+  ],
+})
+export class AppModule {
+}
 ```
 
 ## Usage
@@ -37,15 +61,6 @@ import {NgbxDarkmodeModule} from '@mean-stream/ngbx';
     NgbxDarkmodeModule,
   ],
   // ...
-
-  // Important for Bootstrap color mode:
-  providers: [
-    // ...
-    {
-      provide: THEME_ATTRIBUTE, // import {THEME_ATTRIBUTE} from '@mean-stream/ngbx';
-      useValue: 'data-bs-theme',
-    },
-  ],
 })
 export class AppModule {
 }
