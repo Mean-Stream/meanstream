@@ -1,48 +1,88 @@
 import {EventRepository} from "./event.repository";
-import {DeleteManyResult, RawUpsertResult, UpdateManyResult} from "../resource/repository";
+import {DeleteManyResult, RawUpsertResult, Repository, UpdateManyResult} from "../resource/repository";
 
 describe('EventRepository', () => {
   let emitted = undefined;
 
+  class Simple {
+    id: number;
+    a: string;
+  }
+
+  type NewSimple = Omit<Simple, 'id'>;
+  type SimpleFilter = Partial<Simple>;
+
   @EventRepository()
-  class SimpleService {
-    async findAll(filter: any) {
-      return [filter];
+  class SimpleService implements Repository<number, Simple, NewSimple, SimpleFilter, NewSimple> {
+    async find(): Promise<Simple | null> {
+      return null;
     }
 
-    async create(dto: any) {
-      return dto;
+    async findOne(): Promise<Simple | null> {
+      return null;
     }
 
-    async update(id: any, dto: any) {
+    async findAll() {
+      return [{id: 1, a: 'a'}];
+    }
+
+    async exists(): Promise<number | undefined> {
+      return;
+    }
+
+    async distinct(): Promise<unknown[]> {
+      return [];
+    }
+
+    async create(dto: NewSimple) {
+      return {...dto, id: 1};
+    }
+
+    async createMany(dtos: NewSimple[]): Promise<Simple[]> {
+      return dtos.map((dto, i) => ({...dto, id: i}));
+    }
+
+    async update(id: number, dto: NewSimple) {
       return {...dto, id};
     }
 
-    async upsertRaw(filter: any, update: any): Promise<RawUpsertResult<any>> {
-      return {operation: 'created', result: {...filter, ...update}};
+    async updateOne(_: SimpleFilter, update: NewSimple): Promise<Simple | null> {
+      return {id: 1, ...update};
     }
 
-    async updateMany(filter: any, update: any): Promise<UpdateManyResult> {
+    async upsert(_: SimpleFilter, update: NewSimple): Promise<Simple> {
+      return {id: 1, ...update};
+    }
+
+    async upsertRaw(filter: SimpleFilter, update: NewSimple): Promise<RawUpsertResult<Simple>> {
+      return {operation: 'created', result: {id: 1, ...filter, ...update}};
+    }
+
+    async updateMany(filter: SimpleFilter, update: NewSimple): Promise<UpdateManyResult> {
       return {acknowledged: true, matchedCount: 1, upsertedCount: 0, modifiedCount: 1};
     }
 
-    async deleteMany(filter: any): Promise<DeleteManyResult> {
+    async deleteOne(filter: SimpleFilter): Promise<Simple | null> {
+      return null;
+    }
+
+    async deleteMany(filter: SimpleFilter): Promise<DeleteManyResult> {
       return {acknowledged: true, deletedCount: 1};
     }
 
-    async delete(id: any) {
-      return {id};
+    async delete(id: number) {
+      return {id, a: ''};
     }
 
-    async saveAll(docs: any[]) {
+    async saveAll(docs: Simple[]) {
       return docs;
     }
 
-    async deleteAll(docs: any[]) {
+    async deleteAll(docs: Simple[]) {
       return docs;
     }
 
-    emit(event: string, data: any) {
+    emit(event: string, data: Simple) {
       emitted = {event, data};
     }
   }
@@ -51,7 +91,7 @@ describe('EventRepository', () => {
 
   it('should call emit on create', async () => {
     await service.create({a: 'a'});
-    expect(emitted).toStrictEqual({event: 'created', data: {a: 'a'}});
+    expect(emitted).toStrictEqual({event: 'created', data: {id: 1, a: 'a'}});
   });
 
   it('should call emit on update', async () => {
@@ -59,24 +99,39 @@ describe('EventRepository', () => {
     expect(emitted).toStrictEqual({event: 'updated', data: {id: 1, a: 'a'}});
   });
 
-  it('should call emit on delete', async () => {
-    await service.delete(1);
-    expect(emitted).toStrictEqual({event: 'deleted', data: {id: 1}});
+  it('should call emit on updateOne', async () => {
+    await service.updateOne({id: 1}, {a: 'a'});
+    expect(emitted).toStrictEqual({event: 'updated', data: {id: 1, a: 'a'}});
   });
 
-  it('should call emit on upsert', async () => {
+  it('should call emit on delete', async () => {
+    await service.delete(1);
+    expect(emitted).toStrictEqual({event: 'deleted', data: {id: 1, a: ''}});
+  });
+
+  it('should call emit on deleteOne', async () => {
+    await service.deleteOne({id: 1});
+    expect(emitted).toStrictEqual({event: 'deleted', data: {id: 1, a: ''}});
+  });
+
+  it('should call emit on upsertRaw', async () => {
     await service.upsertRaw({id: 1}, {a: 'a'});
     expect(emitted).toStrictEqual({event: 'created', data: {id: 1, a: 'a'}});
   });
 
+  it('should call emit on create many', async () => {
+    const result = await service.createMany([{a: 'a'}]);
+    expect(emitted).toStrictEqual({event: 'created', data: {id: 0, a: 'a'}});
+  });
+
   it('should call emit on update many', async () => {
     await service.updateMany({id: 1}, {a: 'a'});
-    expect(emitted).toStrictEqual({event: 'updated', data: {id: 1}});
+    expect(emitted).toStrictEqual({event: 'updated', data: {id: 1, a: 'a'}});
   });
 
   it('should call emit on delete many', async () => {
     await service.deleteMany({id: 1});
-    expect(emitted).toStrictEqual({event: 'deleted', data: {id: 1}});
+    expect(emitted).toStrictEqual({event: 'deleted', data: {id: 1, a: 'a'}});
   });
 
   it('should call emit on save all', async () => {
