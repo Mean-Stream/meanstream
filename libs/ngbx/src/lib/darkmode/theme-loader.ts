@@ -32,7 +32,7 @@ export const LOCAL_STORAGE_THEME_SAVER: ThemeSaver = theme => {
 }
 
 export const THEME_ATTRIBUTE: InjectionToken<string> = new InjectionToken<string>('Body attribute to set in ThemeService', {
-  factory: () => 'data-theme',
+  factory: () => 'data-bs-theme',
 });
 
 /**
