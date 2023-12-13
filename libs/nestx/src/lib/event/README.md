@@ -73,8 +73,9 @@ It ensures the following methods emit appropriate events by calling the service'
 - `delete`
 - `deleteOne`
 - `upsertRaw` - Note that `upsert` itself is not wrapped, assuming it is implemented using `upsertRaw`.
-- `updateMany`
-- `deleteMany`
+- `updateMany` - Note that the operation itself does not return the documents, so an additional `findAll` is done after the update operation.
+  This may yield slightly different results if the update affects which documents match the filter.
+- `deleteMany` - Note that the operation itself does not return the documents, so an additional `findAll` is done before the delete operation.
 - `saveAll` (MongooseRepository)
 - `deleteAll` (MongooseRepository)
 
