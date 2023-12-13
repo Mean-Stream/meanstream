@@ -27,6 +27,10 @@ export class MongooseRepository<T,
 
   // --------- Read ---------
 
+  async count(filter: FILTER): Promise<number> {
+    return this.model.countDocuments(filter).exec();
+  }
+
   async exists(filter: FILTER): Promise<ID | undefined> {
     return (await this.model.exists(filter))?._id as ID;
   }

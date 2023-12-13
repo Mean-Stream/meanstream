@@ -24,6 +24,8 @@ export interface Repository<ID, DOC, NEW, FILTER, UPDATE> {
 
   // --------- Read ---------
 
+  count(filter: FILTER): Promise<number>;
+
   exists(filter: FILTER): Promise<ID | undefined>;
 
   distinct<K extends keyof DOC>(field: K, filter: FILTER): Promise<DOC[K][]>;
