@@ -13,13 +13,22 @@ describe('ValidatedEvent', () => {
   }
 
   class Example {
-    @ValidatedEvent()
+    @ValidatedEvent({transform: true})
     async example(dto: Dto) {
       return dto;
     }
   }
 
-  it('should validate events', async () => {
+  it('should transform DTOs', async () => {
+    const example = new Example();
+    const result = await example.example({
+      foo: 'foo',
+      bar: 42,
+    });
+    expect(result).toBeInstanceOf(Dto);
+  });
+
+  it('should create BadRequestExceptions', async () => {
     const example = new Example();
     try {
       const result = await example.example({
