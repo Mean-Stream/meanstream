@@ -27,7 +27,7 @@
     "@nestjs/platform-ws": "^10.2.10",
     "@nestjs/swagger": "^7.1.16",
     "@nestjs/websockets": "^10.2.10",
-    "@ng-bootstrap/ng-bootstrap": "^15.1.2",
+    "@ng-bootstrap/ng-bootstrap": "^16.0.0",
     "@popperjs/core": "^2.11.8",
     "base64-js": "^1.5.1",
     "bootstrap": "^5.3.2",
