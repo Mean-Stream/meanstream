@@ -48,78 +48,66 @@ export function EventRepository(): ClassDecorator {
     decorate(target, 'deleteOne', Emit('deleted'));
     decorate(target, 'upsertRaw', Emit(result => result.operation, result => result.result));
 
-    decorate(target, 'createMany', (target, propertyKey, descriptor: TypedPropertyDescriptor<any>) => {
-      const originalMethod = descriptor.value;
-      descriptor.value = async function (this, ...args) {
-        const created = await originalMethod.apply(this, args);
-        for (const doc of created) {
-          this.emit('created', doc);
-        }
-        return created;
-      };
-    });
+    decorate(target, 'createMany', Wrap(originalMethod => async function (this, ...args) {
+      const created = await originalMethod.apply(this, args);
+      for (const doc of created) {
+        this.emit('created', doc);
+      }
+      return created;
+    }));
 
-    decorate(target, 'updateMany', (target, propertyKey, descriptor: TypedPropertyDescriptor<any>) => {
-      const originalMethod = descriptor.value;
-      descriptor.value = async function (this, filter, update, ...args) {
-        const result = await originalMethod.call(this, filter, update, ...args);
-        const postMatching = await this.findAll(filter, ...args);
-        for (const updated of postMatching) {
-          this.emit('updated', updated);
-        }
-        return result;
-      };
-    });
+    decorate(target, 'updateMany', Wrap(originalMethod => async function (this, filter, update, ...args) {
+      const result = await originalMethod.call(this, filter, update, ...args);
+      const postMatching = await this.findAll(filter, ...args);
+      for (const updated of postMatching) {
+        this.emit('updated', updated);
+      }
+      return result;
+    }));
 
-    decorate(target, 'deleteMany', (target, propertyKey, descriptor: TypedPropertyDescriptor<any>) => {
-      const originalMethod = descriptor.value;
-      descriptor.value = async function (this, ...args) {
-        const preMatching = await this.findAll(...args);
-        const result = await originalMethod.apply(this, args);
-        for (const deleted of preMatching) {
-          this.emit('deleted', deleted);
-        }
-        return result;
-      };
-    });
+    decorate(target, 'deleteMany', Wrap(originalMethod => async function (this, ...args) {
+      const preMatching = await this.findAll(...args);
+      const result = await originalMethod.apply(this, args);
+      for (const deleted of preMatching) {
+        this.emit('deleted', deleted);
+      }
+      return result;
+    }));
 
-    decorate(target, 'saveAll', (target, propertyKey, descriptor: TypedPropertyDescriptor<any>) => {
-      const originalMethod = descriptor.value;
-      descriptor.value = async function (this, docs: Document[], ...args) {
-        const created = docs.filter(d => d.isNew);
-        const updated = docs.filter(d => d.isModified());
-        const result = await originalMethod.call(this, docs, ...args);
-        for (const doc of created) {
-          this.emit('created', doc);
-        }
-        for (const doc of updated) {
-          this.emit('updated', doc);
-        }
-        return result;
-      };
-    });
+    decorate(target, 'saveAll', Wrap(originalMethod => async function (this, docs: Document[], ...args) {
+      const created = docs.filter(d => d.isNew);
+      const updated = docs.filter(d => d.isModified());
+      const result = await originalMethod.call(this, docs, ...args);
+      for (const doc of created) {
+        this.emit('created', doc);
+      }
+      for (const doc of updated) {
+        this.emit('updated', doc);
+      }
+      return result;
+    }));
 
-    decorate(target, 'deleteAll', (target, propertyKey, descriptor: TypedPropertyDescriptor<any>) => {
-      const originalMethod = descriptor.value;
-      descriptor.value = async function (this, docs: Document[], ...args) {
-        const result = await originalMethod.call(this, docs, ...args);
-        for (const doc of docs) {
-          this.emit('deleted', doc);
-        }
-        return result;
-      };
-    });
+    decorate(target, 'deleteAll', Wrap(originalMethod => async function (this, docs: Document[], ...args) {
+      const result = await originalMethod.call(this, docs, ...args);
+      for (const doc of docs) {
+        this.emit('deleted', doc);
+      }
+      return result;
+    }));
   }
 }
 
 export function Emit(event: string | ((result: any) => string), extractor?: (result: any) => any): MethodDecorator {
+  return Wrap(originalMethod => async function (this, ...args) {
+    const result = await originalMethod.apply(this, args);
+    result && this.emit(typeof event === 'string' ? event : event(result), extractor ? extractor(result) : result);
+    return result;
+  });
+}
+
+function Wrap(impl: (originalMethod: Function) => (...args: any[]) => any): MethodDecorator {
   return (target, propertyKey, descriptor: TypedPropertyDescriptor<any>) => {
-    const originalMethod = descriptor.value;
-    descriptor.value = async function (this, ...args) {
-      const result = await originalMethod.apply(this, args);
-      result && this.emit(typeof event === 'string' ? event : event(result), extractor ? extractor(result) : result);
-      return result;
-    };
+    descriptor.value = impl(descriptor.value);
   };
 }
 
