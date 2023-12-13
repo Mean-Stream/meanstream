@@ -37,8 +37,6 @@ export class ThemeService {
       } else {
         document.body.removeAttribute(themeAttribute);
       }
-
-      themeSaver(theme);
     });
   }
 
