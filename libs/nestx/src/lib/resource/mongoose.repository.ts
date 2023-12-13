@@ -67,9 +67,9 @@ export class MongooseRepository<T,
       ...options,
       new: true,
       upsert: true,
-      rawResult: true
+      includeResultMetadata: true,
     }).exec();
-    if (result.lastErrorObject.upserted) {
+    if (result.lastErrorObject?.upserted) {
       return {operation: 'created', result: result.value};
     } else {
       return {operation: 'updated', result: result.value};
