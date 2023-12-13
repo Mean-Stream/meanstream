@@ -8,9 +8,11 @@ import type {Document} from "mongoose";
  * - `create`, `update`, `updateOne`, `delete`, `deleteOne`: emit `created`, `updated`, `deleted` respectively
  * - `upsertRaw`: emit `created` or `updated` depending on the operation
  * - `createMany`: emit `created` for each document
- * - `updateMany`, `deleteMany`:
- *   emit `updated` or `deleted` respectively for each document.
- *   Note that the operation itself does not return the documents, so an additional `findAll` is done BEFORE the operation
+ * - `updateMany`: emit `updated` for each document.
+ *   Note that the operation itself does not return the documents, so an additional `findAll` is done after the update operation.
+ *   This may yield slightly different results if the update affects which documents match the filter.
+ * - `deleteMany`: emit `deleted` respectively for each document.
+ *   Note that the operation itself does not return the documents, so an additional `findAll` is done before the delete operation.
  * - `saveAll`: emit `created` or `updated` depending on status of the document
  * - `deleteAll`: emit `deleted` for each document
  *
@@ -60,10 +62,10 @@ export function EventRepository(): ClassDecorator {
     decorate(target, 'updateMany', (target, propertyKey, descriptor: TypedPropertyDescriptor<any>) => {
       const originalMethod = descriptor.value;
       descriptor.value = async function (this, filter, update, ...args) {
-        const all = await this.findAll(filter, ...args);
         const result = await originalMethod.call(this, filter, update, ...args);
-        for (const result of all) {
-          this.emit('updated', result);
+        const postMatching = await this.findAll(filter, ...args);
+        for (const updated of postMatching) {
+          this.emit('updated', updated);
         }
         return result;
       };
@@ -72,10 +74,10 @@ export function EventRepository(): ClassDecorator {
     decorate(target, 'deleteMany', (target, propertyKey, descriptor: TypedPropertyDescriptor<any>) => {
       const originalMethod = descriptor.value;
       descriptor.value = async function (this, ...args) {
-        const all = await this.findAll(...args);
+        const preMatching = await this.findAll(...args);
         const result = await originalMethod.apply(this, args);
-        for (const result of all) {
-          this.emit('deleted', result);
+        for (const deleted of preMatching) {
+          this.emit('deleted', deleted);
         }
         return result;
       };
