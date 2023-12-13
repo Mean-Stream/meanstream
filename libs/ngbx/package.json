@@ -11,20 +11,15 @@
     "tslib": "^2.3.0"
   },
   "peerDependencies": {
-    "@angular/common": "^16.2.0",
-    "@angular/core": "^16.2.0",
-    "@angular/router": "^16.2.0",
-    "@ng-bootstrap/ng-bootstrap": "^15.1.0",
-    "bootstrap": "^5.2.3",
-    "bootstrap-darkmode": "^0.9.1",
+    "@angular/common": ">=16.2.0 <18.0.0",
+    "@angular/core": ">=16.2.0 <18.0.0",
+    "@angular/router": ">=16.2.0 <18.0.0",
+    "@ng-bootstrap/ng-bootstrap": ">=15.1.0 <17.0.0",
+    "bootstrap": ">=5.2.0 <6.0.0",
     "class-validator": "^0.14.0",
     "reflect-metadata": "^0.1.13"
   },
   "peerDependenciesMeta": {
-    "bootstrap-darkmode": {
-      "optional": true,
-      "comment": "Required for darkmode-switch"
-    },
     "class-validator": {
       "optional": true,
       "comment": "Required for forms"
