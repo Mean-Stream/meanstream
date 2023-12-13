@@ -113,3 +113,33 @@ class MyService {
   }
 }
 ```
+
+## ValidatedEvent
+
+The `@ValidatedEvent` decorator can be used to validate parameters for event handlers using class-validator.
+Note that the decorated method must be `async`, or the decorator will create a warning and wrap all results into a Promise.
+
+```ts
+class MyEvent {
+  @IsString()
+  readonly myProperty: string;
+}
+
+class MyHandler {
+  @ValidatedEvent({transform: true})
+  @OnEvent('my.event')
+  async handle(event: MyEvent) {
+    console.log(event instanceof MyEvent); // true
+  }
+
+  async example() {
+    this.handle('my.event', {myProperty: "abc"});
+
+    try {
+      await this.handle('my.event', {myProperty: 123});
+    } catch (e) {
+      console.log(e.message); // "myProperty must be a string"
+    }
+  }
+}
+```
