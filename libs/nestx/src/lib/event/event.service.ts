@@ -1,8 +1,8 @@
 import {Inject, Injectable, Logger, Optional} from '@nestjs/common';
 import {EventEmitter2} from '@nestjs/event-emitter';
 import {ClientProxy} from '@nestjs/microservices';
-import {Client} from '@nestjs/microservices/external/nats-client.interface';
 import {Observable} from 'rxjs';
+import {Subscription} from "nats";
 
 @Injectable()
 export class EventService {
@@ -20,8 +20,8 @@ export class EventService {
 
   subscribe<T>(event: string, user?: string): Observable<{ event: string, data: T }> {
     return new Observable(observer => {
-      const nats = ((this.client as any).natsClient) as Client;
-      const subscription = nats.subscribe(event, {
+      let subscription: Subscription | undefined;
+      this.client.connect().then(nats => subscription = nats.subscribe(event, {
         callback: (err, msg) => {
           const event = msg.subject;
           const dataStr = Buffer.from(msg.data).toString('utf-8');
@@ -45,8 +45,8 @@ export class EventService {
             data,
           });
         },
-      });
-      return () => subscription.unsubscribe();
+      }));
+      return () => subscription?.unsubscribe();
     });
   }
 }
