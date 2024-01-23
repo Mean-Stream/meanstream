@@ -5,7 +5,7 @@ The events library provides a simple event gateway for NestJS apps based on NATS
 ## Setup
 
 ```ts
-import {EventModule, EventService, initEventGateway} from '@mean-stream/nestx';
+import {EventModule, EventService} from '@mean-stream/nestx';
 import {WebSocketGateway} from '@nestjs/websockets';
 import {IncomingMessage} from 'http';
 import {EventGateway} from './event.gateway';
@@ -38,11 +38,12 @@ class AppModule {
 }
 ```
 
-If you did everything right (including `initEventGateway`!), you will see the output:
+If you did everything right (including the call to `WebSocketGateway`), you will see the output:
 
 ```
 [Nest] 27843  - 03/17/2023, 10:56:29 AM     LOG [WebSocketsController] EventGateway subscribed to the "subscribe" message +5ms
 [Nest] 27843  - 03/17/2023, 10:56:29 AM     LOG [WebSocketsController] EventGateway subscribed to the "unsubscribe" message +0ms
+[Nest] 27843  - 03/17/2023, 10:56:29 AM     LOG [WebSocketsController] EventGateway subscribed to the "ping" message +0ms
 ```
 
 ## Usage
