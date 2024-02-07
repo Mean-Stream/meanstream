@@ -39,9 +39,10 @@ export function Ref(ref: string, {array, optional, index}: RefOptions = {}): Pro
   }
   const swagger = optionalRequire('@nestjs/swagger');
   swagger && decorators.push(swagger.ApiProperty({
+    type: 'string',
+    format: 'objectid',
     isArray: array,
     example: array ? [EXAMPLE_OBJECT_ID] : EXAMPLE_OBJECT_ID,
-    format: 'objectid',
     required: !optional,
   }));
   return applyDecorators(...decorators);
