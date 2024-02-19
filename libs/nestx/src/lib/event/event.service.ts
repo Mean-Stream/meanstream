@@ -9,7 +9,7 @@ export class EventService {
   constructor(
     @Inject('EVENT_SERVICE') private client: ClientProxy,
     private eventEmitter2: EventEmitter2,
-    @Optional() @Inject() private logger: Logger = new Logger(EventService.name),
+    @Optional() @Inject(Logger) private logger = new Logger(EventService.name),
   ) {
   }
 
