@@ -13,6 +13,7 @@
         "outputPath": "dist/apps/example-service",
         "main": "apps/example-service/src/main.ts",
         "tsConfig": "apps/example-service/tsconfig.app.json",
+        "isolatedConfig": false,
         "assets": ["apps/example-service/src/assets"]
       },
       "configurations": {
