@@ -13,8 +13,7 @@ import {UserModule} from '../user/user.module';
     }),
     MongooseModule.forRoot('mongodb://localhost:27017/mean-stream'),
     EventModule.forRootAsync({
-      // imports: [AuthModule],
-      // inject: [AuthService],
+      inject: [AuthService],
       useFactory: (service: AuthService) => ({
         transport: Transport.NATS,
         transportOptions: {
