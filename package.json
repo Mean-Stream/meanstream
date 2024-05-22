@@ -70,6 +70,7 @@
     "@types/base64-js": "^1.3.2",
     "@types/jest": "29.4.4",
     "@types/node": "18.16.9",
+    "@types/passport-jwt": "^4.0.1",
     "@typescript-eslint/eslint-plugin": "6.14.0",
     "@typescript-eslint/parser": "6.14.0",
     "eslint": "8.48.0",
@@ -87,5 +88,6 @@
     "ts-jest": "29.1.0",
     "ts-node": "10.9.1",
     "typescript": "5.2.2"
-  }
+  },
+  "packageManager": "pnpm@8.15.8+sha512.d1a029e1a447ad90bc96cd58b0fad486d2993d531856396f7babf2d83eb1823bb83c5a3d0fc18f675b2d10321d49eb161fece36fe8134aa5823ecd215feed392"
 }
