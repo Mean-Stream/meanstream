@@ -9,7 +9,9 @@ import {UserModule} from '../user/user.module';
   imports: [
     AuthModule.forRoot({
       secret: 'a',
-      expiry: '1d',
+      signOptions: {
+        expiresIn: '1d',
+      },
     }),
     MongooseModule.forRoot('mongodb://localhost:27017/mean-stream'),
     EventModule.forRootAsync({

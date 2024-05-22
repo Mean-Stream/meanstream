@@ -1,8 +1,7 @@
 import {ConfigurableModuleBuilder} from '@nestjs/common';
+import {JwtModuleOptions} from '@nestjs/jwt';
 
-export interface AuthModuleOptions {
-  secret: string;
-  expiry: string;
+export interface AuthModuleOptions extends JwtModuleOptions {
 }
 
 export const {

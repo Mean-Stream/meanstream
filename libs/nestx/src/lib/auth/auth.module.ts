@@ -9,13 +9,7 @@ import {JwtStrategy} from './jwt.strategy';
   imports: [
     JwtModule.registerAsync({
       inject: [MODULE_OPTIONS_TOKEN],
-      useFactory: async (options: AuthModuleOptions) => ({
-        secret: options.secret,
-        verifyOptions: {},
-        signOptions: {
-          expiresIn: options.expiry,
-        },
-      }),
+      useFactory: (options: AuthModuleOptions) => options,
     }),
   ],
   providers: [AuthService, JwtStrategy],
