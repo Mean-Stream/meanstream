@@ -1,7 +1,6 @@
 import {Global, Module} from '@nestjs/common';
 import {EventEmitterModule} from '@nestjs/event-emitter';
 import {ClientProxyFactory} from '@nestjs/microservices';
-import {AuthModule} from '../auth/auth.module';
 import {EventGateway} from './event.gateway';
 import {ConfigurableModuleClass, EventModuleOptions, MODULE_OPTIONS_TOKEN} from './event.module-def';
 import {EventService} from './event.service';
@@ -13,7 +12,6 @@ import {EventService} from './event.service';
       wildcard: true,
       global: true,
     }),
-    AuthModule,
   ],
   providers: [
     EventService,

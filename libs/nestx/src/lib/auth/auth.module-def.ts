@@ -10,4 +10,7 @@ export const {
   MODULE_OPTIONS_TOKEN,
   OPTIONS_TYPE,
   ASYNC_OPTIONS_TYPE,
-} = new ConfigurableModuleBuilder<AuthModuleOptions>().setClassMethodName('forRoot').build();
+} = new ConfigurableModuleBuilder<AuthModuleOptions>()
+  .setClassMethodName('forRoot')
+  .setExtras({}, def => ({...def, global: true}))
+  .build();
