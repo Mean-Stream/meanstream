@@ -1,9 +1,9 @@
-import {Body, Controller, Delete, Get, MessageEvent, Param, Patch, Post, Sse,} from '@nestjs/common';
+import {Body, Controller, Delete, Get, MessageEvent, Param, Patch, Post, Sse} from '@nestjs/common';
 import {UserService} from './user.service';
 import {CreateUserDto, UpdateUserDto} from './user.dto';
-import {EventService, ObjectIdPipe} from "@clashsoft/nestx";
-import {Types} from "mongoose";
-import {map, Observable} from "rxjs";
+import {Auth, AuthUser, EventService, ObjectIdPipe, UserToken} from '@clashsoft/nestx';
+import {Types} from 'mongoose';
+import {map, Observable} from 'rxjs';
 
 @Controller('users')
 export class UserController {
@@ -24,8 +24,12 @@ export class UserController {
   }
 
   @Post()
-  create(@Body() dto: CreateUserDto) {
-    return this.userService.create(dto);
+  @Auth()
+  create(
+    @AuthUser() user: UserToken,
+    @Body() dto: CreateUserDto,
+  ) {
+    return this.userService.create({...dto, uuid: user.sub});
   }
 
   @Get()
