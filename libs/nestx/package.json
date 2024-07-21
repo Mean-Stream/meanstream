@@ -1,11 +1,15 @@
 {
   "name": "@mean-stream/nestx",
-  "version": "0.11.4",
+  "version": "0.12.0",
   "type": "commonjs",
   "exports": {
     ".": {
       "default": "./src/index.js",
       "types": "./src/index.d.ts"
+    },
+    "./auth": {
+      "default": "./src/lib/auth/index.js",
+      "types": "./src/lib/auth/index.d.ts"
     },
     "./event": {
       "default": "./src/lib/event/index.js",
@@ -31,7 +35,9 @@
   "peerDependencies": {
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
+    "@nestjs/passport": "^10.0.0",
     "@nestjs/event-emitter": "^2.0.0",
+    "@nestjs/jwt": "^10.0.0",
     "@nestjs/microservices": "^10.0.0",
     "@nestjs/mongoose": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
@@ -42,12 +48,19 @@
     "class-validator": "^0.14.0",
     "mongoose": ">=7.0.0 <9.0.0",
     "nats": "^2.13.0",
+    "passport-jwt": "^4.0.0",
     "reflect-metadata": "^0.1.0",
     "rxjs": "^7.0.0",
     "tslib": "^2.4.1"
   },
   "peerDependenciesMeta": {
+    "@nestjs/passport": {
+      "optional": true
+    },
     "@nestjs/event-emitter": {
+      "optional": true
+    },
+    "@nestjs/jwt": {
       "optional": true
     },
     "@nestjs/microservices": {
@@ -72,6 +85,9 @@
       "optional": true
     },
     "nats": {
+      "optional": true
+    },
+    "passport-jwt": {
       "optional": true
     }
   }
