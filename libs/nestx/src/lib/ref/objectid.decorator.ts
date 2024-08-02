@@ -13,7 +13,7 @@ function TransformObjectId(array = false, transformOptions?: TransformOptions) {
     array
       // NB: obj[key] instead of value
       // See https://github.com/typestack/class-transformer/issues/484#issuecomment-755872178
-      ? ({obj, key}) => Array.isArray(obj[key]) && obj[key].map(objectId)
+      ? ({obj, key}) => Array.isArray(obj[key]) ? obj[key].map(v => objectId(v)) : obj[key]
       : ({obj, key}) => objectId(obj[key]),
     transformOptions,
   );
