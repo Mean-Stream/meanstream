@@ -8,7 +8,7 @@ export function IsObjectId(validationOptions?: ValidationOptions) {
   return IsInstance(Types.ObjectId, validationOptions);
 }
 
-function TransformObjectId(array = false, transformOptions?: TransformOptions) {
+export function TransformObjectId(array = false, transformOptions?: TransformOptions) {
   return Transform(
     array
       // NB: obj[key] instead of value
