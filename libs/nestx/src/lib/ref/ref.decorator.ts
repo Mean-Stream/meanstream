@@ -1,7 +1,7 @@
 import {applyDecorators} from '@nestjs/common';
 import {optionalRequire} from '@nestjs/core/helpers/optional-require';
 import {IsOptional} from 'class-validator';
-import {IndexDefinition, IndexDirection, Types} from 'mongoose';
+import {IndexDefinition, IndexDirection, SchemaTypes} from 'mongoose';
 import type {PropOptions} from '@nestjs/mongoose';
 import {AsObjectId} from './objectid.decorator';
 
@@ -25,10 +25,10 @@ export function Ref(ref: string, {array, optional, index}: RefOptions = {}): Pro
   const mongoose = optionalRequire('@nestjs/mongoose');
   if (mongoose) {
     const propOptions: PropOptions = array ? {
-      type: [{type: Types.ObjectId, ref}],
+      type: [{type: SchemaTypes.ObjectId, ref}],
       required: !optional,
     } : {
-      type: Types.ObjectId,
+      type: SchemaTypes.ObjectId,
       ref,
       required: !optional,
     };
