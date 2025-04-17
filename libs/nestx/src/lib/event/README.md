@@ -77,7 +77,7 @@ It ensures the following methods emit appropriate events by calling the service'
 - `updateMany` - Note that the operation itself does not return the documents, so an additional `findAll` is done after the update operation.
   This may yield slightly different results if the update affects which documents match the filter.
 - `deleteMany` - Note that the operation itself does not return the documents, so an additional `findAll` is done before the delete operation.
-- `saveAll` (MongooseRepository)
+- `save` and `saveAll` (MongooseRepository)
 - `deleteAll` (MongooseRepository)
 
 ```ts

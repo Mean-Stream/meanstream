@@ -1,5 +1,8 @@
-import {EventRepository} from "./event.repository";
-import {DeleteManyResult, RawUpsertResult, Repository, UpdateManyResult} from "../resource/repository";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {MongooseRepository} from '@clashsoft/nestx';
+import {Model, UpdateWriteOpResult} from 'mongoose';
+import {DeleteManyResult, RawUpsertResult} from '../resource/repository';
+import {EventRepository} from './event.repository';
 
 describe('EventRepository', () => {
   let emitted = undefined;
@@ -13,7 +16,8 @@ describe('EventRepository', () => {
   type SimpleFilter = Partial<Simple>;
 
   @EventRepository()
-  class SimpleService implements Repository<number, Simple, NewSimple, SimpleFilter, NewSimple> {
+  // @ts-ignore
+  class SimpleService implements MongooseRepository<Simple, number, NewSimple, SimpleFilter, NewSimple> {
     async find(): Promise<Simple | null> {
       return null;
     }
@@ -30,7 +34,11 @@ describe('EventRepository', () => {
       return;
     }
 
-    async distinct(): Promise<unknown[]> {
+    async count(): Promise<number> {
+      return 1;
+    }
+
+    async distinct(): Promise<never[]> {
       return [];
     }
 
@@ -58,8 +66,8 @@ describe('EventRepository', () => {
       return {operation: 'created', result: {id: 1, ...filter, ...update}};
     }
 
-    async updateMany(filter: SimpleFilter, update: NewSimple): Promise<UpdateManyResult> {
-      return {acknowledged: true, matchedCount: 1, upsertedCount: 0, modifiedCount: 1};
+    async updateMany(filter: SimpleFilter, update: NewSimple): Promise<UpdateWriteOpResult> {
+      return {acknowledged: true, matchedCount: 1, upsertedCount: 0, modifiedCount: 1, upsertedId: null};
     }
 
     async deleteOne(filter: SimpleFilter): Promise<Simple | null> {
@@ -74,12 +82,16 @@ describe('EventRepository', () => {
       return {id, a: ''};
     }
 
-    async saveAll(docs: Simple[]) {
-      return docs;
+    async save(doc: Simple) {
+      return;
     }
 
-    async deleteAll(docs: Simple[]) {
-      return docs;
+    async saveAll(docs: Simple[]) {
+      return;
+    }
+
+    async deleteAll(docs: Simple[]): Promise<DeleteManyResult> {
+      return {acknowledged: true, deletedCount: 0};
     }
 
     emit(event: string, data: Simple) {
@@ -132,6 +144,16 @@ describe('EventRepository', () => {
   it('should call emit on delete many', async () => {
     await service.deleteMany({id: 1});
     expect(emitted).toStrictEqual({event: 'deleted', data: {id: 1, a: 'a'}});
+  });
+
+  it('should call emit on save one', async () => {
+    let input: any = {id: 1, isNew: true, isModified: () => false};
+    await service.save(input);
+    expect(emitted).toStrictEqual({event: 'created', data: input});
+
+    input = {id: 1, isModified: () => true};
+    await service.save(input);
+    expect(emitted).toStrictEqual({event: 'updated', data: input});
   });
 
   it('should call emit on save all', async () => {
