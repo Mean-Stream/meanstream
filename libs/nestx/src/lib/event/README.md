@@ -115,6 +115,16 @@ class MyService {
 }
 ```
 
+### Bypassing Events
+
+If you want to perform an update operation without sending events, call the `MongooseRepository` prototype method directly:
+
+```ts
+import {MongooseRepository} from '@mean-stream/nestx';
+
+MongooseRepository.prototype.updateMany.call(userService, {...filter}, {...update});
+```
+
 ## ValidatedEvent
 
 The `@ValidatedEvent` decorator can be used to validate parameters for event handlers using class-validator.

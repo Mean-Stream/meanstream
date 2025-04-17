@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {MongooseRepository} from '@clashsoft/nestx';
-import {Model, UpdateWriteOpResult} from 'mongoose';
+import {UpdateWriteOpResult} from 'mongoose';
+import {MongooseRepository} from '../resource/mongoose.repository';
 import {DeleteManyResult, RawUpsertResult} from '../resource/repository';
 import {EventRepository} from './event.repository';
 
