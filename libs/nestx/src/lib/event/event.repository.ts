@@ -13,7 +13,7 @@ import type {Document} from "mongoose";
  *   This may yield slightly different results if the update affects which documents match the filter.
  * - `deleteMany`: emit `deleted` respectively for each document.
  *   Note that the operation itself does not return the documents, so an additional `findAll` is done before the delete operation.
- * - `saveAll`: emit `created` or `updated` depending on status of the document
+ * - `save` and `saveAll`: emit `created` or `updated` depending on status of the document
  * - `deleteAll`: emit `deleted` for each document
  *
  * Other (read) operations are not affected.
@@ -70,6 +70,15 @@ export function EventRepository(): ClassDecorator {
       const result = await originalMethod.apply(this, args);
       for (const deleted of preMatching) {
         this.emit('deleted', deleted);
+      }
+      return result;
+    }));
+
+    decorate(target, 'save', Wrap(originalMethod => async function (this, doc: Document, ...args) {
+      const event = doc.isNew ? 'created' : doc.isModified() ? 'updated' : null;
+      const result = await originalMethod.call(this, doc, ...args);
+      if (event) {
+        this.emit(event, doc);
       }
       return result;
     }));

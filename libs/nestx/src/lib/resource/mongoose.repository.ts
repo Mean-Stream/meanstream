@@ -1,4 +1,13 @@
-import type {Document, FilterQuery, Model, QueryOptions, Types, UpdateQuery, UpdateWriteOpResult} from "mongoose";
+import type {
+  Document,
+  FilterQuery,
+  Model,
+  QueryOptions,
+  SaveOptions,
+  Types,
+  UpdateQuery,
+  UpdateWriteOpResult,
+} from 'mongoose';
 import {Doc} from "../ref";
 import {DeleteManyResult, RawUpsertResult, Repository} from "./repository";
 
@@ -100,9 +109,13 @@ export class MongooseRepository<T,
 
   // --------- Other ---------
 
+  async save(doc: DOC, options?: SaveOptions): Promise<void> {
+    await (doc as Document).save(options);
+  }
+
   // TODO may specify a better return type
-  async saveAll(docs: DOC[]): Promise<void> {
-    await this.model.bulkSave(docs as Document[]);
+  async saveAll(docs: DOC[], options?: Parameters<Model<T>['bulkSave']>[1]): Promise<void> {
+    await this.model.bulkSave(docs as Document[], options);
   }
 
   async deleteAll(items: (T & {_id: ID})[]): Promise<DeleteManyResult> {
