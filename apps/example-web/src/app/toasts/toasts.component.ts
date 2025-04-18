@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {ToastService} from '@nestx/ngbx';
 
 @Component({
   selector: 'nestx-toasts',
   templateUrl: './toasts.component.html',
   styleUrls: ['./toasts.component.css'],
+  standalone: false,
 })
 export class ToastsComponent {
 

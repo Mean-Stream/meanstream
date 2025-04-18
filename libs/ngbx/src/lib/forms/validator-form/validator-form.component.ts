@@ -7,6 +7,7 @@ import {InputProperties, ValidationFormOptions} from '../input-properties.interf
   selector: 'ngbx-validator-form',
   templateUrl: './validator-form.component.html',
   styleUrls: ['./validator-form.component.css'],
+  standalone: false,
 })
 export class ValidatorFormComponent<T extends object> implements OnInit {
   @Input() type?: Type<T>;

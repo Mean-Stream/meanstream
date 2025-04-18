@@ -6,6 +6,7 @@ import {Person} from './person';
   selector: 'nestx-forms',
   templateUrl: './forms.component.html',
   styleUrls: ['./forms.component.css'],
+  standalone: false,
 })
 export class FormsComponent {
   Person = Person;

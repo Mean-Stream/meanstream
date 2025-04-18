@@ -5,6 +5,7 @@ import {ActivatedRoute, Route} from '@angular/router';
   selector: 'ngbx-route-tabs',
   templateUrl: './route-tabs.component.html',
   styleUrls: ['./route-tabs.component.scss'],
+  standalone: false,
 })
 export class RouteTabsComponent {
   @Input() routes!: Route[];

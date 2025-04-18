@@ -12,6 +12,7 @@ import {ThemeService} from '../theme.service';
   selector: 'ngbx-theme-switch',
   templateUrl: './theme-switch.component.html',
   styleUrls: ['./theme-switch.component.scss'],
+  standalone: false,
 })
 export class ThemeSwitchComponent {
   /**

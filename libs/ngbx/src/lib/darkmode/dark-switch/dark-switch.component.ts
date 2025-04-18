@@ -12,6 +12,7 @@ import {ThemeService} from '../theme.service';
   selector: 'ngbx-darkmode-switch',
   templateUrl: './dark-switch.component.html',
   styleUrls: ['./dark-switch.component.scss'],
+  standalone: false,
 })
 export class DarkSwitchComponent {
   theme$: Subject<string | null>;

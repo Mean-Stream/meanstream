@@ -5,6 +5,7 @@ import {ToastService} from '../toast.service';
   selector: 'ngbx-toast-list',
   templateUrl: './toast-list.component.html',
   styleUrls: ['./toast-list.component.scss'],
+  standalone: false,
 })
 export class ToastListComponent implements OnInit {
   @Input() top: string | number = 0;
