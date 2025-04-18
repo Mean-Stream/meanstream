@@ -11,13 +11,13 @@
     "tslib": "^2.3.0"
   },
   "peerDependencies": {
-    "@angular/common": ">=16.2.0 <18.0.0",
-    "@angular/core": ">=16.2.0 <18.0.0",
-    "@angular/router": ">=16.2.0 <18.0.0",
-    "@ng-bootstrap/ng-bootstrap": ">=15.1.0 <17.0.0",
+    "@angular/common": ">=19.0.0 <20.0.0",
+    "@angular/core": ">=19.0.0 <20.0.0",
+    "@angular/router": ">=19.0.0 <20.0.0",
+    "@ng-bootstrap/ng-bootstrap": ">=18.0.0 <19.0.0",
     "bootstrap": ">=5.2.0 <6.0.0",
     "class-validator": "^0.14.0",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13 || ^0.2.0"
   },
   "peerDependenciesMeta": {
     "class-validator": {
