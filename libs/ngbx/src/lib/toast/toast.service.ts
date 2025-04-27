@@ -34,7 +34,7 @@ export class ToastService {
   error(title: string, body: string, error?: any): Toast {
     console.error(error);
     if (error) {
-      body += ': ' + error.error?.message ?? error.message ?? error;
+      body += ': ' + (error.error?.message ?? error.message ?? error);
     }
     return this.add({
       title,

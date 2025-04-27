@@ -1,6 +1,6 @@
-import {ValidatedEvent} from "@clashsoft/nestx";
-import {IsNotEmpty, IsString, Min} from "class-validator";
-import {BadRequestException} from "@nestjs/common";
+import {BadRequestException} from '@nestjs/common';
+import {IsNotEmpty, IsString, Min} from 'class-validator';
+import {ValidatedEvent} from './validated-event.decorator';
 
 describe('ValidatedEvent', () => {
   class Dto {

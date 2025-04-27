@@ -1,5 +1,5 @@
-import {ForbiddenException, UnauthorizedException} from "@nestjs/common";
-import {exceptionDesc, extractExceptionMessages} from "@clashsoft/nestx";
+import {ForbiddenException, UnauthorizedException} from '@nestjs/common';
+import {exceptionDesc, extractExceptionMessages} from './exception.extractor';
 
 describe('ExceptionExtractor', () => {
   class ItemController {
