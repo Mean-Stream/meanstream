@@ -18,7 +18,9 @@ import type {Document} from "mongoose";
  *
  * Other (read) operations are not affected.
  * Overriding one of the methods and calling `super` will emit the event after the overridden method has finished.
+ *
  * Event emit can be skipped by passing an options object with `emit: false` as the last argument.
+ * See {@link ModifyOptions.emit}.
  *
  * @example
  * *@EventRepository()

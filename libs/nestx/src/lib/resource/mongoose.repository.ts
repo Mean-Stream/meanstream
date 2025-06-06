@@ -10,6 +10,7 @@ import type {
   UpdateWriteOpResult,
 } from 'mongoose';
 import {Doc} from "../ref";
+import {ModifyOptions} from './options';
 import {DeleteManyResult, RawUpsertResult, Repository} from "./repository";
 
 export class MongooseRepository<T,
@@ -27,7 +28,7 @@ export class MongooseRepository<T,
 
   // --------- Create ---------
 
-  async create(dto: NEW, options?: CreateOptions): Promise<DOC> {
+  async create(dto: NEW, options?: CreateOptions & ModifyOptions): Promise<DOC> {
     if (options) {
       return this.model.create([dto], options).then(docs => docs[0]);
     } else {
@@ -35,7 +36,7 @@ export class MongooseRepository<T,
     }
   }
 
-  async createMany(dtos: NEW[], options?: CreateOptions): Promise<DOC[]> {
+  async createMany(dtos: NEW[], options?: CreateOptions & ModifyOptions): Promise<DOC[]> {
     return this.model.create(dtos, options);
   }
 
@@ -68,15 +69,15 @@ export class MongooseRepository<T,
 
   // --------- Update ---------
 
-  async update(id: ID, update: UPDATE, options: QueryOptions<T> = {}): Promise<DOC | null> {
+  async update(id: ID, update: UPDATE, options: QueryOptions<T> & ModifyOptions = {}): Promise<DOC | null> {
     return this.model.findByIdAndUpdate(id, update, {...options, new: true}).setOptions(options).exec();
   }
 
-  async upsert(filter: FILTER, update: UPDATE, options: QueryOptions<T> = {}): Promise<DOC> {
+  async upsert(filter: FILTER, update: UPDATE, options: QueryOptions<T> & ModifyOptions = {}): Promise<DOC> {
     return (await this.upsertRaw(filter, update, options)).result;
   }
 
-  async upsertRaw(filter: FILTER, update: UPDATE, options: QueryOptions<T> = {}): Promise<RawUpsertResult<DOC>> {
+  async upsertRaw(filter: FILTER, update: UPDATE, options: QueryOptions<T> & ModifyOptions = {}): Promise<RawUpsertResult<DOC>> {
     const result = await this.model.findOneAndUpdate(filter, update, {
       ...options,
       new: true,
@@ -90,40 +91,40 @@ export class MongooseRepository<T,
     }
   }
 
-  async updateOne(filter: FILTER, update: UPDATE, options: QueryOptions<T> = {}): Promise<DOC | null> {
+  async updateOne(filter: FILTER, update: UPDATE, options: QueryOptions<T> & ModifyOptions = {}): Promise<DOC | null> {
     return this.model.findOneAndUpdate(filter, update, {...options, new: true}).exec();
   }
 
-  async updateMany(filter: FILTER, update: UPDATE, options: QueryOptions<T> = {}): Promise<UpdateWriteOpResult> {
+  async updateMany(filter: FILTER, update: UPDATE, options: QueryOptions<T> & ModifyOptions = {}): Promise<UpdateWriteOpResult> {
     return this.model.updateMany(filter, update, {...options, new: true}).exec();
   }
 
   // --------- Delete ---------
 
-  async delete(id: ID, options?: QueryOptions<T>): Promise<DOC | null> {
+  async delete(id: ID, options?: QueryOptions<T> & ModifyOptions): Promise<DOC | null> {
     return this.model.findByIdAndDelete(id, options);
   }
 
-  async deleteOne(filter: FILTER, options?: QueryOptions<T>): Promise<DOC | null> {
+  async deleteOne(filter: FILTER, options?: QueryOptions<T> & ModifyOptions): Promise<DOC | null> {
     return this.model.findOneAndDelete(filter, options);
   }
 
-  async deleteMany(filter: FILTER, options?: QueryOptions<T>): Promise<DeleteManyResult> {
+  async deleteMany(filter: FILTER, options?: QueryOptions<T> & ModifyOptions): Promise<DeleteManyResult> {
     return this.model.deleteMany(filter, options).exec();
   }
 
   // --------- Other ---------
 
-  async save(doc: DOC, options?: SaveOptions): Promise<void> {
+  async save(doc: DOC, options?: SaveOptions & ModifyOptions): Promise<void> {
     await (doc as Document).save(options);
   }
 
   // TODO may specify a better return type
-  async saveAll(docs: DOC[], options?: Parameters<Model<T>['bulkSave']>[1]): Promise<void> {
+  async saveAll(docs: DOC[], options?: Parameters<Model<T>['bulkSave']>[1] & ModifyOptions): Promise<void> {
     await this.model.bulkSave(docs as Document[], options);
   }
 
-  async deleteAll(items: (T & {_id: ID})[], options?: QueryOptions<T>): Promise<DeleteManyResult> {
+  async deleteAll(items: (T & {_id: ID})[], options?: QueryOptions<T> & ModifyOptions): Promise<DeleteManyResult> {
     return this.model.deleteMany({_id: {$in: items.map(i => i._id)}}, options);
   }
 }
