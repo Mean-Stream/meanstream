@@ -18,12 +18,14 @@ import type {Document} from "mongoose";
  *
  * Other (read) operations are not affected.
  * Overriding one of the methods and calling `super` will emit the event after the overridden method has finished.
+ * In other words, event emit always hooks after the original method call.
  *
  * Event emit can be skipped by passing an options object with `emit: false` as the last argument.
  * See {@link ModifyOptions.emit}.
  *
  * @example
- * *@EventRepository()
+ * ```ts
+ * @EventRepository()
  * class MyRepository extends MongooseRepository {
  *   create(dto: Foo): Promise<Doc<Foo>> {
  *     console.log('before super');
@@ -41,6 +43,7 @@ import type {Document} from "mongoose";
  * // - (Document created in MongoDB)
  * // - after super
  * // - emit created { ... }
+ * ```
  */
 export function EventRepository(): ClassDecorator {
   return target => {
