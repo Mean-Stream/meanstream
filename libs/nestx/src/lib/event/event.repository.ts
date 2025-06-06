@@ -18,6 +18,7 @@ import type {Document} from "mongoose";
  *
  * Other (read) operations are not affected.
  * Overriding one of the methods and calling `super` will emit the event after the overridden method has finished.
+ * Event emit can be skipped by passing an options object with `emit: false` as the last argument.
  *
  * @example
  * *@EventRepository()
@@ -49,6 +50,10 @@ export function EventRepository(): ClassDecorator {
     decorate(target, 'upsertRaw', Emit(result => result.operation, result => result.result));
 
     decorate(target, 'createMany', Wrap(originalMethod => async function (this, ...args) {
+      if (skipEmit(args)) {
+        return originalMethod.apply(this, args);
+      }
+
       const created = await originalMethod.apply(this, args);
       for (const doc of created) {
         this.emit('created', doc);
@@ -57,6 +62,10 @@ export function EventRepository(): ClassDecorator {
     }));
 
     decorate(target, 'updateMany', Wrap(originalMethod => async function (this, filter, update, ...args) {
+      if (skipEmit(args)) {
+        return originalMethod.call(this, filter, update, ...args);
+      }
+
       const result = await originalMethod.call(this, filter, update, ...args);
       const postMatching = await this.findAll(filter, ...args);
       for (const updated of postMatching) {
@@ -66,6 +75,10 @@ export function EventRepository(): ClassDecorator {
     }));
 
     decorate(target, 'deleteMany', Wrap(originalMethod => async function (this, ...args) {
+      if (skipEmit(args)) {
+        return originalMethod.apply(this, args);
+      }
+
       const preMatching = await this.findAll(...args);
       const result = await originalMethod.apply(this, args);
       for (const deleted of preMatching) {
@@ -75,6 +88,10 @@ export function EventRepository(): ClassDecorator {
     }));
 
     decorate(target, 'save', Wrap(originalMethod => async function (this, doc: Document, ...args) {
+      if (skipEmit(args)) {
+        return originalMethod.call(this, doc, ...args);
+      }
+
       const event = doc.isNew ? 'created' : doc.isModified() ? 'updated' : null;
       const result = await originalMethod.call(this, doc, ...args);
       if (event) {
@@ -84,6 +101,10 @@ export function EventRepository(): ClassDecorator {
     }));
 
     decorate(target, 'saveAll', Wrap(originalMethod => async function (this, docs: Document[], ...args) {
+      if (skipEmit(args)) {
+        return originalMethod.call(this, docs, ...args);
+      }
+
       const created = docs.filter(d => d.isNew);
       const updated = docs.filter(d => d.isModified());
       const result = await originalMethod.call(this, docs, ...args);
@@ -98,8 +119,10 @@ export function EventRepository(): ClassDecorator {
 
     decorate(target, 'deleteAll', Wrap(originalMethod => async function (this, docs: Document[], ...args) {
       const result = await originalMethod.call(this, docs, ...args);
-      for (const doc of docs) {
-        this.emit('deleted', doc);
+      if (!skipEmit(args)) {
+        for (const doc of docs) {
+          this.emit('deleted', doc);
+        }
       }
       return result;
     }));
@@ -109,7 +132,9 @@ export function EventRepository(): ClassDecorator {
 export function Emit(event: string | ((result: any) => string), extractor?: (result: any) => any): MethodDecorator {
   return Wrap(originalMethod => async function (this, ...args) {
     const result = await originalMethod.apply(this, args);
-    result && this.emit(typeof event === 'string' ? event : event(result), extractor ? extractor(result) : result);
+    if (result && !skipEmit(args)) {
+      this.emit(typeof event === 'string' ? event : event(result), extractor ? extractor(result) : result);
+    }
     return result;
   });
 }
@@ -118,6 +143,11 @@ function Wrap(impl: (originalMethod: Function) => (...args: any[]) => any): Meth
   return (target, propertyKey, descriptor: TypedPropertyDescriptor<any>) => {
     descriptor.value = impl(descriptor.value);
   };
+}
+
+function skipEmit(args: any[]): boolean {
+  // assume options are the last argument
+  return args.length > 0 && args.at(-1)?.emit === false;
 }
 
 function getMethodDescriptor(target: Function, propertyName: string): TypedPropertyDescriptor<any> {
