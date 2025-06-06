@@ -1,4 +1,5 @@
 import type {
+  CreateOptions,
   Document,
   FilterQuery,
   Model,
@@ -26,27 +27,31 @@ export class MongooseRepository<T,
 
   // --------- Create ---------
 
-  async create(dto: NEW): Promise<DOC> {
-    return this.model.create(dto);
+  async create(dto: NEW, options?: CreateOptions): Promise<DOC> {
+    if (options) {
+      return this.model.create([dto], options).then(docs => docs[0]);
+    } else {
+      return this.model.create(dto);
+    }
   }
 
-  async createMany(dtos: NEW[]): Promise<DOC[]> {
-    return await this.model.insertMany(dtos) as DOC[];
+  async createMany(dtos: NEW[], options?: CreateOptions): Promise<DOC[]> {
+    return this.model.create(dtos, options);
   }
 
   // --------- Read ---------
 
-  async count(filter: FILTER): Promise<number> {
-    return this.model.countDocuments(filter).exec();
+  async count(filter: FILTER, options?: QueryOptions<T>): Promise<number> {
+    return this.model.countDocuments(filter, options).exec();
   }
 
-  async exists(filter: FILTER): Promise<ID | undefined> {
-    return (await this.model.exists(filter))?._id as ID;
+  async exists(filter: FILTER, options?: QueryOptions<T>): Promise<ID | undefined> {
+    return (await this.model.exists(filter).setOptions(options).exec())?._id as ID;
   }
 
-  distinct<K extends keyof DOC>(field: K, filter: FILTER): Promise<DOC[K][]>;
-  async distinct(field: string, filter: FILTER): Promise<unknown[]> {
-    return this.model.distinct(field, filter).exec();
+  distinct<K extends keyof DOC>(field: K, filter: FILTER, options?: QueryOptions<T>): Promise<DOC[K][]>;
+  async distinct(field: string, filter: FILTER, options?: QueryOptions<T>): Promise<unknown[]> {
+    return this.model.distinct(field, filter).setOptions(options).exec();
   }
 
   async find(id: ID, options?: QueryOptions<T>): Promise<DOC | null> {
@@ -118,7 +123,7 @@ export class MongooseRepository<T,
     await this.model.bulkSave(docs as Document[], options);
   }
 
-  async deleteAll(items: (T & {_id: ID})[]): Promise<DeleteManyResult> {
-    return this.model.deleteMany({_id: {$in: items.map(i => i._id)}});
+  async deleteAll(items: (T & {_id: ID})[], options?: QueryOptions<T>): Promise<DeleteManyResult> {
+    return this.model.deleteMany({_id: {$in: items.map(i => i._id)}}, options);
   }
 }
