@@ -16,6 +16,8 @@ Helpful additional components for [ng-bootstrap](https://ng-bootstrap.github.io)
 | 0.7  | ^15.2   | ^14          | ^5.2.3    |
 | 0.8  | ^15.2   | ^14          | ^5.2.3    |
 | 0.12 | ^16.2   | ^14          | ^5.2.3    |
+| 0.13 | ^19.0   | ^18          | ^5.2.3    |
+| 0.14 | ^20.0   | ^19          | ^5.2.3    |
 
 For older versions, see [ng-bootstrap-ext](https://github.com/Clashsoft/ng-bootstrap-ext#compatibility).
 
