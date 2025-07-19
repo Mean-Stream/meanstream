@@ -1,15 +1,18 @@
 <div class="toast-container position-fixed end-0 p-3" [style.top]="top">
-  <ngb-toast
-    *ngFor="let toast of toastService.toasts"
-    [class]="toast.class"
-    [autohide]="true"
-    [header]="toast.title || ''"
-    [delay]="toast.delay || 5000"
-    (hidden)="toastService.remove(toast)"
-  >
-    {{ toast.body }}
-    <a *ngFor="let action of toast.actions" [routerLink]="action.link" (click)="action.run && action.run()">
-      {{ action.name }}
-    </a>
-  </ngb-toast>
+  @for (toast of toastService.toasts; track toast) {
+    <ngb-toast
+      [class]="toast.class"
+      [autohide]="true"
+      [header]="toast.title || ''"
+      [delay]="toast.delay || 5000"
+      (hidden)="toastService.remove(toast)"
+      >
+      {{ toast.body }}
+      @for (action of toast.actions; track action) {
+        <a [routerLink]="action.link" (click)="action.run && action.run()">
+          {{ action.name }}
+        </a>
+      }
+    </ngb-toast>
+  }
 </div>

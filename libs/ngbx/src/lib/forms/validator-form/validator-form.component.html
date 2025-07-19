@@ -1,83 +1,102 @@
-<div *ngFor="let field of fields" class="mb-3" [class.form-check]="field.control === 'checkbox'">
-  <label *ngIf="field.control !== 'checkbox'" [for]="field.id" class="form-label">
-    {{field.label}}
-    <span *ngIf="field.required" class="text-danger" ngbTooltip="Required">*</span>
-  </label>
-  <ng-container [ngSwitch]="field.control">
-    <input
-      *ngSwitchCase="'input'"
-      class="form-control"
-      [type]="field.type"
-      [id]="field.id"
-      [required]="field.required"
-      [min]="field.min"
-      [max]="field.max"
-      [step]="field.step"
-      [pattern]="field.pattern"
-      [minLength]="field.minLength"
-      [maxLength]="field.maxLength"
-      [(ngModel)]="model[field.id]"
-      (change)="validate(field)"
-      [class.is-valid]="errors[field.id]?.length === 0"
-      [class.is-invalid]="errors[field.id]?.length"
-    >
-    <input *ngSwitchCase="'checkbox'"
-      class="form-check-input"
-      type="checkbox"
-      [id]="field.id"
-      [required]="field.required"
-      [(ngModel)]="model[field.id]"
-      (change)="validate(field)"
-      [class.is-valid]="errors[field.id]?.length === 0"
-      [class.is-invalid]="errors[field.id]?.length"
-    />
-    <textarea
-      *ngSwitchCase="'textarea'"
-      class="form-control"
-      [id]="field.id"
-      [required]="field.required"
-      [pattern]="field.pattern"
-      [minLength]="field.minLength"
-      [maxLength]="field.maxLength"
-      [rows]="field.rows"
-      [(ngModel)]="model[field.id]"
-      (change)="validate(field)"
-      [class.is-valid]="errors[field.id]?.length === 0"
-      [class.is-invalid]="errors[field.id]?.length"
-    ></textarea>
-    <select
-      *ngSwitchCase="'select'"
-      class="form-select"
-      [id]="field.id"
-      [required]="field.required"
-      [(ngModel)]="model[field.id]"
-      (change)="validate(field)"
-      [class.is-valid]="errors[field.id]?.length === 0"
-      [class.is-invalid]="errors[field.id]?.length"
-    >
-      <option *ngFor="let option of field.options" [value]="option">
-        {{ field.optionLabels?.[option] ?? option }}
-      </option>
-    </select>
-    <div *ngSwitchCase="'radio'">
-      <div *ngFor="let option of field.options; let index = index"
-           [class]="field.rows === 1 ? 'form-check-inline' : 'form-check'">
-        <input class="form-check-input" type="radio" [id]="'radio-' + field.id + '-' + index"
-               [checked]="model[field.id] === option"
-               (change)="model[field.id] = option">
-        <label class="form-check-label" [for]="'radio-' + field.id + '-' + index">
-          {{ field.optionLabels?.[option] ?? option }}
-        </label>
-      </div>
+@for (field of fields; track field) {
+  <div class="mb-3" [class.form-check]="field.control === 'checkbox'">
+    @if (field.control !== 'checkbox') {
+      <label [for]="field.id" class="form-label">
+        {{field.label}}
+        @if (field.required) {
+          <span class="text-danger" ngbTooltip="Required">*</span>
+        }
+      </label>
+    }
+    @switch (field.control) {
+      @case ('input') {
+        <input
+          class="form-control"
+          [type]="field.type"
+          [id]="field.id"
+          [required]="field.required"
+          [min]="field.min"
+          [max]="field.max"
+          [step]="field.step"
+          [pattern]="field.pattern"
+          [minLength]="field.minLength"
+          [maxLength]="field.maxLength"
+          [(ngModel)]="model[field.id]"
+          (change)="validate(field)"
+          [class.is-valid]="errors[field.id]?.length === 0"
+          [class.is-invalid]="errors[field.id]?.length"
+          >
+      }
+      @case ('checkbox') {
+        <input
+          class="form-check-input"
+          type="checkbox"
+          [id]="field.id"
+          [required]="field.required"
+          [(ngModel)]="model[field.id]"
+          (change)="validate(field)"
+          [class.is-valid]="errors[field.id]?.length === 0"
+          [class.is-invalid]="errors[field.id]?.length"
+          />
+      }
+      @case ('textarea') {
+        <textarea
+          class="form-control"
+          [id]="field.id"
+          [required]="field.required"
+          [pattern]="field.pattern"
+          [minLength]="field.minLength"
+          [maxLength]="field.maxLength"
+          [rows]="field.rows"
+          [(ngModel)]="model[field.id]"
+          (change)="validate(field)"
+          [class.is-valid]="errors[field.id]?.length === 0"
+          [class.is-invalid]="errors[field.id]?.length"
+        ></textarea>
+      }
+      @case ('select') {
+        <select
+          class="form-select"
+          [id]="field.id"
+          [required]="field.required"
+          [(ngModel)]="model[field.id]"
+          (change)="validate(field)"
+          [class.is-valid]="errors[field.id]?.length === 0"
+          [class.is-invalid]="errors[field.id]?.length"
+          >
+          @for (option of field.options; track option) {
+            <option [value]="option">
+              {{ field.optionLabels?.[option] ?? option }}
+            </option>
+          }
+        </select>
+      }
+      @case ('radio') {
+        <div>
+          @for (option of field.options; track option; let index = $index) {
+            <div
+              [class]="field.rows === 1 ? 'form-check-inline' : 'form-check'">
+              <input class="form-check-input" type="radio" [id]="'radio-' + field.id + '-' + index"
+                [checked]="model[field.id] === option"
+                (change)="model[field.id] = option">
+              <label class="form-check-label" [for]="'radio-' + field.id + '-' + index">
+                {{ field.optionLabels?.[option] ?? option }}
+              </label>
+            </div>
+          }
+        </div>
+      }
+    }
+    @if (field.control == 'checkbox') {
+      <label class="form-check-label" [for]="field.id">
+        {{ field.placeholder || field.label }}
+      </label>
+    }
+    <div class="form-text">
+      {{ field.description }}
     </div>
-  </ng-container>
-  <label *ngIf="field.control == 'checkbox'" class="form-check-label" [for]="field.id">
-    {{ field.placeholder || field.label }}
-  </label>
-  <div class="form-text">
-    {{ field.description }}
+    <div class="invalid-feedback">
+      {{ errors[field.id] }}
+    </div>
   </div>
-  <div class="invalid-feedback">
-    {{ errors[field.id] }}
-  </div>
-</div>
+}

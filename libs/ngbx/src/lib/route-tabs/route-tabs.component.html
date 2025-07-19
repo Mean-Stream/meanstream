@@ -1,9 +1,15 @@
 <ul ngbNav [activeId]="active || route.firstChild?.routeConfig?.path" class="nav-tabs mb-3">
-  <li *ngFor="let step of routes" [ngbNavItem]="step.path">
-    <a ngbNavLink [routerLink]="step.path">
-      <i *ngIf="step.data?.['icon'] as icon" [class]="icon"></i>
-      {{ step.data?.['title'] }}
-      <span *ngIf="step.data?.['new']" [class]="newBadgeClass">New</span>
-    </a>
-  </li>
+  @for (step of routes; track step) {
+    <li [ngbNavItem]="step.path">
+      <a ngbNavLink [routerLink]="step.path">
+        @if (step.data?.['icon']; as icon) {
+          <i [class]="icon"></i>
+        }
+        {{ step.data?.['title'] }}
+        @if (step.data?.['new']) {
+          <span [class]="newBadgeClass">New</span>
+        }
+      </a>
+    </li>
+  }
 </ul>

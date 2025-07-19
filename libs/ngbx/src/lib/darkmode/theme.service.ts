@@ -1,5 +1,5 @@
-import {DOCUMENT} from '@angular/common';
-import {Inject, Injectable} from '@angular/core';
+
+import {Inject, Injectable, DOCUMENT} from '@angular/core';
 
 import {BehaviorSubject, fromEvent, Observable, of, Subject, switchMap, tap} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
