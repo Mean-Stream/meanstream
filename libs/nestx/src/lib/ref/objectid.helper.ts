@@ -1,7 +1,8 @@
+import {fromByteArray, toByteArray} from 'base64-js';
+import {ObjectId, ObjectIdLike} from 'bson';
 import {Types} from 'mongoose';
-import {toByteArray, fromByteArray} from 'base64-js';
 
-export type ObjectIdInput = string | number | Types.ObjectId | Uint8Array;
+export type ObjectIdInput = string | Uint8Array<ArrayBufferLike> | ObjectId | ObjectIdLike;
 
 /**
  * Convert ObjectId to url-safe base64

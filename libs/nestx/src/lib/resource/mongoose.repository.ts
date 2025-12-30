@@ -1,23 +1,31 @@
+import {Abortable, CountOptions, DeleteOptions, UpdateOptions} from 'mongodb';
 import type {
+  ApplyBasicCreateCasting,
   CreateOptions,
+  DeepPartial,
   Document,
-  FilterQuery,
   Model,
+  MongooseBaseQueryOptions,
+  MongooseUpdateQueryOptions,
+  QueryFilter,
   QueryOptions,
+  Require_id,
   SaveOptions,
   Types,
   UpdateQuery,
   UpdateWriteOpResult,
 } from 'mongoose';
-import {Doc} from "../ref";
+import {Doc} from '../ref';
 import {ModifyOptions} from './options';
-import {DeleteManyResult, RawUpsertResult, Repository} from "./repository";
+import {DeleteManyResult, RawUpsertResult, Repository} from './repository';
+
+type NewHelper<T> = DeepPartial<ApplyBasicCreateCasting<Require_id<T>>>;
 
 export class MongooseRepository<T,
   ID = Types.ObjectId,
   DOC = Doc<T, ID>,
-  NEW = Omit<T, '_id' | 'createdAt' | 'updatedAt'>,
-  FILTER = FilterQuery<T>,
+  NEW extends NewHelper<T> = NewHelper<T>,
+  FILTER = QueryFilter<T>,
   UPDATE = UpdateQuery<T>,
 >
   implements Repository<ID, DOC, NEW, FILTER, UPDATE> {
@@ -42,7 +50,7 @@ export class MongooseRepository<T,
 
   // --------- Read ---------
 
-  async count(filter: FILTER, options?: QueryOptions<T>): Promise<number> {
+  async count(filter: FILTER, options?: CountOptions & Abortable & MongooseBaseQueryOptions<T>): Promise<number> {
     return this.model.countDocuments(filter, options).exec();
   }
 
@@ -95,8 +103,8 @@ export class MongooseRepository<T,
     return this.model.findOneAndUpdate(filter, update, {...options, new: true}).exec();
   }
 
-  async updateMany(filter: FILTER, update: UPDATE, options: QueryOptions<T> & ModifyOptions = {}): Promise<UpdateWriteOpResult> {
-    return this.model.updateMany(filter, update, {...options, new: true}).exec();
+  async updateMany(filter: FILTER, update: UPDATE, options: UpdateOptions & MongooseUpdateQueryOptions<T> = {}): Promise<UpdateWriteOpResult> {
+    return this.model.updateMany(filter, update, options).exec();
   }
 
   // --------- Delete ---------
@@ -109,7 +117,7 @@ export class MongooseRepository<T,
     return this.model.findOneAndDelete(filter, options);
   }
 
-  async deleteMany(filter: FILTER, options?: QueryOptions<T> & ModifyOptions): Promise<DeleteManyResult> {
+  async deleteMany(filter: FILTER, options?: DeleteOptions & MongooseBaseQueryOptions<T>): Promise<DeleteManyResult> {
     return this.model.deleteMany(filter, options).exec();
   }
 
@@ -124,7 +132,7 @@ export class MongooseRepository<T,
     await this.model.bulkSave(docs as Document[], options);
   }
 
-  async deleteAll(items: (T & {_id: ID})[], options?: QueryOptions<T> & ModifyOptions): Promise<DeleteManyResult> {
+  async deleteAll(items: (T & {_id: ID})[], options?: DeleteOptions & MongooseBaseQueryOptions<T>): Promise<DeleteManyResult> {
     return this.model.deleteMany({_id: {$in: items.map(i => i._id)}}, options);
   }
 }
