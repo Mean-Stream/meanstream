@@ -58,6 +58,8 @@
     "@angular/compiler-cli": "21.0.6",
     "@angular/language-service": "21.0.6",
     "@angular/localize": "21.0.6",
+    "@eslint/eslintrc": "^2.1.1",
+    "@eslint/js": "^9.39.2",
     "@nestjs/schematics": "^11.0.9",
     "@nestjs/testing": "^11.1.11",
     "@nx/angular": "22.3.3",
@@ -72,15 +74,16 @@
     "@types/jest": "30.0.0",
     "@types/node": "22.16.5",
     "@types/passport-jwt": "^4.0.1",
-    "@typescript-eslint/eslint-plugin": "7.18.0",
-    "@typescript-eslint/parser": "7.18.0",
-    "@typescript-eslint/utils": "^7.18.0",
+    "@typescript-eslint/eslint-plugin": "^8.40.0",
+    "@typescript-eslint/parser": "^8.40.0",
+    "@typescript-eslint/utils": "^8.40.0",
     "autoprefixer": "^10.4.23",
-    "eslint": "8.57.1",
+    "eslint": "^9.8.0",
     "eslint-config-prettier": "10.1.8",
     "jest": "30.2.0",
     "jest-environment-jsdom": "30.2.0",
     "jest-preset-angular": "16.0.0",
+    "jest-util": "^30.0.0",
     "ng-packagr": "21.0.1",
     "nx": "22.3.3",
     "postcss": "^8.5.6",
@@ -91,7 +94,7 @@
     "ts-jest": "29.4.5",
     "ts-node": "10.9.2",
     "typescript": "5.9.3",
-    "jest-util": "^30.0.0"
+    "typescript-eslint": "^8.40.0"
   },
   "packageManager": "pnpm@10.27.0+sha512.72d699da16b1179c14ba9e64dc71c9a40988cbdc65c264cb0e489db7de917f20dcf4d64d8723625f2969ba52d4b7e2a1170682d9ac2a5dcaeaab732b7e16f04a"
 }
