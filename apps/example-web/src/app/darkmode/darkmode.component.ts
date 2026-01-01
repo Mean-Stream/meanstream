@@ -1,11 +1,16 @@
+import {AsyncPipe} from '@angular/common';
 import {Component, inject} from '@angular/core';
-import {ThemeService} from '@meanstream/ngbx';
+import {DarkSwitchComponent, ThemeService, ThemeSwitchComponent} from '@meanstream/ngbx';
 
 @Component({
   selector: 'nestx-darkmode',
   templateUrl: './darkmode.component.html',
   styleUrls: ['./darkmode.component.css'],
-  standalone: false,
+  imports: [
+    DarkSwitchComponent,
+    ThemeSwitchComponent,
+    AsyncPipe,
+  ],
 })
 export class DarkmodeComponent {
   sizes = [undefined, 'sm', 'md', 'lg'] as const;

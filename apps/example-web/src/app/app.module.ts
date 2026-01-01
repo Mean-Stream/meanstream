@@ -12,13 +12,7 @@ import {ModalsComponent} from './modals/modals.component';
 import {ToastsComponent} from './toasts/toasts.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    ToastsComponent,
-    ModalsComponent,
-    ExampleModalComponent,
-    FormsComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes, {initialNavigation: 'enabledBlocking'}),
@@ -28,6 +22,10 @@ import {ToastsComponent} from './toasts/toasts.component';
     ModalModule,
     FormsModule,
     DarkmodeModule,
+    ToastsComponent,
+    ModalsComponent,
+    ExampleModalComponent,
+    FormsComponent,
   ],
   bootstrap: [AppComponent],
 })

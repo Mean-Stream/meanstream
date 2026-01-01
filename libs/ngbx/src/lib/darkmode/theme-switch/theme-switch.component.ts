@@ -1,5 +1,5 @@
+import {AsyncPipe} from '@angular/common';
 import {Component, inject, Input} from '@angular/core';
-
 import {Subject} from 'rxjs';
 
 import {ThemeService} from '../theme.service';
@@ -12,7 +12,7 @@ import {ThemeService} from '../theme.service';
   selector: 'ngbx-theme-switch',
   templateUrl: './theme-switch.component.html',
   styleUrls: ['./theme-switch.component.scss'],
-  standalone: false,
+  imports: [AsyncPipe],
 })
 export class ThemeSwitchComponent {
   /**

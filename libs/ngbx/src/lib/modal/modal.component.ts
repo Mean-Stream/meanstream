@@ -9,7 +9,6 @@ const DESTROY = Symbol();
   exportAs: 'modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss'],
-  standalone: false,
 })
 export class ModalComponent implements OnInit, OnDestroy {
   @Input() size?: 'sm' | 'lg' | 'xl' | string;

@@ -1,4 +1,6 @@
 import {Component, inject, Input, OnInit, Type} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 import {validate, ValidationError} from 'class-validator';
 import {FormsService} from '../forms.service';
 import {InputProperties, ValidationFormOptions} from '../input-properties.interface';
@@ -7,7 +9,7 @@ import {InputProperties, ValidationFormOptions} from '../input-properties.interf
   selector: 'ngbx-validator-form',
   templateUrl: './validator-form.component.html',
   styleUrls: ['./validator-form.component.css'],
-  standalone: false,
+  imports: [NgbTooltip, FormsModule],
 })
 export class ValidatorFormComponent<T extends object> implements OnInit {
   @Input() type?: Type<T>;

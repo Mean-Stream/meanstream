@@ -8,8 +8,6 @@ import {ThemeSwitchComponent} from './theme-switch/theme-switch.component';
   imports: [
     CommonModule,
     FormsModule,
-  ],
-  declarations: [
     DarkSwitchComponent,
     ThemeSwitchComponent,
   ],

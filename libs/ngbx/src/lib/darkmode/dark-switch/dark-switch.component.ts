@@ -1,5 +1,6 @@
+import {AsyncPipe} from '@angular/common';
 import {Component, inject} from '@angular/core';
-
+import {FormsModule} from '@angular/forms';
 import {Subject} from 'rxjs';
 
 import {ThemeService} from '../theme.service';
@@ -12,7 +13,7 @@ import {ThemeService} from '../theme.service';
   selector: 'ngbx-darkmode-switch',
   templateUrl: './dark-switch.component.html',
   styleUrls: ['./dark-switch.component.scss'],
-  standalone: false,
+  imports: [FormsModule, AsyncPipe],
 })
 export class DarkSwitchComponent {
   theme$: Subject<string | null> = inject(ThemeService).theme$;

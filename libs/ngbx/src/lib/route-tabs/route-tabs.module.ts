@@ -4,15 +4,12 @@ import {RouterModule} from '@angular/router';
 import {NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
 import {RouteTabsComponent} from './route-tabs.component';
 
-
 @NgModule({
-  declarations: [
-    RouteTabsComponent,
-  ],
   imports: [
     CommonModule,
     NgbNavModule,
     RouterModule,
+    RouteTabsComponent,
   ],
   exports: [
     RouteTabsComponent,

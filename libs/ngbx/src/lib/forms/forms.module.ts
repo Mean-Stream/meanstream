@@ -6,14 +6,12 @@ import {ValidatorFormComponent} from './validator-form/validator-form.component'
 
 
 @NgModule({
-  declarations: [
-    ValidatorFormComponent,
-  ],
   imports: [
     CommonModule,
     NgbTooltipModule,
     ReactiveFormsModule,
     NgFormsModule,
+    ValidatorFormComponent,
   ],
   exports: [
     ValidatorFormComponent,

@@ -4,13 +4,12 @@ import {NgbxDarkmodeModule, THEME_LOADER, THEME_SAVER} from '@nestx/ngbx';
 import {of} from 'rxjs';
 import {DarkmodeComponent} from './darkmode.component';
 
-
 @NgModule({
   imports: [
     CommonModule,
     NgbxDarkmodeModule,
+    DarkmodeComponent,
   ],
-  declarations: [DarkmodeComponent],
   exports: [DarkmodeComponent],
   providers: [
     {

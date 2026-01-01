@@ -1,3 +1,4 @@
+import {JsonPipe} from '@angular/common';
 import {Component, QueryList, ViewChildren} from '@angular/core';
 import {ValidatorFormComponent} from '@nestx/ngbx';
 import {Person} from './person';
@@ -6,7 +7,7 @@ import {Person} from './person';
   selector: 'nestx-forms',
   templateUrl: './forms.component.html',
   styleUrls: ['./forms.component.css'],
-  standalone: false,
+  imports: [ValidatorFormComponent, JsonPipe],
 })
 export class FormsComponent {
   Person = Person;
