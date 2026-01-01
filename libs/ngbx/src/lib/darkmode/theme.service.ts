@@ -1,18 +1,8 @@
-
-import {Inject, Injectable, DOCUMENT} from '@angular/core';
+import {DOCUMENT, inject, Injectable} from '@angular/core';
 
 import {BehaviorSubject, fromEvent, Observable, of, Subject, switchMap, tap} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
-import {
-  ActiveTheme,
-  DetectedTheme,
-  Theme,
-  THEME_ATTRIBUTE,
-  THEME_LOADER,
-  THEME_SAVER,
-  ThemeLoader,
-  ThemeSaver
-} from './theme-loader';
+import {ActiveTheme, DetectedTheme, Theme, THEME_ATTRIBUTE, THEME_LOADER, THEME_SAVER} from './theme-loader';
 
 @Injectable({
   providedIn: 'root',
@@ -20,12 +10,12 @@ import {
 export class ThemeService {
   private _theme = new BehaviorSubject<Theme | null>(null);
 
-  constructor(
-    @Inject(DOCUMENT) document: Document,
-    @Inject(THEME_ATTRIBUTE) themeAttribute: string,
-    @Inject(THEME_LOADER) themeLoader: ThemeLoader,
-    @Inject(THEME_SAVER) themeSaver: ThemeSaver,
-  ) {
+  constructor() {
+    const document = inject(DOCUMENT);
+    const themeAttribute = inject(THEME_ATTRIBUTE);
+    const themeLoader = inject(THEME_LOADER);
+    const themeSaver = inject(THEME_SAVER);
+
     themeLoader().subscribe(theme => this._theme.next(theme));
 
     this.theme$.pipe(

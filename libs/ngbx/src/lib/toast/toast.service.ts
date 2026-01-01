@@ -7,9 +7,6 @@ import {Toast} from './toast.interface';
 export class ToastService {
   toasts: Toast[] = [];
 
-  constructor() {
-  }
-
   add(toast: Toast): Toast {
     this.toasts.push(toast);
     return toast;

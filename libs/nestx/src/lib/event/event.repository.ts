@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-types,no-prototype-builtins */
+/* eslint-disable @typescript-eslint/no-unsafe-function-type */
 
 import type {Document} from "mongoose";
 
@@ -156,8 +156,9 @@ function skipEmit(args: any[]): boolean {
 }
 
 function getMethodDescriptor(target: Function, propertyName: string): TypedPropertyDescriptor<any> {
-  if (target.prototype.hasOwnProperty(propertyName))
+  if (Object.prototype.hasOwnProperty.call(target.prototype, propertyName)) {
     return Object.getOwnPropertyDescriptor(target.prototype, propertyName);
+  }
 
   // create a new property descriptor for the base class' method
   return {

@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
-import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
+import {Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
+import {NavigationExtras, Router} from '@angular/router';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 
 const DESTROY = Symbol();
@@ -24,10 +24,11 @@ export class ModalComponent implements OnInit, OnDestroy {
 
   @Output() modalClose = new EventEmitter<any>();
 
+  private modalService = inject(NgbModal);
+  private router = inject(Router);
+
   constructor(
-    private modalService: NgbModal,
-    private route: ActivatedRoute,
-    private router: Router,
+
   ) {
     this.backOptions ||= {relativeTo: route};
   }

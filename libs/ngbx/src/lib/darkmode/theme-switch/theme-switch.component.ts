@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, inject, Input} from '@angular/core';
 
 import {Subject} from 'rxjs';
 
@@ -38,9 +38,5 @@ export class ThemeSwitchComponent {
    */
   @Input() style?: 'icon' | 'label';
 
-  theme$: Subject<string | null>;
-
-  constructor(themeService: ThemeService) {
-    this.theme$ = themeService.theme$;
-  }
+  theme$: Subject<string | null> = inject(ThemeService).theme$;
 }

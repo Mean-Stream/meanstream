@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'ngbx',
   preset: '../../jest.preset.js',

@@ -38,13 +38,15 @@ export function Ref(ref: string, {array, optional, index}: RefOptions = {}): Pro
     decorators.push(mongoose.Prop(propOptions));
   }
   const swagger = optionalRequire('@nestjs/swagger');
-  swagger && decorators.push(swagger.ApiProperty({
-    type: 'string',
-    format: 'objectid',
-    isArray: array,
-    example: array ? [EXAMPLE_OBJECT_ID] : EXAMPLE_OBJECT_ID,
-    required: !optional,
-  }));
+  if (swagger) {
+    decorators.push(swagger.ApiProperty({
+      type: 'string',
+      format: 'objectid',
+      isArray: array,
+      example: array ? [EXAMPLE_OBJECT_ID] : EXAMPLE_OBJECT_ID,
+      required: !optional,
+    }));
+  }
   return applyDecorators(...decorators);
 }
 

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 
 import {Subject} from 'rxjs';
 
@@ -15,9 +15,5 @@ import {ThemeService} from '../theme.service';
   standalone: false,
 })
 export class DarkSwitchComponent {
-  theme$: Subject<string | null>;
-
-  constructor(themeService: ThemeService) {
-    this.theme$ = themeService.theme$;
-  }
+  theme$: Subject<string | null> = inject(ThemeService).theme$;
 }

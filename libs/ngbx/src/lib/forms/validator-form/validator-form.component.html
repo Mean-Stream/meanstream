@@ -87,7 +87,7 @@
         </div>
       }
     }
-    @if (field.control == 'checkbox') {
+    @if (field.control === 'checkbox') {
       <label class="form-check-label" [for]="field.id">
         {{ field.placeholder || field.label }}
       </label>

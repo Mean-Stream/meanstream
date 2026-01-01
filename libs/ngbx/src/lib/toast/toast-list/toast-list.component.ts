@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, inject, Input} from '@angular/core';
 import {ToastService} from '../toast.service';
 
 @Component({
@@ -7,15 +7,8 @@ import {ToastService} from '../toast.service';
   styleUrls: ['./toast-list.component.scss'],
   standalone: false,
 })
-export class ToastListComponent implements OnInit {
+export class ToastListComponent {
   @Input() top: string | number = 0;
 
-  constructor(
-    public toastService: ToastService,
-  ) {
-  }
-
-  ngOnInit(): void {
-  }
-
+  protected toastService = inject(ToastService);
 }

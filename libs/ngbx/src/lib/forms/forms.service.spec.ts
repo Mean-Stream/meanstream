@@ -1,6 +1,6 @@
 import {TestBed} from '@angular/core/testing';
-import {FormsService} from '@nestx/ngbx';
 import {IsOptional, ValidateIf} from 'class-validator';
+import {FormsService} from './forms.service';
 
 describe('FormsService', () => {
   let service: FormsService;

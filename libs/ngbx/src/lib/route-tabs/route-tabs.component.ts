@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, inject, Input} from '@angular/core';
 import {ActivatedRoute, Route} from '@angular/router';
 
 @Component({
@@ -12,8 +12,5 @@ export class RouteTabsComponent {
   @Input() active?: string;
   @Input() newBadgeClass = 'badge text-white bg-primary bg-gradient-primary';
 
-  constructor(
-    public route: ActivatedRoute,
-  ) {
-  }
+  protected route = inject(ActivatedRoute);
 }

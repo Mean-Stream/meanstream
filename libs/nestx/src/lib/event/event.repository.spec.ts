@@ -16,7 +16,7 @@ describe('EventRepository', () => {
   type SimpleFilter = Partial<Simple>;
 
   @EventRepository()
-  // @ts-ignore
+  // @ts-expect-error TS2720: Class SimpleService incorrectly implements class MongooseRepository
   class SimpleService implements MongooseRepository<Simple, number, NewSimple, SimpleFilter, NewSimple> {
     async find(): Promise<Simple | null> {
       return null;

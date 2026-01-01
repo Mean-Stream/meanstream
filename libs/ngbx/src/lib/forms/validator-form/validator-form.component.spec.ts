@@ -1,6 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {ValidatorFormComponent} from '@nestx/ngbx';
+import {ValidatorFormComponent} from './validator-form.component';
 
 describe('ValidatorFormComponent', () => {
   let component: ValidatorFormComponent<object>;

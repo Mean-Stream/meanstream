@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {ToastService} from '@nestx/ngbx';
 
 @Component({
@@ -9,10 +9,7 @@ import {ToastService} from '@nestx/ngbx';
 })
 export class ToastsComponent {
 
-  constructor(
-    private toastService: ToastService,
-  ) {
-  }
+  private toastService = inject(ToastService);
 
   toast() {
     this.toastService.add({

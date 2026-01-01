@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Type} from '@angular/core';
+import {Component, inject, Input, OnInit, Type} from '@angular/core';
 import {validate, ValidationError} from 'class-validator';
 import {FormsService} from '../forms.service';
 import {InputProperties, ValidationFormOptions} from '../input-properties.interface';
@@ -18,10 +18,7 @@ export class ValidatorFormComponent<T extends object> implements OnInit {
 
   errors: Partial<Record<keyof T, string[]>> = {};
 
-  constructor(
-    private formsService: FormsService,
-  ) {
-  }
+  private formsService = inject(FormsService);
 
   ngOnInit(): void {
     this.fields = this.formsService.parse(this.type || this.model.constructor as Type<T>, this.options);
