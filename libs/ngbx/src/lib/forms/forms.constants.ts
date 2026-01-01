@@ -11,6 +11,7 @@ import {
   IS_NEGATIVE,
   IS_NOT_EMPTY,
   IS_NUMBER,
+  IS_OPTIONAL,
   IS_PHONE_NUMBER,
   IS_POSITIVE,
   IS_STRING,
@@ -42,6 +43,7 @@ function getEnumValues<T>(enumClass: Record<string, T>): T[] {
 }
 
 export const COMMON_MAPPERS: Record<string, Mapper> = {
+  [IS_OPTIONAL]: props => props.required = false,
   [IS_BOOLEAN]: (props) => {
     props.control = 'checkbox';
     props.options = [true, false];

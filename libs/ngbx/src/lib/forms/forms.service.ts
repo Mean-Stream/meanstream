@@ -1,11 +1,10 @@
 import {Injectable, Type} from '@angular/core';
 
-import {getMetadataStorage, ValidationTypes} from 'class-validator';
+import {getMetadataStorage} from 'class-validator';
 import {ValidationMetadata} from 'class-validator/types/metadata/ValidationMetadata';
 import {MAPPERS, TYPE_MAPPING} from './forms.constants';
 import {InputProperties, InputType, ValidationFormOptions} from './input-properties.interface';
 import {getPresentation} from './presentation.decorator';
-
 
 function toTitleCase(key: string) {
   return key[0].toUpperCase() + key.substring(1).replace(/[A-Z]+/g, match => ' ' + match[0].toUpperCase() + match.substring(1));
@@ -60,27 +59,6 @@ export class FormsService {
         MAPPERS[m.name](props, ...(m.constraints ?? []));
       }
     }
-
-    if (this.isIsOptional(m)) {
-      props.required = false;
-    }
-  }
-
-  private isIsOptional(m: ValidationMetadata) {
-    if (m.type !== ValidationTypes.CONDITIONAL_VALIDATION) {
-      return false;
-    }
-    const constraint = m.constraints?.[0];
-    // black box testing
-    return constraint
-      && constraint({[m.propertyName]: null}, null) === false
-      && constraint({[m.propertyName]: undefined}, undefined) === false
-      && constraint({[m.propertyName]: ''}, '') === true
-      && constraint({[m.propertyName]: ' '}, ' ') === true
-      && constraint({[m.propertyName]: 0}, 0) === true
-      && constraint({[m.propertyName]: false}, false) === true
-      && constraint({[m.propertyName]: true}, true) === true
-      ;
   }
 
   coerce(type: InputType, value: any) {
