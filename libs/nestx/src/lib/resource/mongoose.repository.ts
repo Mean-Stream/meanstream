@@ -5,7 +5,7 @@ import type {
   DeepPartial,
   Document,
   Model,
-  MongooseBaseQueryOptions,
+  MongooseBaseQueryOptions, MongooseBulkWriteResult,
   MongooseUpdateQueryOptions,
   QueryFilter,
   QueryOptions,
@@ -78,7 +78,7 @@ export class MongooseRepository<T,
   // --------- Update ---------
 
   async update(id: ID, update: UPDATE, options: QueryOptions<T> & ModifyOptions = {}): Promise<DOC | null> {
-    return this.model.findByIdAndUpdate(id, update, {...options, new: true}).setOptions(options).exec();
+    return this.model.findByIdAndUpdate(id, update, {...options, returnDocument: 'after'}).setOptions(options).exec();
   }
 
   async upsert(filter: FILTER, update: UPDATE, options: QueryOptions<T> & ModifyOptions = {}): Promise<DOC> {
@@ -88,8 +88,8 @@ export class MongooseRepository<T,
   async upsertRaw(filter: FILTER, update: UPDATE, options: QueryOptions<T> & ModifyOptions = {}): Promise<RawUpsertResult<DOC>> {
     const result = await this.model.findOneAndUpdate(filter, update, {
       ...options,
-      new: true,
       upsert: true,
+      returnDocument: 'after',
       includeResultMetadata: true,
     }).exec();
     if (result.lastErrorObject?.upserted) {
@@ -100,7 +100,10 @@ export class MongooseRepository<T,
   }
 
   async updateOne(filter: FILTER, update: UPDATE, options: QueryOptions<T> & ModifyOptions = {}): Promise<DOC | null> {
-    return this.model.findOneAndUpdate(filter, update, {...options, new: true}).exec();
+    return this.model.findOneAndUpdate(filter, update, {
+      ...options,
+      returnDocument: 'after',
+    }).exec();
   }
 
   async updateMany(filter: FILTER, update: UPDATE, options: UpdateOptions & MongooseUpdateQueryOptions<T> = {}): Promise<UpdateWriteOpResult> {
@@ -123,13 +126,12 @@ export class MongooseRepository<T,
 
   // --------- Other ---------
 
-  async save(doc: DOC, options?: SaveOptions & ModifyOptions): Promise<void> {
-    await (doc as Document).save(options);
+  async save(doc: DOC, options?: SaveOptions & ModifyOptions): Promise<DOC> {
+    return await (doc as Document).save(options) as DOC;
   }
 
-  // TODO may specify a better return type
-  async saveAll(docs: DOC[], options?: Parameters<Model<T>['bulkSave']>[1] & ModifyOptions): Promise<void> {
-    await this.model.bulkSave(docs as Document[], options);
+  async saveAll(docs: DOC[], options?: Parameters<Model<T>['bulkSave']>[1] & ModifyOptions): Promise<MongooseBulkWriteResult> {
+    return this.model.bulkSave(docs, options);
   }
 
   async deleteAll(items: (T & {_id: ID})[], options?: DeleteOptions & MongooseBaseQueryOptions<T>): Promise<DeleteManyResult> {

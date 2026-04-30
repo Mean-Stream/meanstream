@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {UpdateWriteOpResult} from 'mongoose';
+import {MongooseBulkWriteResult, UpdateWriteOpResult} from 'mongoose';
 import {MongooseRepository} from '../resource/mongoose.repository';
 import {DeleteManyResult, RawUpsertResult} from '../resource/repository';
 import {EventRepository} from './event.repository';
@@ -86,7 +86,7 @@ describe('EventRepository', () => {
       return;
     }
 
-    async saveAll(docs: Simple[]) {
+    async saveAll(docs: Simple[]): Promise<MongooseBulkWriteResult> {
       return;
     }
 
