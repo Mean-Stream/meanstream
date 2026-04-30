@@ -5,7 +5,7 @@ import type {
   DeepPartial,
   Document,
   Model,
-  MongooseBaseQueryOptions,
+  MongooseBaseQueryOptions, MongooseBulkWriteResult,
   MongooseUpdateQueryOptions,
   QueryFilter,
   QueryOptions,
@@ -126,13 +126,12 @@ export class MongooseRepository<T,
 
   // --------- Other ---------
 
-  async save(doc: DOC, options?: SaveOptions & ModifyOptions): Promise<void> {
-    await (doc as Document).save(options);
+  async save(doc: DOC, options?: SaveOptions & ModifyOptions): Promise<DOC> {
+    return await (doc as Document).save(options) as DOC;
   }
 
-  // TODO may specify a better return type
-  async saveAll(docs: DOC[], options?: Parameters<Model<T>['bulkSave']>[1] & ModifyOptions): Promise<void> {
-    await this.model.bulkSave(docs, options);
+  async saveAll(docs: DOC[], options?: Parameters<Model<T>['bulkSave']>[1] & ModifyOptions): Promise<MongooseBulkWriteResult> {
+    return this.model.bulkSave(docs, options);
   }
 
   async deleteAll(items: (T & {_id: ID})[], options?: DeleteOptions & MongooseBaseQueryOptions<T>): Promise<DeleteManyResult> {
