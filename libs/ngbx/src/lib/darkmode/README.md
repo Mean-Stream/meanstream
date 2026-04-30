@@ -101,9 +101,8 @@ import {ThemeService} from '@mean-stream/ngbx';
 @Injectable()
 export class MyService {
   constructor(
-    themeService: ThemeService,
   ) {
-    themeService.theme$.subscribe(theme => console.log(theme));
+    inject(ThemeService).theme$.subscribe(theme => console.log(theme));
   }
 }
 ```
