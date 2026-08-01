@@ -87,7 +87,7 @@
     "jest-util": "^30.3.0",
     "ng-packagr": "21.2.3",
     "nx": "22.7.1",
-    "postcss": "^8.5.12",
+    "postcss": "^8.5.18",
     "postcss-import": "~14.1.0",
     "postcss-preset-env": "~7.5.0",
     "postcss-url": "~10.1.3",
